@@ -1,26 +1,20 @@
 <?php
-ini_set('display_errors',1); error_reporting(E_ALL);
+
 // Include config file
 require_once 'config.php';
 
 // Define variables and initialize with empty values
-$event_name = "";
+$opportunity_id = "";
+$event_id = "";
 
-//NOTE: this value will be readonly {1}
-$sponsor = "";
-
+$role_name = "";
 $description = "";
-$location = "";
-
-//NOTE: this value will be readonly {1}
-$contribution_type = "";
-$contact_name = "";
-$contact_phone = "";
-$contact_email = "";
-$registration_start = "";
-$registration_end = "";
-$event_start = "";
-$event_end = "";
+$start_date = "";
+$end_date = "";
+$start_time = "";
+$end_time = "";
+$total_positions = "";
+$contribution_value = "";
 
 //define and initialize error message variables
 $event_name_error = "";
