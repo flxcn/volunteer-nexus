@@ -1,12 +1,16 @@
 <?php
 
+if(isset($_GET['event_id'] && !is_int($_GET['event_id'])){
+  header('Location: index.php');
+  exit;
+}
+
+$event_id = (isset($_GET['event_id']) ? $_GET['event_id'] : 0);
+
 // Include config file
 require_once 'config.php';
 
 // Define variables and initialize with empty values
-$opportunity_id = "";
-$event_id = "";
-
 $role_name = "";
 $description = "";
 $start_date = "";
@@ -17,39 +21,27 @@ $total_positions = "";
 $contribution_value = "";
 
 //define and initialize error message variables
-$event_name_error = "";
-$sponsor_error = "";
+$role_name_error = "";
 $description_error = "";
-$location_error = "";
-$contribution_type_error = "";
-$contact_name_error = "";
-$contact_phone_error = "";
-$contact_email_error = "";
-$registration_start_error = "";
-$registration_end_error = "";
-$event_start_error = "";
-$event_end_error = "";
+$start_date_error = "";
+$end_date_error = "";
+$start_time_error = "";
+$end_time_error = "";
+$total_positions_error = "";
+$contribution_value_error = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Validate event name
-    $input_event_name = trim($_POST["event_name"]);
-    if(empty($input_event_name)){
-        $event_name_error = "Please enter an event name.";
+    // Validate opportunity name
+    $input_event_name = trim($_POST["role_name"]);
+    if(empty($input_role_name)){
+        $event_role_error = "Please enter a role name.";
     }else{
-        $event_name = $input_event_name;
+        $role_name = $input_role_name;
     }
 
-    // Validate sponsor //NOTE: refer to-do list {1}
-    $input_sponsor = trim($_POST["sponsor"]);
-    if(empty($input_sponsor)){
-        $sponsor_error = "Please enter a sponsor.";
-    } else{
-        $sponsor = $input_sponsor;
-    }
-
-    // Validate description // NOTE: refer to-do list {3}
+    // Validate description //NOTE: refer to-do list {1} // NOTE: add string length validator
     $input_description = trim($_POST["description"]);
     if(empty($input_description)){
         $description_error = "Please enter a description.";
@@ -57,105 +49,78 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $description = $input_description;
     }
 
-    // Validate location // NOTE: refer to-do list {3}
-    $input_location = trim($_POST["location"]);
-    if(empty($input_location)){
-        $location_error = "Please enter a location.";
+    // Validate start_date // NOTE: refer to-do list {3}
+    $input_start_date = trim($_POST["start_date"]);
+    if(empty($input_start_date)){
+        $start_date_error = "Please enter a start date.";
     } else{
-        $location = $input_location;
+        $start_date = $input_start_date;
     }
 
-    // Validate contribution_type // NOTE: refer to-do list {3}
-    $input_contribution = trim($_POST["contribution_type"]);
-    if(empty($input_contribution)){
-        $contribution_error = "Please enter a contribution type.";
+    // Validate start_time // NOTE: refer to-do list {3}
+    $input_start_time = trim($_POST["start_time"]);
+    if(empty($input_start_time)){
+        $start_time_error = "Please enter a start time.";
     } else{
-        $contribution_type = $contribution_type;
+        $start_time = $input_start_time;
     }
 
-    // Validate contact_name // NOTE: refer to-do list {3}
-    $input_contact_name = trim($_POST["contact_name"]);
-    if(empty($input_contact_name)){
-        $contact_name_error = "Please enter a contact name.";
+    // Validate end_date // NOTE: refer to-do list {3}
+    $input_end_date = trim($_POST["end_date"]);
+    if(empty($input_end_date)){
+        $end_date_error = "Please enter a end date.";
     } else{
-        $description = $input_description;
+        $end_date = $input_end_date;
     }
 
-    // Validate contact_phone // NOTE: refer to-do list {3}
-    $input_contact_phone = trim($_POST["contact_phone"]);
-    if(empty($input_contact_phone)){
-        $contact_phone_error = "Please enter a contact phone.";
+    // Validate end_time // NOTE: refer to-do list {3}
+    $input_end_time = trim($_POST["end_time"]);
+    if(empty($input_end_time)){
+        $end_time_error = "Please enter an end time.";
     } else{
-        $contact_phone = $input_contact_phone;
+        $end_time = $input_end_time;
     }
 
-    // Validate contact_email // NOTE: refer to-do list {3}
-    $input_contact_email = trim($_POST["contact_email"]);
-    if(empty($input_contact_email)){
-        $contact_email_error = "Please enter a contact email.";
+    // Validate total_positions // NOTE: refer to-do list {3}
+    $input_total_positions = trim($_POST["total_positions"]);
+    if(empty($input_total_positions)){
+        $total_positions_error = "Please enter the total number of positions. Leave blank if there is no limit.";
     } else{
-        $contact_email = $input_contact_email;
+        $total_positions = $input_total_positions;
     }
 
-    // Validate registration_start // NOTE: refer to-do list {3}
-    $input_registration_start = trim($_POST["registration_start"]);
-    if(empty($input_registration_start)){
-        $registration_start_error = "Please enter a registration start date.";
+    // Validate contribution_value // NOTE: refer to-do list {3}
+    $input_contribution_value = trim($_POST["contribution_value"]);
+    if(empty($input_contribution_value)){
+        $contribution_value_error = "Please enter a contribution value.";
     } else{
-        $registration_start = $input_registration_start;
-    }
-
-    // Validate registration_end // NOTE: refer to-do list {3}
-    $input_registration_end = trim($_POST["registration_end"]);
-    if(empty($input_registration_end)){
-        $registration_end_error = "Please enter a registration end date.";
-    } else{
-        $registration_end = $input_registration_end;
-    }
-
-    // Validate event_start // NOTE: refer to-do list {3}
-    $input_event_start = trim($_POST["event_start"]);
-    if(empty($input_event_start)){
-        $event_start_error = "Please enter an event start date.";
-    } else{
-        $event_start = $input_event_start;
-    }
-
-    // Validate event_end // NOTE: refer to-do list {3}
-    $input_event_end = trim($_POST["event_end"]);
-    if(empty($input_event_end)){
-        $event_end_error = "Please enter an event end date.";
-    } else{
-        $event_end = $input_event_end;
+        $contribution_value = $input_contribution_value;
     }
 
     // Check input errors before inserting in database
-    if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
+    if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO events (event_name, sponsor, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_event_name, $param_sponsor, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "issssssssssii", $param_event_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value);
 
             // Set parameters
-            $param_event_name = $event_name;
-            $param_sponsor = $sponsor;
+            $param_event_id = $event_id;
+            $param_role_name = $role_name;
             $param_description = $description;
-            $param_location = $location;
-            $param_contribution_type = $contribution_type;
-            $param_contact_name = $contact_name;
-            $param_contact_phone = $contact_phone;
-            $param_contact_email = $contact_email;
-            $param_registration_start = $registration_start;
-            $param_registration_end = $registration_end;
-            $param_event_start = $event_start;
-            $param_event_end = $event_end;
+            $param_start_date = $start_date;
+            $param_end_date = $end_date;
+            $param_start_time = $start_time;
+            $param_end_time = $end_time;
+            $param_total_positions= $total_positions;
+            $param_contribution_value = $contribution_value;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: index.php");
+                header("location: read.php?event_id='. $event_id .'"); // NOTE: BACK BUTTION
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
@@ -176,7 +141,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create Event</title>
+    <title>Create Opportunity</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -217,21 +182,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Create Event</h2>
+                        <h2>Create Opportunity</h2>
                     </div>
-                    <p>Please fill this form and submit to add a new event to the database.</p>
+                    <p>Please fill this form and submit to add a new opportunity to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
                         <!--form for event name-->
-                        <div class="form-group <?php echo (!empty($event_name_error)) ? 'has-error' : ''; ?>">
-                            <label>Event Name</label>
-                            <input type="text" name="event_name" class="form-control" value="<?php echo $event_name; ?>">
-                            <span class="help-block"><?php echo $event_name_error;?></span>
+                        <div class="form-group <?php echo (!empty($role_name_error)) ? 'has-error' : ''; ?>">
+                            <label>Opportunity Name</label>
+                            <input type="text" name="role_name" class="form-control" value="<?php echo $role_name; ?>">
+                            <span class="help-block"><?php echo $role_name_error;?></span>
                         </div>
 
                         <!--form for sponsor-->
-                        <div class="form-group <?php echo (!empty($sponsor_error)) ? 'has-error' : ''; ?>">
-                            <label>Sponsor</label>
+                        <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>">
+                            <label>Description</label>
                             <input name="sponsor" class="form-control"><?php echo $sponsor; ?>
                             <span class="help-block"><?php echo $sponsor_error;?></span>
                         </div>
