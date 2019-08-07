@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">All Events</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Add New Event</a>
+                        <a href="create-event.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
                     <?php
