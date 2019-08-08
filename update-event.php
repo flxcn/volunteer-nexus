@@ -243,12 +243,34 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     <meta charset="UTF-8">
     <title>Update Record</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+    <!-- Bootstrap Date-Picker Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <!--datepicker-->
+    <script>
+    $(document).ready(function(){
+      var date_input=$('input[type="date"]'); //our date input has the type "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'yyyy-mm-dd',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+    </script>
+
+    <!--CSS-->
     <style type="text/css">
         .wrapper{
             width: 500px;
             margin: 0 auto;
         }
     </style>
+
 </head>
 <body>
     <div class="wrapper">
@@ -258,7 +280,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                     <div class="page-header">
                         <h2>Update Event</h2>
                     </div>
-                    <p>Please edit the input values and submit to update the record.</p>
+                    <p>Please edit the input values and submit to update the event.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
 
                       <div class="form-group <?php echo (!empty($event_name_error)) ? 'has-error' : ''; ?>">
