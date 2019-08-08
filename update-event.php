@@ -55,7 +55,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
         $sponsor = $input_sponsor;
     }
 
-    / Validate description // NOTE: refer to-do list {3}
+    // Validate description // NOTE: refer to-do list {3}
     $input_description = trim($_POST["description"]);
     if(empty($input_description)){
         $description_error = "Please enter a description.";
@@ -292,16 +292,16 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       <!--form for sponsor-->
                       <div class="form-group <?php echo (!empty($sponsor_error)) ? 'has-error' : ''; ?>">
                           <label>Sponsor</label>
-                          <input name="sponsor" class="form-control"><?php echo $sponsor; ?>
+                          <input name="sponsor" class="form-control" value="<?php echo $sponsor; ?>">
                           <span class="help-block"><?php echo $sponsor_error;?></span>
                       </div>
 
                       <!--form for description-->
                       <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                           <label>Description</label>
-                          <textarea type="text" name="description" class="form-control" value="<?php echo $description; ?>"></textarea>
-                          <span class="help-block"><?php echo $description_error;?></span>
+                          <textarea type="text" name="description" class="form-control"><?php echo $description; ?></textarea>                          <span class="help-block"><?php echo $description_error;?></span>
                       </div>
+
 
                       <!--form for location-->
                       <div class="form-group <?php echo (!empty($location_error)) ? 'has-error' : ''; ?>">
@@ -313,7 +313,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       <!--form for contribution_type-->
                       <div class="form-group <?php echo (!empty($contribution_type_error)) ? 'has-error' : ''; ?>">
                           <label>Contribution Type</label>
-                          <input type="text" name="contribution_type" class="form-control"><?php echo $contribution_type; ?>
+                          <input type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
                           <span class="help-block"><?php echo $contribution_type_error;?></span>
                       </div>
 
@@ -334,7 +334,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       <!--form for contact_email-->
                       <div class="form-group <?php echo (!empty($contact_email_error)) ? 'has-error' : ''; ?>">
                           <label>Contact Email</label>
-                          <input type="email" name="contact_email" class="form-control"><?php echo $contact_email; ?>
+                          <input type="email" name="contact_email" class="form-control" value="<?php echo $contact_email; ?>">
                           <span class="help-block"><?php echo $contact_email_error;?></span>
                       </div>
 
@@ -343,28 +343,28 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       <!--form for registration_start-->
                       <div class="form-group <?php echo (!empty($registration_start_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                           <label>Registration Start</label>
-                          <input type="date" name="registration_start" class="form-control"><?php echo $registration_start; ?>
+                          <input type="date" name="registration_start" class="form-control" value="<?php echo $registration_start; ?>">
                           <span class="help-block"><?php echo $registration_start_error;?></span>
                       </div>
 
                       <!--form for registration_end-->
                       <div class="form-group <?php echo (!empty($registration_end_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                           <label>Registration End</label>
-                          <input type="date" name="registration_end" class="form-control"><?php echo $registration_end; ?>
+                          <input type="date" name="registration_end" class="form-control" value="<?php echo $registration_end; ?>">
                           <span class="help-block"><?php echo $registration_end_error;?></span>
                       </div>
 
                       <!--form for event_start-->
                       <div class="form-group <?php echo (!empty($event_start_error)) ? 'has-error' : ''; ?>">
                           <label>Event Start Date</label>
-                          <input type="date" name="event_start" class="form-control"><?php echo $event_start; ?>
+                          <input type="date" name="event_start" class="form-control" value="<?php echo $event_start; ?>">
                           <span class="help-block"><?php echo $event_start_error;?></span>
                       </div>
 
                       <!--form for event_end-->
                       <div class="form-group <?php echo (!empty($event_end_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                           <label>Event End Date</label>
-                          <input type="date" name="event_end" class="form-control"><?php echo $event_end; ?>
+                          <input type="date" name="event_end" class="form-control" value="<?php echo $event_end; ?>">
                           <span class="help-block"><?php echo $event_end_error;?></span>
                       </div>
 
