@@ -28,6 +28,15 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 $event_name = $row["event_name"];
                 $sponsor = $row["sponsor"];
                 $description = $row["description"];
+                $location = $row["location"];
+                $contribution_type = $row["contribution_type"];
+                $contact_name = $row["contact_name"];
+                $contact_phone = $row["contact_phone"];
+                $contact_email = $row["contact_email"];
+                $registration_start = $row["registration_start"];
+                $registration_end = $row["registration_end"];
+                $event_start = $row["event_start"];
+                $event_end = $row["event_end"];
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
                 header("location: error.php");
@@ -71,18 +80,67 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                     <div class="page-header">
                         <h1>View Event</h1>
                     </div>
+
                     <div class="form-group">
                         <label>Event Name</label>
                         <p class="form-control-static"><?php echo $row["event_name"]; ?></p>
                     </div>
+
                     <div class="form-group">
                         <label>Sponsor</label>
                         <p class="form-control-static"><?php echo $row["sponsor"]; ?></p>
                     </div>
+
                     <div class="form-group">
                         <label>Description</label>
                         <p class="form-control-static"><?php echo $row["description"]; ?></p>
                     </div>
+
+                    <div class="form-group">
+                        <label>Location</label>
+                        <p class="form-control-static"><?php echo $row["location"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contribution Type</label>
+                        <p class="form-control-static"><?php echo $row["contribution_type"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Name(s)</label>
+                        <p class="form-control-static"><?php echo $row["contact_name"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Phone(s)</label>
+                        <p class="form-control-static"><?php echo $row["contact_phone"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Email(s)</label>
+                        <p class="form-control-static"><?php echo $row["contact_email"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Registration Start Date</label>
+                        <p class="form-control-static"><?php echo $row["registration_start"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Registration End Date</label>
+                        <p class="form-control-static"><?php echo $row["registration_end"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Event Start Date</label>
+                        <p class="form-control-static"><?php echo $row["event_start"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Event End Date</label>
+                        <p class="form-control-static"><?php echo $row["event_end"]; ?></p>
+                    </div>
+                    
                     <p><a href="index.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>
