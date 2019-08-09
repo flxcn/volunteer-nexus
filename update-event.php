@@ -241,7 +241,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Record</title>
+    <title>Update Event</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 
     <!-- Bootstrap Date-Picker Plugin -->
