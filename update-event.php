@@ -73,10 +73,10 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 
     // Validate contribution_type // NOTE: refer to-do list {3}
     $input_contribution = trim($_POST["contribution_type"]);
-    if(empty($input_contribution)){
+    if(empty($input_contribution_type)){
         $contribution_error = "Please enter a contribution type.";
     } else{
-        $contribution_type = $contribution_type;
+        $contribution_type = $input_contribution_type;
     }
 
     // Validate contact_name // NOTE: refer to-do list {3}
@@ -84,7 +84,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     if(empty($input_contact_name)){
         $contact_name_error = "Please enter a contact name.";
     } else{
-        $description = $input_description;
+        $contact_name = $input_contact_name;
     }
 
     // Validate contact_phone // NOTE: refer to-do list {3}
@@ -320,7 +320,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       <!--form for contact_name-->
                       <div class="form-group <?php echo (!empty($contact_name_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                           <label>Contact Name</label>
-                          <input type="text" name="contact_name" class="form-control" value="<?php echo $contact_name; ?>">
+                          <input type="text" name="contact_name" class="form-control" value="<?php echo $contact_name; ?>" >
                           <span class="help-block"><?php echo $contact_name_error;?></span>
                       </div>
 
