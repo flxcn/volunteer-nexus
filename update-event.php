@@ -72,9 +72,9 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     }
 
     // Validate contribution_type // NOTE: refer to-do list {3}
-    $input_contribution = trim($_POST["contribution_type"]);
+    $input_contribution_type = trim($_POST["contribution_type"]);
     if(empty($input_contribution_type)){
-        $contribution_error = "Please enter a contribution type.";
+        $contribution_type_error = "Please enter a contribution type.";
     } else{
         $contribution_type = $input_contribution_type;
     }
