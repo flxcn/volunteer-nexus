@@ -3,56 +3,116 @@
 require_once "config.php";
 
 // Define variables and initialize with empty values
-$name = $address = $salary = "";
-$name_err = $address_err = $salary_err = "";
+$role_name = "";
+$description = "";
+$start_date = "";
+$start_time = "";
+$end_date = "";
+$end_time = "";
+$total_positions = "";
+$contribution_value = "";
+
+$role_name_error = "";
+$description_error = "";
+$start_date_error = "";
+$start_time_error = "";
+$end_date_error = "";
+$end_time_error = "";
+$total_positions_error = "";
+$contribution_value_error = "";
+
 
 // Processing form data when form is submitted
-if(isset($_POST["id"]) && !empty($_POST["id"])){
+if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && $_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
     // Get hidden input value
-    $id = $_POST["id"];
+    $event_id = $_POST["event_id"];
+    $opportunity_id = $_POST["opportunity_id"];
 
-    // Validate name
-    $input_name = trim($_POST["name"]);
-    if(empty($input_name)){
-        $name_err = "Please enter a name.";
-    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
-        $name_err = "Please enter a valid name.";
-    } else{
-        $name = $input_name;
+    // Validate opportunity name
+    $input_role_name = trim($_POST["role_name"]);
+    if(empty($input_role_name)){
+        $role_name_error = "Please enter an opportunity name.";
+    }else{
+        $role_name = $input_role_name;
     }
 
-    // Validate address address
-    $input_address = trim($_POST["address"]);
-    if(empty($input_address)){
-        $address_err = "Please enter an address.";
+    // Validate description // NOTE: refer to-do list {3}
+    $input_description = trim($_POST["description"]);
+    if(empty($input_description)){
+        $description_error = "Please enter a description.";
     } else{
-        $address = $input_address;
+        $description = $input_description;
     }
 
-    // Validate salary
-    $input_salary = trim($_POST["salary"]);
-    if(empty($input_salary)){
-        $salary_err = "Please enter the salary amount.";
-    } elseif(!ctype_digit($input_salary)){
-        $salary_err = "Please enter a positive integer value.";
+    // Validate contribution_value // NOTE: refer to-do list {3}
+    $input_contribution_value = trim($_POST["contribution_value"]);
+    if(empty($input_contribution_value)){
+        $contribution_value_error = "Please enter a contribution value.";
     } else{
-        $salary = $input_salary;
+        $contribution_value = $input_contribution_value;
     }
+
+    // Validate total_positions // NOTE: refer to-do list {3}
+    $input_total_positions = trim($_POST["total_positions"]);
+    if(empty($input_total_positions)){
+        $total_positions_error = "Please enter the total number of positions.";
+    } else{
+        $total_positions = $input_total_positions;
+    }
+
+    // Validate start_date // NOTE: refer to-do list {3}
+    $input_start_date = trim($_POST["start_date"]);
+    if(empty($input_start_date)){
+        $start_date_error = "Please enter an opportunity start date.";
+    } else{
+        $registration_start = $input_registration_start;
+    }
+
+    // Validate start_time // NOTE: refer to-do list {3}
+    $input_start_time = trim($_POST["start_time"]);
+    if(empty($input_start_time)){
+        $start_time_error = "Please enter a opportunity start time.";
+    } else{
+        $start_time = $input_start_time;
+    }
+
+    // Validate end_date // NOTE: refer to-do list {3}
+    $input_end_date = trim($_POST["end_date"]);
+    if(empty($input_end_date)){
+        $end_date_error = "Please enter an opportunity end date.";
+    } else{
+        $end_date = $input_end_date;
+    }
+
+    // Validate end_time // NOTE: refer to-do list {3}
+    $input_end_time = trim($_POST["end_time"]);
+    if(empty($input_end_time)){
+        $end_time_error= "Please enter an opportunity end time.";
+    } else{
+        $end_time = $input_end_time;
+    }
+
 
     // Check input errors before inserting in database
-    if(empty($name_err) && empty($address_err) && empty($salary_err)){
+    if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an update statement
-        $sql = "UPDATE employees SET name=?, address=?, salary=? WHERE id=?";
+        $sql = "UPDATE opportunities SET role_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=? WHERE opportunity_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssi", $param_name, $param_address, $param_salary, $param_id);
+            mysqli_stmt_bind_param($stmt, "ssssssiii", $param_role_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $opportunity_id);
 
             // Set parameters
-            $param_name = $name;
-            $param_address = $address;
-            $param_salary = $salary;
-            $param_id = $id;
+            $param_role_name = $role_name;
+            $param_description = $description;
+            $param_start_date = $start_date;
+            $param_start_time = $start_time;
+            $param_end_date = $end_date;
+            $param_end_time = $end_time;
+            $param_total_positions = $total_positions;
+            $param_contribution_value = $contribution_value;
+
+            $param_opportunity_id = $opportunity_id;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -72,18 +132,18 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     mysqli_close($link);
 } else{
     // Check existence of id parameter before processing further
-    if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
+    if(isset($_GET["opportunity_id"]) && !empty(trim($_GET["opportunity_id"]))){
         // Get URL parameter
-        $id =  trim($_GET["id"]);
+        $opportunity_id =  trim($_GET["opportunity_id"]);
 
         // Prepare a select statement
-        $sql = "SELECT * FROM employees WHERE id = ?";
+        $sql = "SELECT * FROM opportunities WHERE opportunity_id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "i", $param_id);
+            mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
 
             // Set parameters
-            $param_id = $id;
+            $param_opportunity_id = $opportunity_id;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -94,9 +154,15 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                     // Retrieve individual field value
-                    $name = $row["name"];
-                    $address = $row["address"];
-                    $salary = $row["salary"];
+                    $role_name = $row["role_name"];
+                    $description = $row["description"];
+                    $start_date = $row["start_date"];
+                    $start_time = $row["start_time"];
+                    $end_date = $row["end_date"];
+                    $end_time = $row["end_time"];
+                    $total_positions = $row["total_positions"];
+                    $contribution_value = $row["contribution_value"];
+
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -125,14 +191,36 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Record</title>
+    <title>Update Opportunity</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+    <!-- Bootstrap Date-Picker Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <!--datepicker-->
+    <script>
+    $(document).ready(function(){
+      var date_input=$('input[type="date"]'); //our date input has the type "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'yyyy-mm-dd',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+    </script>
+
+    <!--CSS-->
     <style type="text/css">
         .wrapper{
             width: 500px;
             margin: 0 auto;
         }
     </style>
+
 </head>
 <body>
     <div class="wrapper">
@@ -140,26 +228,67 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Update Record</h2>
+                        <h2>Update Opportunity</h2>
                     </div>
-                    <p>Please edit the input values and submit to update the record.</p>
+                    <p>Please edit the input values and submit to update the opportunity.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                            <span class="help-block"><?php echo $name_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($address_err)) ? 'has-error' : ''; ?>">
-                            <label>Address</label>
-                            <textarea name="address" class="form-control"><?php echo $address; ?></textarea>
-                            <span class="help-block"><?php echo $address_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($salary_err)) ? 'has-error' : ''; ?>">
-                            <label>Salary</label>
-                            <input type="text" name="salary" class="form-control" value="<?php echo $salary; ?>">
-                            <span class="help-block"><?php echo $salary_err;?></span>
-                        </div>
-                        <input type="hidden" name="id" value="<?php echo $id; ?>"/>
+
+                      <!--form for opportunity_name-->
+                      <div class="form-group <?php echo (!empty($role_name_error)) ? 'has-error' : ''; ?>">
+                          <label>Opportunity Name</label>
+                          <input type="text" name="role_name" class="form-control" value="<?php echo $role_name; ?>">
+                          <span class="help-block"><?php echo $role_name_error;?></span>
+                      </div>
+
+                      <!--form for description-->
+                      <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                          <label>Description</label>
+                          <textarea type="text" name="description" class="form-control"><?php echo $description; ?></textarea>                          <span class="help-block"><?php echo $description_error;?></span>
+                      </div>
+
+                      <!--form for start_date-->
+                      <div class="form-group <?php echo (!empty($start_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                          <label>Opportunity Start Date</label>
+                          <input type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
+                          <span class="help-block"><?php echo $start_date_error;?></span>
+                      </div>
+
+                      <!--form for start_time-->
+                      <div class="form-group <?php echo (!empty($start_time_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                          <label>Start Time</label>
+                          <input type="time" name="start_time" class="form-control" value="<?php echo $start_time; ?>">
+                          <span class="help-block"><?php echo $start_time_error;?></span>
+                      </div>
+
+                      <!--form for end_date-->
+                      <div class="form-group <?php echo (!empty($end_date_error)) ? 'has-error' : ''; ?>">
+                          <label>End Date</label>
+                          <input type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
+                          <span class="help-block"><?php echo $end_date_error;?></span>
+                      </div>
+
+                      <!--form for end_time-->
+                      <div class="form-group <?php echo (!empty($end_time_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                          <label>End Time</label>
+                          <input type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
+                          <span class="help-block"><?php echo $end_time_error;?></span>
+                      </div>
+
+                      <!--form for total_positions-->
+                      <div class="form-group <?php echo (!empty($total_positions_error)) ? 'has-error' : ''; ?>">
+                          <label>Total Positions</label>
+                          <input type="number" name="total_positions" class="form-control" value="<?php echo $total_positions; ?>">
+                          <span class="help-block"><?php echo $total_positions_error;?></span>
+                      </div>
+
+                      <!--form for contribution_value-->
+                      <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
+                          <label>Contribution Value</label>
+                          <input type="number" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
+                          <span class="help-block"><?php echo $contribution_value_error;?></span>
+                      </div>
+
+                        <input type="hidden" name="opportunity_id" value="<?php echo $opportunity_id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <a href="index.php" class="btn btn-default">Cancel</a>
                     </form>
