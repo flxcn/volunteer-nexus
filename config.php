@@ -3,7 +3,7 @@
 define('HOST', 'localhost');
 define('USERNAME', 'root');
 define('PASSWORD', 'root');
-define('DB_NAME', 'volunteerconnect');
+define('DB_NAME', 'volunteer_nexus');
 
 /*only for MAMP server (testing)*/
 define('PORT', 8889);
