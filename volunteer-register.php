@@ -4,6 +4,7 @@ require_once "config.php";
 
 // Define variables and initialize with empty values
 $student_id = "";
+$username = "";
 $password = "";
 $confirm_password = "";
 $graduation_year = "";
@@ -11,6 +12,7 @@ $first_name = "";
 $last_name = "";
 
 $student_id_error = "";
+$username_error = "";
 $password_error = "";
 $confirm_password_error = "";
 $graduation_year_error = "";
@@ -20,9 +22,43 @@ $last_name_error = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+  // Validate username (email)
+  if(empty(trim($_POST["username"]))){
+      $username_err = "Please enter a username.";
+  } else{
+      // Prepare a select statement
+      $sql = "SELECT student_id FROM volunteers WHERE username = ?";
+
+      if($stmt = mysqli_prepare($link, $sql)){
+          // Bind variables to the prepared statement as parameters
+          mysqli_stmt_bind_param($stmt, "s", $param_username);
+
+          // Set parameters
+          $param_username = trim($_POST["username"]);
+
+          // Attempt to execute the prepared statement
+          if(mysqli_stmt_execute($stmt)){
+              /* store result */
+              mysqli_stmt_store_result($stmt);
+
+              if(mysqli_stmt_num_rows($stmt) == 1){
+                  $username_error = "This username is already taken.";
+              } else{
+                  $username = trim($_POST["username"]);
+              }
+          } else{
+              echo "Oops! Something went wrong. Please try again later.";
+          }
+      }
+
+      // Close statement
+      mysqli_stmt_close($stmt);
+  }
+
+
     // Validate student_id
     if(empty(trim($_POST["student_id"]))){
-        $student_id_error = "Please enter your five-digit student id.";
+        $student_id_error = "Please enter your five-digit student ID.";
     } else{
         // Prepare a select statement
         $sql = "SELECT student_id FROM volunteers WHERE student_id = ?";
@@ -40,7 +76,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 mysqli_stmt_store_result($stmt);
 
                 if(mysqli_stmt_num_rows($stmt) == 1){
-                    $student_id_error = "This student_id is already in use.";
+                    $student_id_error = "This student ID is already in use.";
                 } else{
                     $student_id = trim($_POST["student_id"]);
                 }
@@ -97,7 +133,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($student_id_error) && empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($first_name_error) && empty($last_name_error)){
 
         // Prepare an insert statement
-        $sql = "INSERT INTO volunteers (student_id, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO volunteers (student_id, username, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -145,12 +181,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <p>Please fill this form to create an account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-            <!--form for student ID-->
-            <div class="form-group <?php echo (!empty($student_id_error)) ? 'has-error' : ''; ?>">
-                <label>Student ID</label>
-                <input type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
-                <span class="help-block"><?php echo $student_id_error; ?></span>
-            </div>
+          <!--form for first name-->
+          <div class="form-group <?php echo (!empty($first_name_error)) ? 'has-error' : ''; ?>">
+              <label>First Name</label>
+              <input type="text" name="first_name" class="form-control" value="<?php echo $first_name; ?>">
+              <span class="help-block"><?php echo $first_name_error; ?></span>
+          </div>
+
+          <!--form for last name-->
+          <div class="form-group <?php echo (!empty($last_name_error)) ? 'has-error' : ''; ?>">
+              <label>Last Name</label>
+              <input type="text" name="last_name" class="form-control" value="<?php echo $last_name; ?>">
+              <span class="help-block"><?php echo $last_name_error; ?></span>
+          </div>
+
+          <!--form for graduation_year-->
+          <div class="form-group <?php echo (!empty($graduation_year_error)) ? 'has-error' : ''; ?>">
+              <label>Graduation Year</label>
+              <input type="number" name="student_id" maxlength="4" size="4" class="form-control" value="<?php echo $graduation_year; ?>">
+              <span class="help-block"><?php echo $graduation_year_error; ?></span>
+          </div>
+
+          <!--form for student ID-->
+          <div class="form-group <?php echo (!empty($student_id_error)) ? 'has-error' : ''; ?>">
+              <label>Student ID</label>
+              <input type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
+              <span class="help-block"><?php echo $student_id_error; ?></span>
+          </div>
+
+          <!--form for username-->
+          <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
+              <label>Email Address</label>
+              <input type="email" name="username"  size="30" class="form-control" value="<?php echo $username; ?>">
+              <span class="help-block"><?php echo $username_error; ?></span>
+          </div>
 
             <!--form for password-->
             <div class="form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>">
@@ -166,32 +230,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="help-block"><?php echo $confirm_password_error; ?></span>
             </div>
 
-            <!--form for first name-->
-            <div class="form-group <?php echo (!empty($first_name_error)) ? 'has-error' : ''; ?>">
-                <label>First Name</label>
-                <input type="text" name="first_name" class="form-control" value="<?php echo $first_name; ?>">
-                <span class="help-block"><?php echo $first_name_error; ?></span>
-            </div>
 
-            <!--form for last name-->
-            <div class="form-group <?php echo (!empty($last_name_error)) ? 'has-error' : ''; ?>">
-                <label>Last Name</label>
-                <input type="text" name="last_name" class="form-control" value="<?php echo $last_name; ?>">
-                <span class="help-block"><?php echo $last_name_error; ?></span>
-            </div>
-
-            <!--form for graduation_year-->
-            <div class="form-group <?php echo (!empty($graduation_year_error)) ? 'has-error' : ''; ?>">
-                <label>Graduation Year</label>
-                <input type="number" name="student_id" maxlength="4" size="4" class="form-control" value="<?php echo $graduation_year; ?>">
-                <span class="help-block"><?php echo $graduation_year_error; ?></span>
-            </div>
 
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">
                 <input type="reset" class="btn btn-default" value="Reset">
             </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            <p>Already have an account? <a href="volunteer-login.php">Login here</a>.</p>
         </form>
     </div>
 </body>
