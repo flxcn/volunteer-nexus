@@ -198,7 +198,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for graduation_year-->
           <div class="form-group <?php echo (!empty($graduation_year_error)) ? 'has-error' : ''; ?>">
               <label>Graduation Year</label>
-              <input type="number" name="student_id" maxlength="4" size="4" class="form-control" value="<?php echo $graduation_year; ?>">
+              <input type="number" name="graduation_year" maxlength="4" size="4" class="form-control" value="<?php echo $graduation_year; ?>">
               <span class="help-block"><?php echo $graduation_year_error; ?></span>
           </div>
 
