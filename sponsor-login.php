@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: volunteer-welcome.php");
+    header("location: sponsor-welcome.php");
     exit;
 }
 
@@ -37,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_error) && empty($password_error)){
         // Prepare a select statement
-        $sql = "SELECT student_id, first_name, last_name, graduation_year, username, password FROM volunteers WHERE username = ?";
+        $sql = "SELECT sponsor_id, sponsor_name, contribution_type, username, password FROM sponsors WHERE username = ?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $student_id, $first_name, $last_name, $graduation_year, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $sponsor_id, $sponsor_name, $contribution_type, $username, $hashed_password);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
@@ -62,15 +62,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
-                            $_SESSION["student_id"] = $student_id;
+                            $_SESSION["sponsor_id"] = $sponsor_id;
                             $_SESSOPM["username"] = $username;
-                            $_SESSION["first_name"] = $first_name;
-                            $_SESSION["last_name"] = $last_name;
-                            $_SESSION["graduation_year"] = $graduation_year;
-                            //$_SESSION["name"] = $username;
+                            $_SESSION["sponsor_name"] = $sponsor_name;
+                            $_SESSION["contribution_type"] = $contribution_type;
 
                             // Redirect user to welcome page
-                            header("location: volunteer-welcome.php");
+                            header("location: sponsor-welcome.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_error = "The password you entered was not valid.";
@@ -98,7 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Volunteer Login</title>
+    <title>Sponsor Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -107,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="wrapper">
-        <h2>Volunteer Login</h2>
+        <h2>Sponsor Login</h2>
         <p>Please fill in your credentials to login.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
@@ -123,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
-            <p>Don't have an account? <a href="volunteer-register.php">Sign up now</a>.</p>
+            <p>Don't have an account? <a href="sponsor-register.php">Sign up now</a>.</p>
         </form>
     </div>
 </body>
