@@ -70,6 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $location = $input_location;
     }
 
+    // WARNING: issues with the variable names, they are incorrect, change before you use them
     // Validate contribution_type // NOTE: refer to-do list {3}
     $input_contribution = trim($_POST["contribution_type"]);
     if(empty($input_contribution)){
