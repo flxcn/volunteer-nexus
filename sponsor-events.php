@@ -47,7 +47,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">My Sponsored Events</h2>
-                        <a href="create-event.php" class="btn btn-success pull-right">Add New Event</a>
+                        <a href="sponsor-create-event.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
                     <?php
@@ -56,7 +56,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
-                    $sql = "SELECT * FROM events WHERE sponsor_name = '$_SESSION["sponsor_name"]'";
+                    $sql = "SELECT * FROM events WHERE sponsor_name = '{$_SESSION['sponsor_name']}'";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -82,7 +82,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     echo "<tr>";
                                         echo "<td>" . $row['event_id'] . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['sponsor'] . "</td>";
+                                        echo "<td>" . $row['sponsor_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
                                         echo "<td>" . $row['contact_name'] . "</td>";
@@ -94,7 +94,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<td>";
                                             echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='event-delete.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
