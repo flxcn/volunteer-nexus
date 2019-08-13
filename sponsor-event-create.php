@@ -25,9 +25,9 @@ $contribution_type = $_SESSION["contribution_type"];
 $contact_name = "";
 $contact_phone = "";
 $contact_email = "";
-$registration_start = date("Y-m-d");
+$registration_start = "";
 $registration_end = "";
-$event_start = date("Y-m-d");
+$event_start = "";
 $event_end = "";
 
 //define and initialize error message variables
