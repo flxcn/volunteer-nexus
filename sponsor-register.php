@@ -159,46 +159,56 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 
-    // Validate advisor1_name
-    if(empty(trim($_POST["advisor2_name"]))){
-        $advisor2_name_error = "Please enter your teacher advisor's full name.";
-    } else{
-        $advisor2_name = trim($_POST["advisor2_name"]);
-    }
-    // Validate advisor1_email
-    if(empty(trim($_POST["advisor2_email"]))){
-        $advisor2_email_error = "Please enter your teacher advisor's email.";
-    } else{
-        $advisor2_email = trim($_POST["advisor2_email"]);
-    }
-    // Validate advisor1_phone
-    if(empty(trim($_POST["advisor2_phone"]))){
-        $advisor2_phone_error = "Please enter your teacher advisor's phone number.";
-    } else{
-        $advisor2_phone = trim($_POST["advisor2_phone"]);
-    }
+    // // Validate advisor2_name
+    // if(empty(trim($_POST["advisor2_name"]))){
+    //     $advisor2_name_error = "Please enter your teacher advisor's full name.";
+    // } else{
+    //     $advisor2_name = trim($_POST["advisor2_name"]);
+    // }
+    // // Validate advisor2_email
+    // if(empty(trim($_POST["advisor2_email"]))){
+    //     $advisor2_email_error = "Please enter your teacher advisor's email.";
+    // } else{
+    //     $advisor2_email = trim($_POST["advisor2_email"]);
+    // }
+    // // Validate advisor2_phone
+    // if(empty(trim($_POST["advisor2_phone"]))){
+    //     $advisor2_phone_error = "Please enter your teacher advisor's phone number.";
+    // } else{
+    //     $advisor2_phone = trim($_POST["advisor2_phone"]);
+    // }
+
+    // Validate advisor2 information
+    $advisor2_name = trim($_POST["advisor2_name"]);
+    $advisor2_email = trim($_POST["advisor2_email"]);
+    $advisor2_phone = trim($_POST["advisor2_phone"]);
 
 
 
 
-    // Validate advisor3_name
-    if(empty(trim($_POST["advisor3_name"]))){
-        $advisor3_name_error = "Please enter your teacher advisor's full name.";
-    } else{
-        $advisor3_name = trim($_POST["advisor3_name"]);
-    }
-    // Validate advisor3_email
-    if(empty(trim($_POST["advisor3_email"]))){
-        $advisor3_email_error = "Please enter your teacher advisor's email.";
-    } else{
-        $advisor3_email = trim($_POST["advisor3_email"]);
-    }
-    // Validate advisor3_phone
-    if(empty(trim($_POST["advisor3_phone"]))){
-        $advisor3_phone_error = "Please enter your teacher advisor's phone number.";
-    } else{
-        $advisor3_phone = trim($_POST["advisor3_phone"]);
-    }
+    // // Validate advisor3_name
+    // if(empty(trim($_POST["advisor3_name"]))){
+    //     $advisor3_name_error = "Please enter your teacher advisor's full name.";
+    // } else{
+    //     $advisor3_name = trim($_POST["advisor3_name"]);
+    // }
+    // // Validate advisor3_email
+    // if(empty(trim($_POST["advisor3_email"]))){
+    //     $advisor3_email_error = "Please enter your teacher advisor's email.";
+    // } else{
+    //     $advisor3_email = trim($_POST["advisor3_email"]);
+    // }
+    // // Validate advisor3_phone
+    // if(empty(trim($_POST["advisor3_phone"]))){
+    //     $advisor3_phone_error = "Please enter your teacher advisor's phone number.";
+    // } else{
+    //     $advisor3_phone = trim($_POST["advisor3_phone"]);
+    // }
+
+    // Validate advisor3 information
+    $advisor3_name = trim($_POST["advisor3_name"]);
+    $advisor3_email = trim($_POST["advisor3_email"]);
+    $advisor3_phone = trim($_POST["advisor3_phone"]);
 
 
 
@@ -266,42 +276,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for sponsor ID-->
           <div class="form-group <?php echo (!empty($sponsor_id_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor ID</label>
-              <input type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
+              <input required type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
               <span class="help-block"><?php echo $sponsor_id_error; ?></span>
           </div>
 
           <!--form for sponsor name-->
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor Name</label>
-              <input type="text" name="first_name" class="form-control" value="<?php echo $first_name; ?>">
+              <input required type="text" name="sponsor_name" class="form-control" value="<?php echo $sponsor_name; ?>">
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
           </div>
 
           <!--form for username-->
           <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
               <label>Username (Email Address)</label>
-              <input type="email" name="username"  size="30" class="form-control" value="<?php echo $username; ?>">
+              <input required type="email" name="username"  size="30" class="form-control" value="<?php echo $username; ?>">
               <span class="help-block"><?php echo $username_error; ?></span>
           </div>
 
           <!--form for password-->
           <div class="form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>">
               <label>Password</label>
-              <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+              <input required type="password" name="password" class="form-control" value="<?php echo $password; ?>">
               <span class="help-block"><?php echo $password_error; ?></span>
           </div>
 
           <!--form for confirm password-->
           <div class="form-group <?php echo (!empty($confirm_password_error)) ? 'has-error' : ''; ?>">
               <label>Confirm Password</label>
-              <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+              <input required type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
               <span class="help-block"><?php echo $confirm_password_error; ?></span>
           </div>
 
           <!--form for contribution_type-->
           <div class="form-group <?php echo (!empty($contribution_type_error)) ? 'has-error' : ''; ?>">
               <label>Contribution Type</label>
-              <input type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
+              <input required type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
               <span class="help-block"><?php echo $contribution_type_error; ?></span>
           </div>
 
@@ -312,19 +322,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for advisor1_name-->
           <div class="form-group <?php echo (!empty($advisor1_name_error)) ? 'has-error' : ''; ?>">
               <label>Teacher Advisor #1 Name</label>
-              <input type="text" name="advisor1_name" class="form-control" value="<?php echo $advisor1_name; ?>">
+              <input required type="text" name="advisor1_name" class="form-control" value="<?php echo $advisor1_name; ?>">
               <span class="help-block"><?php echo $advisor1_name_error; ?></span>
           </div>
           <!--form for advisor1_email-->
           <div class="form-group <?php echo (!empty($advisor1_email_error)) ? 'has-error' : ''; ?>">
               <label>Teacher Advisor #1 Email</label>
-              <input type="email" name="advisor1_email" class="form-control" value="<?php echo $advisor1_email; ?>">
+              <input required type="email" name="advisor1_email" class="form-control" value="<?php echo $advisor1_email; ?>">
               <span class="help-block"><?php echo $advisor1_email_error; ?></span>
           </div>
           <!--form for advisor1_phone-->
           <div class="form-group <?php echo (!empty($advisor1_phone_error)) ? 'has-error' : ''; ?>">
               <label>Teacher Advisor #1 Phone Number</label>
-              <input type="tel" name="advisor1_phone" class="form-control" value="<?php echo $advisor1_phone; ?>">
+              <input required type="tel" name="advisor1_phone" class="form-control" value="<?php echo $advisor1_phone; ?>">
               <span class="help-block"><?php echo $advisor1_phone_error; ?></span>
           </div>
 
