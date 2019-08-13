@@ -1,3 +1,13 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: sponsor-login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,7 +46,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">All Events</h2>
+                        <h2 class="pull-left">My Sponsored Events</h2>
                         <a href="create-event.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
@@ -44,7 +54,7 @@
                     // Include config file
                     require_once "config.php";
                     // Attempt select query execution
-                    $sql = "SELECT * FROM events";
+                    $sql = "SELECT * FROM events WHERE sponsor_name = ?";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
