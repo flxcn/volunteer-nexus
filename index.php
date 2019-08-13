@@ -33,6 +33,8 @@
 <body>
     <div class="wrapper">
         <div class="container-fluid">
+          <a href="volunteer-login.php" class="btn btn-success pull-right">Volunteer Login</a>
+          <a href="sponsor-login.php" class="btn btn-success pull-right">Sponsor Login</a>
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
