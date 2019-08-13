@@ -54,7 +54,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     // Include config file
                     require_once "config.php";
                     // Attempt select query execution
-                    $sql = "SELECT * FROM events WHERE sponsor_name = ?";
+
+                    //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
+                    $sql = "SELECT * FROM events WHERE sponsor_name = '$_SESSION["sponsor_name"]'";
+
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
