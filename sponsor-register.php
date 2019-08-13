@@ -3,7 +3,7 @@
 require_once "config.php";
 
 // Define variables and initialize with empty values
-$sponsor_id = "";
+//$sponsor_id = "";
 $sponsor_name = "";
 $username = "";
 $password = "";
@@ -19,7 +19,7 @@ $advisor3_name = "";
 $advisor3_email = "";
 $advisor3_phone = "";
 
-$sponsor_id_error = "";
+//$sponsor_id_error = "";
 $sponsor_name_error = "";
 $username_error = "";
 $password_error = "";
@@ -213,7 +213,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
     // Check input errors before inserting in database
-    if(empty($sponsor_id_error) && empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($sponsor_name_error) && empty($username_error) && empty($advisor1_name_error) && empty($advisor1_email_error)
+    if(empty($username_error) && empty($password_error) && empty($confirm_password_error) && empty($param_contribution_type_error) && empty($sponsor_name_error)  && empty($advisor1_name_error) && empty($advisor1_email_error)
     && empty($advisor1_phone_error) && empty($advisor2_name_error) && empty($advisor2_email_error) && empty($advisor2_phone_error) && empty($advisor3_name_error) && empty($advisor3_email_error) && empty($advisor3_phone_error)){
 
         // Prepare an insert statement
@@ -272,13 +272,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h2>Sponsor Sign Up</h2>
         <p>Please fill this form to create an account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-
-          <!--form for sponsor ID-->
-          <div class="form-group <?php echo (!empty($sponsor_id_error)) ? 'has-error' : ''; ?>">
-              <label>Sponsor ID</label>
-              <input required type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
-              <span class="help-block"><?php echo $sponsor_id_error; ?></span>
-          </div>
 
           <!--form for sponsor name-->
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
