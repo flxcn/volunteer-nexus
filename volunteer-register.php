@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   // Validate username (email)
   if(empty(trim($_POST["username"]))){
-      $username_err = "Please enter a username.";
+      $username_error = "Please enter a username.";
   } else{
       // Prepare a select statement
       $sql = "SELECT student_id FROM volunteers WHERE username = ?";
@@ -133,14 +133,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($student_id_error) && empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($first_name_error) && empty($last_name_error)){
 
         // Prepare an insert statement
-        $sql = "INSERT INTO volunteers (student_id, username, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO volunteers (student_id, username, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "isiss", $param_student_id, $param_password, $param_graduation_year, $param_first_name, $param_last_name);
+            mysqli_stmt_bind_param($stmt, "ississ", $param_student_id, $param_username, $param_password, $param_graduation_year, $param_first_name, $param_last_name);
 
             // Set parameters
             $param_student_id = $student_id;
+            $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             $param_graduation_year = $graduation_year;
             $param_first_name = $first_name;
