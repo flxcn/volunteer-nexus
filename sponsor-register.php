@@ -71,40 +71,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       mysqli_stmt_close($stmt);
   }
 
-
-    // // Validate sponsor_id
-    // if(empty(trim($_POST["sponsor_id"]))){
-    //     $student_id_error = "Please enter your five-digit student ID.";
-    // } else{
-    //     // Prepare a select statement
-    //     $sql = "SELECT student_id FROM volunteers WHERE student_id = ?";
-    //
-    //     if($stmt = mysqli_prepare($link, $sql)){
-    //         // Bind variables to the prepared statement as parameters
-    //         mysqli_stmt_bind_param($stmt, "i", $param_student_id);
-    //
-    //         // Set parameters
-    //         $param_student_id = trim($_POST["student_id"]);
-    //
-    //         // Attempt to execute the prepared statement
-    //         if(mysqli_stmt_execute($stmt)){
-    //             /* store result */
-    //             mysqli_stmt_store_result($stmt);
-    //
-    //             if(mysqli_stmt_num_rows($stmt) == 1){
-    //                 $student_id_error = "This student ID is already in use.";
-    //             } else{
-    //                 $student_id = trim($_POST["student_id"]);
-    //             }
-    //         } else{
-    //             echo "Oops! Something went wrong. Please try again later.";
-    //         }
-    //     }
-    //
-    //     // Close statement
-    //     mysqli_stmt_close($stmt);
-    // }
-
     // Validate password
     if(empty(trim($_POST["password"]))){
         $password_error = "Please enter a password.";
@@ -157,53 +123,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $advisor1_phone = trim($_POST["advisor1_phone"]);
     }
 
-
-
-    // // Validate advisor2_name
-    // if(empty(trim($_POST["advisor2_name"]))){
-    //     $advisor2_name_error = "Please enter your teacher advisor's full name.";
-    // } else{
-    //     $advisor2_name = trim($_POST["advisor2_name"]);
-    // }
-    // // Validate advisor2_email
-    // if(empty(trim($_POST["advisor2_email"]))){
-    //     $advisor2_email_error = "Please enter your teacher advisor's email.";
-    // } else{
-    //     $advisor2_email = trim($_POST["advisor2_email"]);
-    // }
-    // // Validate advisor2_phone
-    // if(empty(trim($_POST["advisor2_phone"]))){
-    //     $advisor2_phone_error = "Please enter your teacher advisor's phone number.";
-    // } else{
-    //     $advisor2_phone = trim($_POST["advisor2_phone"]);
-    // }
-
     // Validate advisor2 information
     $advisor2_name = trim($_POST["advisor2_name"]);
     $advisor2_email = trim($_POST["advisor2_email"]);
     $advisor2_phone = trim($_POST["advisor2_phone"]);
 
-
-
-
-    // // Validate advisor3_name
-    // if(empty(trim($_POST["advisor3_name"]))){
-    //     $advisor3_name_error = "Please enter your teacher advisor's full name.";
-    // } else{
-    //     $advisor3_name = trim($_POST["advisor3_name"]);
-    // }
-    // // Validate advisor3_email
-    // if(empty(trim($_POST["advisor3_email"]))){
-    //     $advisor3_email_error = "Please enter your teacher advisor's email.";
-    // } else{
-    //     $advisor3_email = trim($_POST["advisor3_email"]);
-    // }
-    // // Validate advisor3_phone
-    // if(empty(trim($_POST["advisor3_phone"]))){
-    //     $advisor3_phone_error = "Please enter your teacher advisor's phone number.";
-    // } else{
-    //     $advisor3_phone = trim($_POST["advisor3_phone"]);
-    // }
 
     // Validate advisor3 information
     $advisor3_name = trim($_POST["advisor3_name"]);
@@ -213,11 +137,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
     // Check input errors before inserting in database
-    if(empty($username_error) && empty($password_error) && empty($confirm_password_error) && empty($param_contribution_type_error) && empty($sponsor_name_error)  && empty($advisor1_name_error) && empty($advisor1_email_error)
-    && empty($advisor1_phone_error) && empty($advisor2_name_error) && empty($advisor2_email_error) && empty($advisor2_phone_error) && empty($advisor3_name_error) && empty($advisor3_email_error) && empty($advisor3_phone_error)){
+    if(empty($username_error) && empty($password_error) && empty($confirm_password_error) && empty($contribution_type_error) && empty($sponsor_name_error)  && empty($advisor1_name_error) && empty($advisor1_email_error) && empty($advisor1_phone_error)){
 
         // Prepare an insert statement
-        $sql = "INSERT INTO sponsors (sponsor_name, username, password, contribution_type, advisor1_name, advisor1_email, advisor1_phone, advisor2_name, advisor2_email, advisor2_phone, advisor3_name, advisor3_email, advisor3_phone ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO sponsors (sponsor_name, username, password, contribution_type, advisor1_name, advisor1_email, advisor1_phone, advisor2_name, advisor2_email, advisor2_phone, advisor3_name, advisor3_email, advisor3_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -245,10 +168,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Something went wrong. Please try again later.";
             }
-        }
 
+        }
         // Close statement
         mysqli_stmt_close($stmt);
+
     }
 
     // Close connection
@@ -307,10 +231,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <input required type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
               <span class="help-block"><?php echo $contribution_type_error; ?></span>
           </div>
-
-
-
-
 
           <!--form for advisor1_name-->
           <div class="form-group <?php echo (!empty($advisor1_name_error)) ? 'has-error' : ''; ?>">
