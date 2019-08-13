@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_GET['event_id'] && !is_int($_GET['event_id'])){
-  header('Location: index.php');
+  header('Location: sponsor-events.php');
   exit;
 }
 
@@ -245,7 +245,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-default">Cancel</a>
+                        <a href="event-read.php?<?php echo $event_id ?>" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>

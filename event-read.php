@@ -140,8 +140,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                         <label>Event End Date</label>
                         <p class="form-control-static"><?php echo $row["event_end"]; ?></p>
                     </div>
-                    
-                    <p><a href="index.php" class="btn btn-primary">Back</a></p>
+
+                    <p><a href="sponsor-events.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>
