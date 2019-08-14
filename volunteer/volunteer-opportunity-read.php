@@ -49,8 +49,45 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
     // Close statement
     mysqli_stmt_close($stmt);
 
+
+
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+        // Validate event name
+        $student_id = trim($_POST["student_id"]);
+
+
+        // Check input errors before inserting in database
+        if(isset($_GET["opportunity_id"]) && isset($_SESSION["student_id"])){
+          // Prepare an insert statement
+            $sql = "INSERT INTO engagements (opportunity_id, student_id) VALUES (?, ?)";
+
+            if($stmt = mysqli_prepare($link, $sql)){
+                // Bind variables to the prepared statement as parameters
+                mysqli_stmt_bind_param($stmt, "ii", $param_opportunity_id, $param_student_id);
+
+                // Set parameters
+                $param_opportunity_id = $_GET["opportunity_id"];
+                $param_student_id = $_SESSION["student_id"];
+
+                // Attempt to execute the prepared statement
+                if(mysqli_stmt_execute($stmt)){
+                    // Records created successfully. Redirect to landing page
+                    header("location: volunteer-events.php"); //NOTE: this can redirect to my upcoming events page
+                    exit();
+                } else{
+                    echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
+                }
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+
+    }
     // Close connection
-    //mysqli_close($link);
+    mysqli_close($link);
+
 } else{
     // URL doesn't contain id parameter. Redirect to error page
     header("location: error.php");
@@ -110,10 +147,24 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                         <label>Total Positions</label>
                         <p class="form-control-static"><?php echo $row["total_positions"]; ?></p>
                     </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="reset" class="btn btn-default" value="Reset">
+                    </div>
                     <!--This button does not work properly-->
-                    <p><a href='read-event.php?event_id="<?php $row["event_id"] ?>"' class="btn btn-primary">Back</a></p>
+
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                      <!--put all the values as hidden, then have the button submit to php file somewhere to add an engagement-->
+                        <input type="hidden" name="student_id" value="<?php echo $_SESSION["student_id"]; ?>"/>
+                      <input type="submit" class="btn btn-primary" value="Sign Up!">
+                    </form>
+                    <p>
+                      <a href='event-read.php?event_id="<?php echo $_GET["event_id"]; ?>"' class="btn btn-primary">Back</a>
+                    </p>
                 </div>
             </div>
+
         </div>
     </div>
 
