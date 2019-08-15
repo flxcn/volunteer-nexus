@@ -1,4 +1,13 @@
 <?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: sponsor-login.php");
+    exit;
+}
+
 // Include config file
 require_once 'config.php';
 
@@ -6,13 +15,13 @@ require_once 'config.php';
 $event_name = "";
 
 //NOTE: this value will be readonly {1}
-$sponsor = "";
+$sponsor_name = $_SESSION["sponsor_name"];
 
 $description = "";
 $location = "";
 
 //NOTE: this value will be readonly {1}
-$contribution_type = "";
+$contribution_type = $_SESSION["contribution_type"];
 $contact_name = "";
 $contact_phone = "";
 $contact_email = "";
@@ -23,7 +32,7 @@ $event_end = "";
 
 //define and initialize error message variables
 $event_name_error = "";
-$sponsor_error = "";
+$sponsor_name_error = "";
 $description_error = "";
 $location_error = "";
 $contribution_type_error = "";
@@ -47,12 +56,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validate sponsor //NOTE: refer to-do list {1}
-    $input_sponsor = trim($_POST["sponsor"]);
-    if(empty($input_sponsor)){
-        $sponsor_error = "Please enter a sponsor.";
-    } else{
-        $sponsor = $input_sponsor;
-    }
+    $sponsor_name = trim($_POST["sponsor_name"]);
 
     // Validate description // NOTE: refer to-do list {3}
     $input_description = trim($_POST["description"]);
@@ -70,14 +74,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $location = $input_location;
     }
 
-    // WARNING: issues with the variable names, they are incorrect, change before you use them
-    // Validate contribution_type // NOTE: refer to-do list {3}
-    $input_contribution = trim($_POST["contribution_type"]);
-    if(empty($input_contribution)){
-        $contribution_error = "Please enter a contribution type.";
-    } else{
-        $contribution_type = $contribution_type;
-    }
+    // Validate contribution_type
+    $contribution_type = trim($_POST["contribution_type"]);
 
     // Validate contact_name // NOTE: refer to-do list {3}
     $input_contact_name = trim($_POST["contact_name"]);
@@ -136,17 +134,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Check input errors before inserting in database
-    if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
+    if(empty($event_name_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO events (event_name, sponsor, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO events (event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_event_name, $param_sponsor, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
 
             // Set parameters
             $param_event_name = $event_name;
-            $param_sponsor = $sponsor;
+            $param_sponsor_name = $sponsor_name;
             $param_description = $description;
             $param_location = $location;
             $param_contribution_type = $contribution_type;
@@ -161,7 +159,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: index.php");
+                header("location: sponsor-events.php");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
@@ -235,11 +233,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <span class="help-block"><?php echo $event_name_error;?></span>
                         </div>
 
-                        <!--form for sponsor-->
-                        <div class="form-group <?php echo (!empty($sponsor_error)) ? 'has-error' : ''; ?>">
-                            <label>Sponsor</label>
-                            <input name="sponsor" class="form-control"><?php echo $sponsor; ?>
-                            <span class="help-block"><?php echo $sponsor_error;?></span>
+                        <!--form for sponsor_name-->
+                        <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
+                            <label>Sponsor Name</label>
+                            <input readonly name="sponsor_name" class="form-control" value="<?php echo $sponsor_name; ?>">
+                            <span class="help-block"><?php echo $sponsor_name_error;?></span>
                         </div>
 
                         <!--form for description-->
@@ -259,7 +257,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <!--form for contribution_type-->
                         <div class="form-group <?php echo (!empty($contribution_type_error)) ? 'has-error' : ''; ?>">
                             <label>Contribution Type</label>
-                            <input type="text" name="contribution_type" class="form-control"><?php echo $contribution_type; ?>
+                            <input readonly type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
                             <span class="help-block"><?php echo $contribution_type_error;?></span>
                         </div>
 
@@ -280,37 +278,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <!--form for contact_email-->
                         <div class="form-group <?php echo (!empty($contact_email_error)) ? 'has-error' : ''; ?>">
                             <label>Contact Email</label>
-                            <input type="email" name="contact_email" class="form-control"><?php echo $contact_email; ?>
+                            <input type="email" name="contact_email" class="form-control" value="<?php echo $contact_email; ?>">
                             <span class="help-block"><?php echo $contact_email_error;?></span>
                         </div>
-
 
 
                         <!--form for registration_start-->
                         <div class="form-group <?php echo (!empty($registration_start_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                             <label>Registration Start</label>
-                            <input type="date" name="registration_start" class="form-control"><?php echo $registration_start; ?>
+                            <input type="date" name="registration_start" class="form-control" value="<?php echo $registration_start; ?>">
                             <span class="help-block"><?php echo $registration_start_error;?></span>
                         </div>
 
                         <!--form for registration_end-->
                         <div class="form-group <?php echo (!empty($registration_end_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                             <label>Registration End</label>
-                            <input type="date" name="registration_end" class="form-control"><?php echo $registration_end; ?>
+                            <input type="date" name="registration_end" class="form-control" value="<?php echo $registration_end; ?>">
                             <span class="help-block"><?php echo $registration_end_error;?></span>
                         </div>
 
                         <!--form for event_start-->
                         <div class="form-group <?php echo (!empty($event_start_error)) ? 'has-error' : ''; ?>">
                             <label>Event Start Date</label>
-                            <input type="date" name="event_start" class="form-control"><?php echo $event_start; ?>
+                            <input type="date" name="event_start" class="form-control" value="<?php echo $event_start; ?>">
                             <span class="help-block"><?php echo $event_start_error;?></span>
                         </div>
 
                         <!--form for event_end-->
                         <div class="form-group <?php echo (!empty($event_end_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                             <label>Event End Date</label>
-                            <input type="date" name="event_end" class="form-control"><?php echo $event_end; ?>
+                            <input type="date" name="event_end" class="form-control" value="<?php echo $event_end; ?>">
                             <span class="help-block"><?php echo $event_end_error;?></span>
                         </div>
 
