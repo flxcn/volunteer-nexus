@@ -17,10 +17,10 @@
         </div>
 
         <p>
-          <a href="volunteer-login.php" class="btn btn-success">Volunteer Login</a>
-          <a href="sponsor-login.php" class="btn btn-success">Sponsor Login</a>
-          <a href="volunteer-register.php" class="btn btn-success">Volunteer Register</a>
-          <a href="sponsor-register.php" class="btn btn-success">Sponsor Register</a>
+          <a href="volunteer/login.php" class="btn btn-success">Volunteer Login</a>
+          <a href="sponsor/login.php" class="btn btn-success">Sponsor Login</a>
+          <a href="volunteer/register.php" class="btn btn-success">Volunteer Register</a>
+          <a href="sponsor/register.php" class="btn btn-success">Sponsor Register</a>
         </p>
     </body>
 </html>

@@ -8,8 +8,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-// Include config file
-require_once 'config.php';
 // Check existence of id parameter before processing further
 if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
     // Include config file
@@ -35,7 +33,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
                 // Retrieve individual field value
                 $event_name = $row["event_name"];
-                $sponsor = $row["sponsor"];
+                $sponsor_name = $row["sponsor_name"];
                 $description = $row["description"];
                 $location = $row["location"];
                 $contribution_type = $row["contribution_type"];
@@ -96,8 +94,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                     </div>
 
                     <div class="form-group">
-                        <label>Sponsor</label>
-                        <p class="form-control-static"><?php echo $row["sponsor"]; ?></p>
+                        <label>Sponsor Name</label>
+                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
                     </div>
 
                     <div class="form-group">

@@ -68,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["contribution_type"] = $contribution_type;
 
                             // Redirect user to welcome page
-                            header("location: sponsor-welcome.php");
+                            header("location: welcome.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_error = "The password you entered was not valid.";
@@ -121,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
-            <p>Don't have an account? <a href="sponsor-register.php">Sign up now</a>.</p>
+            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
         </form>
     </div>
 </body>

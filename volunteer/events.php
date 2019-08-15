@@ -52,7 +52,7 @@
                                     echo "<tr>";
                                         echo "<th>#</th>";
                                         echo "<th>Event Name</th>";
-                                        echo "<th>Sponsor</th>";
+                                        echo "<th>Sponsor Name</th>";
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
                                         echo "<th>Contact Name</th>";
@@ -69,7 +69,7 @@
                                     echo "<tr>";
                                         echo "<td>" . $row['event_id'] . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['sponsor'] . "</td>";
+                                        echo "<td>" . $row['sponsor_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
                                         echo "<td>" . $row['contact_name'] . "</td>";

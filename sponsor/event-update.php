@@ -15,7 +15,7 @@ require_once "../config.php";
 $event_name = "";
 
 //NOTE: this value will be readonly {1}
-$sponsor = "";
+$sponsor_name = "";
 
 $description = "";
 $location = "";
@@ -31,7 +31,7 @@ $event_start = "";
 $event_end = "";
 
 $event_name_error = "";
-$sponsor_error = "";
+$sponsor_name_error = "";
 $description_error = "";
 $location_error = "";
 $contribution_type_error = "";
@@ -57,11 +57,11 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     }
 
     // Validate sponsor
-    $input_sponsor = trim($_POST["sponsor"]);
-    if(empty($input_sponsor)){
-        $sponsor_error = "Please enter a sponsor.";
+    $input_sponsor_name = trim($_POST["sponsor_name"]);
+    if(empty($input_sponsor_name)){
+        $sponsor_name_error = "Please enter a sponsor name.";
     } else{
-        $sponsor = $input_sponsor;
+        $sponsor_name = $input_sponsor_name;
     }
 
     // Validate description // NOTE: refer to-do list {3}
@@ -145,17 +145,17 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     }
 
     // Check input errors before inserting in database
-    if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
+    if(empty($event_name_error) && empty($sponsor_name_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an update statement
         $sql = "UPDATE events SET event_name=?, sponsor_name=?, description=?, location=?, contribution_type=?, contact_name=?, contact_phone=?, contact_email=?, registration_start=?, registration_end=?, event_start=?, event_end=? WHERE event_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssssi", $param_event_name, $param_sponsor, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end, $param_event_id);
+            mysqli_stmt_bind_param($stmt, "ssssssssssssi", $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end, $param_event_id);
 
             // Set parameters
             $param_event_name = $event_name;
-            $param_sponsor = $sponsor;
+            $param_sponsor_name = $sponsor_name;
             $param_description = $description;
             $param_location = $location;
             $param_contribution_type = $contribution_type;
@@ -172,7 +172,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: sponsor-events.php");
+                header("location: events.php");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later.";
@@ -210,7 +210,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 
                     // Retrieve individual field value
                     $event_name = $row["event_name"];
-                    $sponsor = $row["sponsor"];
+                    $sponsor_name = $row["sponsor_name"];
                     $description = $row["description"];
                     $location = $row["location"];
                     $contribution_type = $row["contribution_type"];
@@ -299,10 +299,10 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       </div>
 
                       <!--form for sponsor-->
-                      <div class="form-group <?php echo (!empty($sponsor_error)) ? 'has-error' : ''; ?>">
-                          <label>Sponsor</label>
-                          <input name="sponsor" class="form-control" value="<?php echo $sponsor; ?>">
-                          <span class="help-block"><?php echo $sponsor_error;?></span>
+                      <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
+                          <label>Sponsor Name</label>
+                          <input readonly name="sponsor_name" class="form-control" value="<?php echo $sponsor_name; ?>">
+                          <span class="help-block"><?php echo $sponsor_name_error;?></span>
                       </div>
 
                       <!--form for description-->
@@ -322,7 +322,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                       <!--form for contribution_type-->
                       <div class="form-group <?php echo (!empty($contribution_type_error)) ? 'has-error' : ''; ?>">
                           <label>Contribution Type</label>
-                          <input type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
+                          <input readonly type="text" name="contribution_type" class="form-control" value="<?php echo $contribution_type; ?>">
                           <span class="help-block"><?php echo $contribution_type_error;?></span>
                       </div>
 
