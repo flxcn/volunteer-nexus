@@ -52,7 +52,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
                     <?php
                     // Include config file
-                    require_once "config.php";
+                    require_once "../config.php";
                     // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];

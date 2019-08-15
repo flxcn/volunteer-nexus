@@ -1,10 +1,9 @@
 <?php
-// Include config file
-require_once 'config.php';
+
 // Check existence of id parameter before processing further
 if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
     // Include config file
-    require_once "config.php";
+    require_once "../config.php";
 
     // Prepare a select statement
     $sql = "SELECT * FROM events WHERE event_id = ?";

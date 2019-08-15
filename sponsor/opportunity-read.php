@@ -8,12 +8,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-// Include config file
-require_once 'config.php';
 // Check existence of id parameter before processing further
 if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
     // Include config file
-    require_once "config.php";
+    require_once "../config.php";
 
     // Prepare a select statement
     $sql = "SELECT * FROM opportunities WHERE opportunity_id = ?";

@@ -11,7 +11,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 // Process delete operation after confirmation
 if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
   // Include config file
-  require_once "config.php";
+  require_once "../config.php";
 
   // Prepare a delete statement
   $sql = "DELETE FROM events WHERE event_id = ?";

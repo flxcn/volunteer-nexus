@@ -16,7 +16,7 @@ if(isset($_GET['event_id'] && !is_int($_GET['event_id'])){
 $event_id = (isset($_GET['event_id']) ? $_GET['event_id'] : 0);
 
 // Include config file
-require_once 'config.php';
+require_once '../config.php';
 
 // Define variables and initialize with empty values
 $role_name = "";

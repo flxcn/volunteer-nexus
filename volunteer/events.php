@@ -42,7 +42,7 @@
 
                     <?php
                     // Include config file
-                    require_once "config.php";
+                    require_once "../config.php";
                     // Attempt select query execution
                     $sql = "SELECT * FROM events";
                     if($result = mysqli_query($link, $sql)){
