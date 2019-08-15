@@ -79,7 +79,7 @@
                                         echo "<td>" . $row['event_start'] . "</td>";
                                         echo "<td>" . $row['event_end'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='volunteer-event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

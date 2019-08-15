@@ -141,7 +141,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                         <p class="form-control-static"><?php echo $row["event_end"]; ?></p>
                     </div>
 
-                    <p><a href="volunteer-events.php" class="btn btn-primary">Back</a></p>
+                    <p><a href="events.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>
@@ -188,7 +188,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<td>" . $row['total_positions'] . "</td>";
                                         echo "<td>" . $row['total_positions'] . "</td>"; //NOTE: fix it
                                         echo "<td>";
-                                            echo "<a href='volunteer-opportunity-read.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='opportunity-read.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

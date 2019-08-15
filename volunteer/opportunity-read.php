@@ -73,7 +73,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                 // Attempt to execute the prepared statement
                 if(mysqli_stmt_execute($stmt)){
                     // Records created successfully. Redirect to landing page
-                    header("location: volunteer-events.php"); //NOTE: this can redirect to my upcoming events page
+                    header("location: events.php"); //NOTE: this can redirect to my upcoming events page
                     exit();
                 } else{
                     echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";

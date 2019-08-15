@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: volunteer-login.php");
+    header("location: login.php");
     exit;
 }
 ?>
@@ -30,8 +30,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <h1>Upcoming events that I am signed up for, with glyphicon to read, and one to cancel.</h1>
     </div>
     <p>
-        <a href="volunteer-reset.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
+        <a href="reset.php" class="btn btn-warning">Reset Your Password</a>
+        <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
 </body>
 </html>
