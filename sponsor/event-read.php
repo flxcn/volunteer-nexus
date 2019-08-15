@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: sponsor-login.php");
+    header("location: login.php");
     exit;
 }
 
@@ -150,7 +150,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                         <p class="form-control-static"><?php echo $row["event_end"]; ?></p>
                     </div>
 
-                    <p><a href="sponsor-events.php" class="btn btn-primary">Back</a></p>
+                    <p><a href="events.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>

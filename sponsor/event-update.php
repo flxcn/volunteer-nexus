@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: sponsor-login.php");
+    header("location: login.php");
     exit;
 }
 
@@ -147,7 +147,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     // Check input errors before inserting in database
     if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an update statement
-        $sql = "UPDATE events SET event_name=?, sponsor=?, description=?, location=?, contribution_type=?, contact_name=?, contact_phone=?, contact_email=?, registration_start=?, registration_end=?, event_start=?, event_end=? WHERE event_id=?";
+        $sql = "UPDATE events SET event_name=?, sponsor_name=?, description=?, location=?, contribution_type=?, contact_name=?, contact_phone=?, contact_email=?, registration_start=?, registration_end=?, event_start=?, event_end=? WHERE event_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -379,7 +379,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 
                         <input type="hidden" name="event_id" value="<?php echo $event_id; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="sponsor-events.php" class="btn btn-default">Cancel</a>
+                        <a href="events.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>

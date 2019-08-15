@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: sponsor-login.php");
+    header("location: login.php");
     exit;
 }
 
@@ -312,7 +312,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-default">Cancel</a>
+                        <a href="welcome.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>

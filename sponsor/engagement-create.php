@@ -138,7 +138,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO events (event_name, sponsor, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO events (event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -315,7 +315,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-default">Cancel</a>
+                        <a href="welcome.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>

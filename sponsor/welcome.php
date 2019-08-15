@@ -28,8 +28,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <h1>Member rolls, (with each persons information), engagements pending confirmation, my sponsored events </h1>
     </div>
     <p>
-        <a href="sponsor-events.php" class="btn btn-primary">My Sponsored Events</a>
-        <a href="sponsor-reset.php" class="btn btn-warning">Reset Your Password</a>
+        <a href="events.php" class="btn btn-primary">My Sponsored Events</a>
+        <a href="reset.php" class="btn btn-warning">Reset Your Password</a>
         <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
 </body>
