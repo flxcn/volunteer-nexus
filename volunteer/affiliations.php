@@ -56,7 +56,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
-                    $sql = "SELECT * FROM affiliations WHERE student_id = '{$_SESSION['student_id']}'";
+                    $sql = "SELECT sponsors.sponsor_name AS sponsor_name, SUM(engagements.contribution_value) AS total_contribution_value FROM sponsors LEFT JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id WHERE student_id = '{$_SESSION['student_id']}' GROUP BY sponsors.sponsor_name";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -64,14 +64,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Affiliated Sponsor</th>";
-                                        echo "<th>My Contributions</th>";
+                                        echo "<th>My Total Contributions</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['sponsor_id'] . "</td>"; //NOTE: this needs work!
-                                        echo "<td>" . $row['student_id'] . "</td>"; //NOTE: this needs work!
+                                        echo "<td>" . $row['sponsor_name'] . "</td>"; //NOTE: this needs work!
+                                        echo "<td>" . $row['total_contribution_value'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>";
                                             echo "<a href='affiliation-read.php?affiliation_id=". $row['affiliation_id'] ."' title='View My Contributions' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
