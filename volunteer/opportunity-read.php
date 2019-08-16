@@ -22,7 +22,6 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
         // Set parameters
         $param_opportunity_id = trim($_GET["opportunity_id"]);
-        $param_event_id = trim($_GET["event_id"]);
 
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -33,6 +32,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                 // Retrieve individual field value
+                $sponsor_id = $row["sponsor_id"];
                 $role_name = $row["role_name"];
                 $description = $row["description"];
                 $start_date = $row["start_date"];
@@ -40,6 +40,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                 $end_date = $row["end_date"];
                 $end_time = $row["end_time"];
                 $total_positions = $row["total_positions"];
+                $contribution_value = $row["contribution_value"];
                 //{7} $positions_available = $[];
 
             } else{
@@ -55,6 +56,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
     // Close statement
     mysqli_stmt_close($stmt);
+
 
     // Close connection
     mysqli_close($link);
@@ -115,14 +117,22 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                     </div>
 
                     <div class="form-group">
+                        <label>Contribution Value</label>
+                        <p class="form-control-static"><?php echo $row["contribution_value"]; ?></p>
+                    </div>
+
+                    <div class="form-group">
                         <label>Total Positions</label>
                         <p class="form-control-static"><?php echo $row["total_positions"]; ?></p>
                     </div>
 
+
                     <div class="form-group">
                       <form action="engagement-create.php" method="post">
                         <input type="hidden" name="opportunity_id" value="<?php echo trim($_GET["opportunity_id"]); ?>">
+                        <input type="hidden" name="sponsor_id" value="<?php echo $row["sponsor_id"];?>">
                         <input type="hidden" name="student_id" value="<?php echo trim($_SESSION["student_id"]); ?>">
+                        <input type="hidden" name="contribution_value" value="<?php echo $row["contribution_value"];?>">
                         <input type="submit" class="btn btn-primary" value="Sign up!">
                       </form>
                     </div>
