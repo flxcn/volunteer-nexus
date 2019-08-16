@@ -19,6 +19,7 @@ $event_id = (isset($_GET['event_id']) ? $_GET['event_id'] : 0);
 require_once '../config.php';
 
 // Define variables and initialize with empty values
+$sponsor_id = $_SESSION["sponsor_id"];
 $role_name = "";
 $description = "";
 $start_date = "";
@@ -108,14 +109,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "issssssssssii", $param_event_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value);
+            mysqli_stmt_bind_param($stmt, "iissssssssssii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value);
 
             // Set parameters
             $param_event_id = $event_id;
+            $param_sponsor_id = $sponsor_id;
             $param_role_name = $role_name;
             $param_description = $description;
             $param_start_date = $start_date;
@@ -218,7 +220,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <!--form for contribution_value-->
-                        <div class="form-group <?php echo (!empty($contact_email_error)) ? 'has-error' : ''; ?>">
+                        <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
                             <label>Contribution Value</label>
                             <input type="number" name="contribution_value" class="form-control"><?php echo $contribution_value; ?>
                             <span class="help-block"><?php echo $contribution_value_error;?></span>
