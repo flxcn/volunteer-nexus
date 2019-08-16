@@ -2,23 +2,24 @@
 // Initialize the session
 session_start();
 
+
+
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
-if(isset($_GET['event_id'] && !is_int($_GET['event_id'])){
+if(!isset($_GET['event_id']) || !is_int($_GET['event_id'])){
   header('Location: events.php');
   exit;
 }
-
-$event_id = (isset($_GET['event_id']) ? $_GET['event_id'] : 0);
 
 // Include config file
 require_once '../config.php';
 
 // Define variables and initialize with empty values
+$event_id = $_GET['event_id'];
 $sponsor_id = $_SESSION["sponsor_id"];
 $role_name = "";
 $description = "";
@@ -255,7 +256,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="event-read.php?<?php echo $event_id ?>" class="btn btn-default">Cancel</a>
+                        <a href="event-read.php?event_id=<?php echo $event_id; ?>" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>
