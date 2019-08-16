@@ -14,19 +14,21 @@ require_once '../config.php';
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     // Check input errors before inserting in database
-    if(isset($_POST["opportunity_id"]) && isset($_POST["student_id"]))
+    if(isset($_POST["opportunity_id"]) && isset($_POST["student_id"]) && isset($_POST["sponsor_id"]) && isset($_POST["contribution_value"]))
     {
         // Prepare an insert statement
-        $sql = "INSERT INTO engagements (opportunity_id, student_id) VALUES (?, ?)";
+        $sql = "INSERT INTO engagements (opportunity_id, student_id, sponsor_id, contribution_value) VALUES (?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql))
         {
               // Bind variables to the prepared statement as parameters
-              mysqli_stmt_bind_param($stmt, "ii", $param_opportunity_id, $param_student_id);
+              mysqli_stmt_bind_param($stmt, "iiii", $param_opportunity_id, $param_student_id, $param_sponsor_id, $param_contribution_value);
 
               // Set parameters
               $param_opportunity_id = $_POST["opportunity_id"];
               $param_student_id = $_POST["student_id"];
+              $param_sponsor_id = $_POST["sponsor_id"];
+              $param_contribution_value = $_POST["contribution_value"];
 
               // Attempt to execute the prepared statement
               if(mysqli_stmt_execute($stmt))
