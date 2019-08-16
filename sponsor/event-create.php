@@ -83,7 +83,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_contact_name)){
         $contact_name_error = "Please enter a contact name.";
     } else{
-        $description = $input_description;
+        $contact_name = $input_contact_name;
     }
 
     // Validate contact_phone // NOTE: refer to-do list {3}
