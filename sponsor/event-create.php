@@ -12,6 +12,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 require_once '../config.php';
 
 // Define variables and initialize with empty values
+$sponsor_id = $_SESSION["sponsor_id"];
 $event_name = "";
 
 //NOTE: this value will be readonly {1}
@@ -136,13 +137,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($event_name_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO events (event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO events (sponsor_id, event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "sssssssssssss", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
 
             // Set parameters
+            $param_sponsor_id = $sponsor_id;
             $param_event_name = $event_name;
             $param_sponsor_name = $sponsor_name;
             $param_description = $description;
@@ -159,7 +161,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: sponsor-events.php");
+                header("location: events.php");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
