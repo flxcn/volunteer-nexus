@@ -30,6 +30,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <h1>Upcoming events that I am signed up for, with glyphicon to read, and one to cancel.</h1>
     </div>
     <p>
+        <a href="events.php" class="btn btn-primary">Find Events</a>
+        <a href="affiliations.php" class="btn btn-warning">Check My Contributions</a>
+        <a href="engagements.php" class="btn btn-danger">My Upcoming Engagements</a>
         <a href="reset.php" class="btn btn-warning">Reset Your Password</a>
         <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
