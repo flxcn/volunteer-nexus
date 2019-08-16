@@ -47,7 +47,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">My Sponsored Events</h2>
-                        <a href="create-event.php" class="btn btn-success pull-right">Add New Event</a>
+                        <a href="event-create.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
                     <?php

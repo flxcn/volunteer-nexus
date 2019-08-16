@@ -118,7 +118,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                         <p class="form-control-static"><?php echo $row["total_positions"]; ?></p>
                     </div>
                     <!--This button does not work properly-->
-                    <p><a href='read-event.php?event_id="<?php $row["event_id"] ?>"' class="btn btn-primary">Back</a></p>
+                    <p><a href='event-read.php?event_id="<?php $row["event_id"] ?>"' class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>
