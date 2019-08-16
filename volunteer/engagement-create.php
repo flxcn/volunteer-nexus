@@ -1,9 +1,18 @@
 <?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+
+// Include config file
+require_once '../config.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    require_once "../config.php";
-
     // Check input errors before inserting in database
     if(isset($_POST["opportunity_id"]) && isset($_POST["student_id"]))
     {
@@ -16,8 +25,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
               mysqli_stmt_bind_param($stmt, "ii", $param_opportunity_id, $param_student_id);
 
               // Set parameters
-              $param_opportunity_id = $_GET["opportunity_id"];
-              $param_student_id = $_SESSION["student_id"];
+              $param_opportunity_id = $_POST["opportunity_id"];
+              $param_student_id = $_POST["student_id"];
 
               // Attempt to execute the prepared statement
               if(mysqli_stmt_execute($stmt))
