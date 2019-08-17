@@ -141,7 +141,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssssssssssss", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "issssssssssss", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
 
             // Set parameters
             $param_sponsor_id = $sponsor_id;
