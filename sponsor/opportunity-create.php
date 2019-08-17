@@ -2,8 +2,6 @@
 // Initialize the session
 session_start();
 
-
-
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
@@ -131,7 +129,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: read.php?event_id='. $event_id .'"); // NOTE: BACK BUTTION
+                header("location: event-read.php?event_id='. $event_id .'");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
