@@ -70,7 +70,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Record</title>
+    <title>View Event</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         .wrapper{
@@ -160,12 +160,12 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Relevant Opportunities</h2>
-                        <a href="opportunity-create.php" class="btn btn-success pull-right">Add New Opportunity</a>
+                        <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
                     </div>
 
                     <?php
                     // Attempt select query execution
-                    $sql = "SELECT * FROM opportunities WHERE event_id = $param_event_id";
+                    $sql = "SELECT * FROM opportunities WHERE event_id = '{$_GET["event_id"]}'";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
