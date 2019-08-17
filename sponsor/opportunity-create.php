@@ -86,6 +86,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_end_time)){
         $end_time_error = "Please enter an end time.";
     } else{
+        $date = DateTime::createFromFormat( 'H:i A', $input_end_time);
+        $end_time = $date->format( 'H:i:s');
         $end_time = $input_end_time;
     }
 
