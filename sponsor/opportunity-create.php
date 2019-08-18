@@ -8,17 +8,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-if(!isset($_GET['event_id']) || !is_int($_GET['event_id'])){
-  header('Location: events.php');
-  exit;
-}
-
 // Include config file
 require_once '../config.php';
 
-// Define variables and initialize with empty values
-$event_id = $_GET['event_id'];
-$sponsor_id = $_SESSION["sponsor_id"];
+// Define variable
+if(isset($_GET["event_id"]))
+{
+  $event_id = trim($_GET["event_id"]);
+}
+else
+{
+  $event_id = "";
+}
+
+$sponsor_id = trim($_SESSION["sponsor_id"]);
 $role_name = "";
 $description = "";
 $start_date = "";
@@ -27,8 +30,11 @@ $start_time = "";
 $end_time = "";
 $total_positions = "";
 $contribution_value = "";
+$type = "time";
 
 //define and initialize error message variables
+$event_id_error = "";
+$sponsor_id_error = "";
 $role_name_error = "";
 $description_error = "";
 $start_date_error = "";
@@ -37,19 +43,23 @@ $start_time_error = "";
 $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
+$type_error = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Validate opportunity name
-    $input_event_name = trim($_POST["role_name"]);
+    $event_id = trim($_POST["event_id"]);
+    $sponsor_id = trim($_POST["sponsor_id"]);
+
+    // Validate role_name
+    $input_role_name = trim($_POST["role_name"]);
     if(empty($input_role_name)){
-        $event_role_error = "Please enter a role name.";
-    }else{
+        $role_name_error = "Please enter a role name.";
+    } else{
         $role_name = $input_role_name;
     }
 
-    // Validate description //NOTE: refer to-do list {1} // NOTE: add string length validator
+    // Validate description
     $input_description = trim($_POST["description"]);
     if(empty($input_description)){
         $description_error = "Please enter a description.";
@@ -57,7 +67,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $description = $input_description;
     }
 
-    // Validate start_date // NOTE: refer to-do list {3}
+    // Validate start_date
     $input_start_date = trim($_POST["start_date"]);
     if(empty($input_start_date)){
         $start_date_error = "Please enter a start date.";
@@ -65,7 +75,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $start_date = $input_start_date;
     }
 
-    // Validate start_time // NOTE: refer to-do list {3}
+    // Validate end_date
+    $input_end_date = trim($_POST["end_date"]);
+    if(empty($input_end_date)){
+        $end_date_error = "Please enter an end date.";
+    } else{
+        $end_date = $input_end_date;
+    }
+
+    // Validate start_time
     $input_start_time = trim($_POST["start_time"]);
     if(empty($input_start_time)){
         $start_time_error = "Please enter a start time.";
@@ -73,33 +91,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $start_time = $input_start_time;
     }
 
-    // Validate end_date // NOTE: refer to-do list {3}
-    $input_end_date = trim($_POST["end_date"]);
-    if(empty($input_end_date)){
-        $end_date_error = "Please enter a end date.";
-    } else{
-        $end_date = $input_end_date;
-    }
-
-    // Validate end_time // NOTE: refer to-do list {3}
+    // Validate end_time
     $input_end_time = trim($_POST["end_time"]);
     if(empty($input_end_time)){
         $end_time_error = "Please enter an end time.";
     } else{
-        $date = DateTime::createFromFormat( 'H:i A', $input_end_time);
-        $end_time = $date->format( 'H:i:s');
         $end_time = $input_end_time;
     }
 
-    // Validate total_positions // NOTE: refer to-do list {3}
+    // Validate total_positions
     $input_total_positions = trim($_POST["total_positions"]);
     if(empty($input_total_positions)){
-        $total_positions_error = "Please enter the total number of positions. Leave blank if there is no limit.";
+        $total_positions_error = "Please enter the total number of positions available.";
     } else{
         $total_positions = $input_total_positions;
     }
 
-    // Validate contribution_value // NOTE: refer to-do list {3}
+    // Validate contribution_value
     $input_contribution_value = trim($_POST["contribution_value"]);
     if(empty($input_contribution_value)){
         $contribution_value_error = "Please enter a contribution value.";
@@ -107,14 +115,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $contribution_value = $input_contribution_value;
     }
 
+    // Validate type
+    $input_type = trim($_POST["type"]);
+    if(empty($input_type)){
+        $type_error = "Please enter an opportunity type.";
+    } else{
+        $type = $input_type;
+    }
+
     // Check input errors before inserting in database
-    if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error)){
+    if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($type_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssssssii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value);
+            mysqli_stmt_bind_param($stmt, "iissssssiis", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
 
             // Set parameters
             $param_event_id = $event_id;
@@ -125,13 +141,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_end_date = $end_date;
             $param_start_time = $start_time;
             $param_end_time = $end_time;
-            $param_total_positions= $total_positions;
+            $param_total_positions = $total_positions;
             $param_contribution_value = $contribution_value;
+            $param_type = $type;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: event-read.php?event_id='. $event_id .'");
+                header("location: event-read?event_id=" . $event_id . ".php");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
@@ -188,7 +205,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </style>
 </head>
 <body>
-
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -199,7 +215,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <p>Please fill this form and submit to add a new opportunity to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-                        <!--form for opportunity_name-->
+                        <!--form for opportunity name-->
                         <div class="form-group <?php echo (!empty($role_name_error)) ? 'has-error' : ''; ?>">
                             <label>Opportunity Name</label>
                             <input type="text" name="role_name" class="form-control" value="<?php echo $role_name; ?>">
@@ -207,10 +223,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <!--form for description-->
-                        <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>">
+                        <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                             <label>Description</label>
-                            <input name="description" class="form-control"><?php echo $description; ?>
+                            <textarea type="text" name="description" class="form-control" value="<?php echo $description; ?>"></textarea>
                             <span class="help-block"><?php echo $description_error;?></span>
+                        </div>
+
+                        <!--form for start_date-->
+                        <div class="form-group <?php echo (!empty($start_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                            <label>Start Date</label>
+                            <input type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
+                            <span class="help-block"><?php echo $start_date_error;?></span>
+                        </div>
+
+                        <!--form for end_date-->
+                        <div class="form-group <?php echo (!empty($end_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                            <label>End Date</label>
+                            <input type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
+                            <span class="help-block"><?php echo $end_date_error;?></span>
+                        </div>
+
+                        <!--form for start_time-->
+                        <div class="form-group <?php echo (!empty($start_time_error)) ? 'has-error' : ''; ?>">
+                            <label>Start Time</label>
+                            <input type="time" name="start_time" class="form-control" value="<?php echo $start_time; ?>">
+                            <span class="help-block"><?php echo $start_time_error;?></span>
+                        </div>
+
+                        <!--form for end_time-->
+                        <div class="form-group <?php echo (!empty($end_time_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
+                            <label>End Time</label>
+                            <input type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
+                            <span class="help-block"><?php echo $end_time_error;?></span>
                         </div>
 
                         <!--form for total_positions-->
@@ -223,40 +267,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <!--form for contribution_value-->
                         <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
                             <label>Contribution Value</label>
-                            <input type="number" name="contribution_value" class="form-control"><?php echo $contribution_value; ?>
+                            <input type="number" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
                             <span class="help-block"><?php echo $contribution_value_error;?></span>
                         </div>
 
-                        <!--form for start_date-->
-                        <div class="form-group <?php echo (!empty($start_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Start Date</label>
-                            <input type="date" name="start_date" class="form-control"><?php echo $start_date; ?>
-                            <span class="help-block"><?php echo $start_date_error;?></span>
+                        <!--form for type-->
+                        <div class="form-group <?php echo (!empty($type_error)) ? 'has-error' : ''; ?>">
+                            <label>Type</label>
+                            <input type="text" name="type" class="form-control" value="<?php echo $type; ?>">
+                            <span class="help-block"><?php echo $type_error;?></span>
                         </div>
 
-                        <!--form for start_time-->
-                        <div class="form-group <?php echo (!empty($start_time_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Start Time</label>
-                            <input type="time" name="start_time" class="form-control"><?php echo $start_time; ?>
-                            <span class="help-block"><?php echo $start_time_error;?></span>
-                        </div>
-
-                        <!--form for end_date-->
-                        <div class="form-group <?php echo (!empty($end_date_error)) ? 'has-error' : ''; ?>">
-                            <label>End Date</label>
-                            <input type="date" name="end_date" class="form-control"><?php echo $end_date; ?>
-                            <span class="help-block"><?php echo $end_date_error;?></span>
-                        </div>
-
-                        <!--form for end_time-->
-                        <div class="form-group <?php echo (!empty($end_time_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>End Time</label>
-                            <input type="time" name="end_time" class="form-control"><?php echo $end_time; ?>
-                            <span class="help-block"><?php echo $end_time_error;?></span>
-                        </div>
+                        <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
+                        <input type="hidden" name="sponsor_id" value="<?php echo $sponsor_id;?>">
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="event-read.php?event_id=<?php echo $event_id; ?>" class="btn btn-default">Cancel</a>
+                        <a href="welcome.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>
