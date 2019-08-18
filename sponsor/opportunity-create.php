@@ -126,11 +126,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($type_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssiis", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "iissssssiis", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_type);
 
             // Set parameters
             $param_event_id = $event_id;
@@ -148,15 +148,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
-                header("location: event-read?event_id=" . $event_id . ".php");
+
+                // Close statement
+                mysqli_stmt_close($stmt);
+
+                header("location: event-read.php?event_id=' . $event_id . '");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
             }
+
+
         }
 
-        // Close statement
-        mysqli_stmt_close($stmt);
+
     }
 
     // Close connection
@@ -210,7 +215,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Create Opportunity</h2>
+                        <h2>Create Opportunity<></h2>
                     </div>
                     <p>Please fill this form and submit to add a new opportunity to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -225,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <!--form for description-->
                         <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                             <label>Description</label>
-                            <textarea type="text" name="description" class="form-control" value="<?php echo $description; ?>"></textarea>
+                            <textarea type="text" name="description" class="form-control"><?php echo $description; ?></textarea>
                             <span class="help-block"><?php echo $description_error;?></span>
                         </div>
 
