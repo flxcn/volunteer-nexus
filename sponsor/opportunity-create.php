@@ -88,7 +88,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_start_time)){
         $start_time_error = "Please enter a start time.";
     } else{
-        $start_time = $input_start_time;
+        // $date = DateTime::createFromFormat( 'H:i A', $input_start_time);
+        // $temp_start_time = $date->format( 'H:i:s');
+	      // $start_time = $temp_start_time;
+        $start_time = date("H:i", strtotime($input_start_time));
     }
 
     // Validate end_time
@@ -96,7 +99,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_end_time)){
         $end_time_error = "Please enter an end time.";
     } else{
-        $end_time = $input_end_time;
+      // $date = DateTime::createFromFormat( 'H:i A', $input_end_time);
+      // $temp_end_time = $date->format( 'H:i:s');
+      // $end_time = $temp_end_time;
+      $end_time = date("H:i", strtotime($input_end_time));
     }
 
     // Validate total_positions
@@ -152,7 +158,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Close statement
                 mysqli_stmt_close($stmt);
 
-                header("location: event-read.php?event_id=' . $event_id . '");
+                header("location: event-read.php?event_id=".$event_id);
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
@@ -215,7 +221,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Create Opportunity<></h2>
+                        <h2>Create Opportunity</h2>
                     </div>
                     <p>Please fill this form and submit to add a new opportunity to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
