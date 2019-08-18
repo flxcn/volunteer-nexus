@@ -161,7 +161,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Relevant Opportunities</h2>
-                        <a href="opportunity-create.php?event_id=<?php echo $row["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
+                        <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
                     </div>
 
                     <?php
