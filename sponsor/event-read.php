@@ -32,6 +32,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                 // Retrieve individual field value
+                $event_id = $row["event_id"];
                 $event_name = $row["event_name"];
                 $sponsor_name = $row["sponsor_name"];
                 $description = $row["description"];
@@ -160,7 +161,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Relevant Opportunities</h2>
-                        <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
+                        <a href="opportunity-create.php?event_id=<?php echo $row["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
                     </div>
 
                     <?php
@@ -196,9 +197,9 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<td>" . $row['total_positions'] . "</td>";
                                         echo "<td>" . $row['total_positions'] . "</td>"; //NOTE: fix it
                                         echo "<td>";
-                                            echo "<a href='read-opportunity.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update-opportunity.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='Update Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete-opportunity.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='Delete Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='opportunity-read.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='opportunity-update.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='Update Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='opportunity-delete.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='Delete Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
