@@ -17,7 +17,7 @@ $sponsor_name = "";
 $sponsor_id = "";
 
 $student_id_error = "";
-$sponsor_id_error = "";
+$sponsor_name_error = "";
 $sponsor_id_error = "";
 
 // Processing form data when form is submitted
@@ -28,7 +28,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $sponsor_name_error = "Please enter a sponsor name.";
   } else{
       // Prepare a select statement
-      $sql = "SELECT sponsor_id FROM volunteers WHERE sponsor_name = ?";
+      $sql = "SELECT sponsor_id FROM sponsors WHERE sponsor_name = ?";
 
       if($stmt = mysqli_prepare($link, $sql)){
           // Bind variables to the prepared statement as parameters
@@ -42,10 +42,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               /* store result */
               mysqli_stmt_store_result($stmt);
 
-              if(mysqli_stmt_num_rows($stmt) !== 1){
+              if(mysqli_stmt_num_rows($stmt) != 1){
                   $sponsor_name_error = "This sponsor name is not valid.";
               } else{
-									mysqli_stmt_bind_result($stmt, $sponsor_id);
+
+									mysqli_stmt_bind_result($stmt, $temp_sponsor_id);
+									if(mysqli_stmt_fetch($stmt))
+									{
+										$sponsor_id = $temp_sponsor_id;
+									}
+
               }
           } else{
               echo "Oops! Something went wrong. Please try again later.";
