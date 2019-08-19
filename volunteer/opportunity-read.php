@@ -129,6 +129,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
                     <div class="form-group">
                       <form action="engagement-create.php" method="post">
+                        <input type="hidden" name="event_id" value="<?php echo trim($_GET["event_id"]); ?>">
                         <input type="hidden" name="opportunity_id" value="<?php echo trim($_GET["opportunity_id"]); ?>">
                         <input type="hidden" name="sponsor_id" value="<?php echo $row["sponsor_id"];?>">
                         <input type="hidden" name="student_id" value="<?php echo trim($_SESSION["student_id"]); ?>">
