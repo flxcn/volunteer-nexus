@@ -13,7 +13,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <head>
     <meta charset="UTF-8">
-    <title>Events</title>
+    <title>My Contributions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
@@ -54,46 +54,42 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     require_once "../config.php";
                     // Attempt select query execution
 
-                    //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
-                    $sql = "SELECT * FROM engagements WHERE student_id = '{$_SESSION['student_id']}' AND sponsor_id = '{$_GET['sponsor_id']}'";
+                    //NOTE: may need to sanitize the data in $_SESSION["sponsor_id"];
+                    $sql = "SELECT * FROM engagements INNER JOIN events ON engagements.event_id = events.event_id WHERE student_id = '{$_SESSION['student_id']}' AND sponsor_id = '{$_GET['sponsor_id']}'";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
-                                        echo "<th>Opportunity Name</th>";
-                                        echo "<th>Sponsor</th>";
+                                        echo "<th>Time Submitted</th>";
+                                        echo "<th>Event Name</th>";
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
                                         echo "<th>Contact Name</th>";
-                                        echo "<th>Contact Phone</th>";
                                         echo "<th>Contact Email</th>";
-                                        echo "<th>Registration End</th>";
                                         echo "<th>Event Start</th>";
                                         echo "<th>Event End</th>";
+                                        echo "<th>Contribution Value</th>"
 
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['event_id'] . "</td>";
+                                        echo "<td>" . $row['time_submitted'] . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['sponsor_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
                                         echo "<td>" . $row['contact_name'] . "</td>";
-                                        echo "<td>" . $row['contact_phone'] . "</td>";
                                         echo "<td>" . $row['contact_email'] . "</td>";
-                                        echo "<td>" . $row['registration_end'] . "</td>";
                                         echo "<td>" . $row['event_start'] . "</td>";
                                         echo "<td>" . $row['event_end'] . "</td>";
+                                        echo "<td>" . $row['contribution_value'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='event-delete.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='opportunity-read.php?event_id=". $row['event_id'] ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                        //     echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                        //     echo "<a href='event-delete.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -102,7 +98,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             // Free result set
                             mysqli_free_result($result);
                         } else{
-                            echo "<p class='lead'><em>No events were found.</em></p>";
+                            echo "<p class='lead'><em>No past engagements were found.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
