@@ -55,7 +55,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     require_once "../config.php";
                     // Attempt select query execution
 
-                    //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
                     $sql = "SELECT sponsors.sponsor_name AS sponsor_name, sponsors.sponsor_id AS sponsor_id, SUM(engagements.contribution_value) AS total_contribution_value FROM sponsors LEFT JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id WHERE student_id = '{$_SESSION['student_id']}' AND status = 1 GROUP BY sponsors.sponsor_name";
 
                     if($result = mysqli_query($link, $sql)){
@@ -73,7 +72,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<td>" . $row['sponsor_name'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>" . $row['total_contribution_value'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>";
-                                            echo "<a href='affiliation-read.php?affiliation_id=". $row['sponsor_id'] ."' title='View My Contributions' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='affiliation-read.php?sponsor_id=". $row['sponsor_id'] ."' title='View My Contributions' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
