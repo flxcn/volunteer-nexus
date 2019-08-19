@@ -55,7 +55,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_id"];
-                    $sql = "SELECT * FROM engagements INNER JOIN events ON engagements.event_id = events.event_id WHERE student_id = '{$_SESSION['student_id']}' AND sponsor_id = '{$_GET['sponsor_id']}'";
+                    $sql = "SELECT * FROM engagements INNER JOIN events ON engagements.event_id = events.event_id WHERE engagements.student_id = '{$_SESSION['student_id']}' AND engagements.sponsor_id = '{$_GET['sponsor_id']}'";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -70,7 +70,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<th>Contact Email</th>";
                                         echo "<th>Event Start</th>";
                                         echo "<th>Event End</th>";
-                                        echo "<th>Contribution Value</th>"
+                                        echo "<th>Contribution Value</th>";
 
                                     echo "</tr>";
                                 echo "</thead>";
