@@ -55,22 +55,22 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     require_once "../config.php";
                     // Attempt select query execution
 
-                    $sql = "SELECT volunteers.student_name AS student_name, volunteers.username AS email_address SUM(engagements.contribution_value) AS total_contribution_value FROM (SELECT * FROM volunteers INNER JOIN affilations ON volunteers.student_id = affiliations.student_id WHERE sponsor_id = '{$_SESSION['sponsor_id']}') LEFT JOIN engagements ON engagements.student_id = volunteers.student_id";
+                    $sql = "SELECT volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value FROM volunteers INNER JOIN affiliations ON volunteers.student_id = affiliations.student_id LEFT JOIN engagements ON affiliations.student_id = engagements.student_id WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Member</th>";
-                                        echo "<th>Email Address</th>"
+                                        echo "<th>Member Name</th>";
+                                        echo "<th>Email Address</th>";
                                         echo "<th>Total Contributions</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['student_name'] . "</td>"; //NOTE: this needs work!
+                                        echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>" . $row['email_address'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>" . $row['total_contribution_value'] . "</td>"; //NOTE: this needs work!
                                         // echo "<td>";
