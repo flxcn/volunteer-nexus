@@ -34,6 +34,30 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
+
+    <script>
+    function showStatus(str) {
+      if (str == "") {
+        document.getElementById("txtHint").innerHTML = "";
+        return;
+      } else {
+        if (window.XMLHttpRequest) {
+          // code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp = new XMLHttpRequest();
+        } else {
+          // code for IE6, IE5
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("statusOf").innerHTML = this.responseText;
+          }
+        };
+        xmlhttp.open("GET","getuser.php?q="+str,true);
+        xmlhttp.send();
+      }
+    }
+    </script>
 </head>
 
 
@@ -74,8 +98,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<td>" . $row['role_name'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>" . $row['event_name'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>";
+                                            echo "<div id='statusOf". $row['engagement_id'] ."'>";
                                             echo "<a href='engagement-verify.php?engagement_id=". $row['engagement_id'] ."?status=1' title='Confirm This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-ok'></span></a>";
                                             echo "<a href='engagement-verify.php?engagement_id=". $row['engagement_id'] ."?status=0' title='Deny This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-remove'></span></a>";
+                                            echo "</div>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
