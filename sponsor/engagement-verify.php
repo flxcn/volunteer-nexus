@@ -1,3 +1,8 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+<body>
 <?php
 // Initialize the session
 session_start();
@@ -11,13 +16,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 // Include config file
 require_once '../config.php';
 
-if($_SERVER["REQUEST_METHOD"] == "POST")
+if($_SERVER["REQUEST_METHOD"] == "GET")
 {
     // Check input errors before inserting in database
-    if(isset($_POST["engagement_id"]) && isset($_POST["status"]))
+    if(isset($_GET["engagement_id"]) && isset($_GET["status"]))
     {
         // Prepare an insert statement
-        $sql = "UPDATE engagements (status) VALUES (?) WHERE engagement_id=?";
+        $sql = "UPDATE engagements SET status=? WHERE engagement_id=?";
 
         if($stmt = mysqli_prepare($link, $sql))
         {
@@ -25,15 +30,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
               mysqli_stmt_bind_param($stmt, "ii", $param_status, $param_engagement_id);
 
               // Set parameters
-              $param_engagement_id = $_POST["engagement_id"];
-              $param_status = $_POST["status"];
+              $param_engagement_id = $_GET["engagement_id"];
+              $param_status = $_GET["status"];
 
               // Attempt to execute the prepared statement
               if(mysqli_stmt_execute($stmt))
               {
                   // Records created successfully. Redirect to landing page
-                  echo "Done!";
-                  exit();
+                  if($_GET["status"] == 1)
+                    echo "<b>Confirmed!</b>";
+                  if($_GET["status"] == 0)
+                    echo "<b>Denied!</b>";
               }
               else
               {
@@ -48,5 +55,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   mysqli_close($link);
 }
-
 ?>
+</body>
+</html>

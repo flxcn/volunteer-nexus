@@ -36,9 +36,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </script>
 
     <script>
-    function showStatus(str,num) {
-      if (str == "" && num=="") {
-        document.getElementById("statusOf").innerHTML = "";
+    function showStatus(id,num) {
+      if (id == "" && num=="") {
+        //document.getElementById("statusOf"+id).innerHTML = "";
         return;
       } else {
         if (window.XMLHttpRequest) {
@@ -50,10 +50,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         }
         xmlhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("statusOf"+num).innerHTML = this.responseText;
+            document.getElementById("statusOf"+id).innerHTML = this.responseText;
           }
         };
-        xmlhttp.open("POST",str,true);
+        xmlhttp.open("GET","engagement-verify.php?engagement_id="+id+"&status="+num,true);
         xmlhttp.send();
       }
     }
@@ -95,12 +95,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>"; //NOTE: this needs work!
-                                        echo "<td>" . $row['role_name'] . "</td>"; //NOTE: this needs work!
-                                        echo "<td>" . $row['event_name'] . "</td>"; //NOTE: this needs work!
+                                        echo "<td>" . $row['role_name'] . "</td>";
+                                        echo "<td>" . $row['event_name'] . "</td>"; 
                                         echo "<td>";
-                                            echo "<div id='statusOf'>";
-                                            echo "<a onclick='showStatus(engagement-verify.php?engagement_id=". $row['engagement_id'] ."?status=1,". $row['engagement_id'] .")' title='Confirm This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-ok'></span></a>";
-                                            echo "<a onclick='showStatus(engagement-verify.php?engagement_id=". $row['engagement_id'] ."?status=0,". $row['engagement_id'] .")' title='Deny This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-remove'></span></a>";
+                                            echo "<div id='statusOf". $row['engagement_id'] ."'>";
+                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",1)' title='Confirm This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-ok'></span></a>";
+                                            echo "<a href='engagement-verify.php?engagement_id=". $row['engagement_id'] ."&status=0' title='Deny This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-remove'></span></a>";
                                             echo "</div>";
                                         echo "</td>";
                                     echo "</tr>";
@@ -110,7 +110,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             // Free result set
                             mysqli_free_result($result);
                         } else{
-                            echo "<p class='lead'><em>No affiliations were found.</em></p>";
+                            echo "<p class='lead'><em>No pending engagements were found.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
