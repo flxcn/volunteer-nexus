@@ -1,4 +1,13 @@
 <?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+
 // Include config file
 require_once '../config.php';
 

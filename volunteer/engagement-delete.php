@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
@@ -27,7 +27,7 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
     // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){
       // Records deleted successfully. Redirect to landing page
-      header("location: index.php");
+      header("location: engagements.php");
       exit();
     } else{
       echo "Oops! Something went wrong. Please try again later.";

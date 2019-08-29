@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
@@ -23,13 +23,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="page-header">
         <h1>Hello, <b><?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?></b>. Welcome to <b>VolunteerNexus</b>.</h1>
     </div>
-
-    <div class="page-header">
-        <h1>Member rolls, (with each persons information), engagements pending confirmation, my sponsored events </h1>
-    </div>
     <p>
         <a href="events.php" class="btn btn-primary">My Sponsored Events</a>
         <a href="affiliations.php" class="btn btn-primary">My Members</a>
+        <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
         <a href="reset.php" class="btn btn-warning">Reset Your Password</a>
         <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>

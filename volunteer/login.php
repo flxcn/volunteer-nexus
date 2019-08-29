@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+if(isset($_SESSION["volunteer_"]) && $_SESSION["volunteer_"] === true){
     header("location: welcome.php");
     exit;
 }
@@ -61,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             session_start();
 
                             // Store data in session variables
-                            $_SESSION["loggedin"] = true;
+                            $_SESSION["volunteer_loggedin"] = true;
                             $_SESSION["student_id"] = $student_id;
                             $_SESSOPM["username"] = $username;
                             $_SESSION["first_name"] = $first_name;

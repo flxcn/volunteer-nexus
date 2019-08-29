@@ -3,7 +3,7 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
@@ -96,7 +96,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     echo "<tr>";
                                         echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>"; //NOTE: this needs work!
                                         echo "<td>" . $row['role_name'] . "</td>";
-                                        echo "<td>" . $row['event_name'] . "</td>"; 
+                                        echo "<td>" . $row['event_name'] . "</td>";
                                         echo "<td>";
                                             echo "<div id='statusOf". $row['engagement_id'] ."'>";
                                             echo "<a onclick='showStatus(" . $row['engagement_id'] .",1)' title='Confirm This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-ok'></span></a>";
