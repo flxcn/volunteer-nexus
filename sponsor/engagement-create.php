@@ -12,17 +12,16 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 require_once '../config.php';
 
 // Define variables and initialize with empty values
+$email = "";
+
+//NOTE: this value will be readonly {1}
 $event_name = "";
+$role_name = "";
+$sponsor_id = $_SESSION["sponsor_id"];
 
 //NOTE: this value will be readonly {1}
-$sponsor = "";
-
-$description = "";
-$location = "";
-
-//NOTE: this value will be readonly {1}
-$contribution_type = "";
-$contact_name = "";
+$contribution_value = "";
+$status = "";
 $contact_phone = "";
 $contact_email = "";
 $registration_start = "";
