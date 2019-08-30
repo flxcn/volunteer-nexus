@@ -9,7 +9,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 }
 
 // Check existence of id parameter before processing further
-if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
+if(isset($_GET["opportunity_id"])){
     // Include config file
     require_once "../config.php";
 
@@ -22,7 +22,6 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
         // Set parameters
         $param_opportunity_id = trim($_GET["opportunity_id"]);
-        $param_event_id = trim($_GET["event_id"]);
 
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -119,6 +118,59 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                     </div>
                     <!--This button does not work properly-->
                     <p><a href='event-read.php?event_id="<?php $row["event_id"] ?>"' class="btn btn-primary">Back</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header clearfix">
+                        <h2 class="pull-left">Who's Signed Up?</h2>
+                    </div>
+
+                    <?php
+                    // Attempt select query execution
+                    $sql = "SELECT engagements.time_submitted AS time_submitted, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address
+                    FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id
+                    WHERE engagements.opportunity_id = '{$_GET['opportunity_id']}'
+                    GROUP BY engagements.time_submitted, volunteers.first_name, volunteers.last_name, volunteers.username";
+                    if($result = mysqli_query($link, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo "<table class='table table-bordered table-striped'>";
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Time Submitted</th>";
+                                        echo "<th>Name</th>";
+
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['time_submitted'] . "</td>";
+                                        echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
+                                        echo "<td>";
+                                            echo "<a href='engagement-delete.php?engagement_id=". $param_engagement_id ."&opportunity_id="  "' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                        echo "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo "<p class='lead'><em>No opportunities were found.</em></p>";
+                        }
+                    } else{
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                    }
+
+                    // Close connection
+                    mysqli_close($link);
+                    ?>
                 </div>
             </div>
         </div>

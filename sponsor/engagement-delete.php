@@ -3,31 +3,31 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
 // Process delete operation after confirmation
-if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
+if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
   // Include config file
   require_once "../config.php";
 
   // Prepare a delete statement
-  $sql = "DELETE FROM engagements WHERE engagement_id = ? AND student_id = ?";
+  $sql = "DELETE FROM engagements WHERE engagement_id = ? AND sponsor_id = ?";
 
   if($stmt = mysqli_prepare($link, $sql)){
     // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt, "ii", $param_engagement_id, $param_student_id);
+    mysqli_stmt_bind_param($stmt, "ii", $param_engagement_id, $param_sponsor_id);
 
     // Set parameters
     $param_engagement_id = trim($_POST["engagement_id"]);
-    $param_student_id = trim($_SESSION["student_id"]);
+    $param_sponsor_id = trim($_SESSION["sponsor_id"]);
 
     // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){
       // Records deleted successfully. Redirect to landing page
-      header("location: engagements.php");
+      header('location: opportunity-read.php?opportunity_id=". $param_opportunity_id ."'); //NOTE: FIX THIS!!!!!
       exit();
     } else{
       echo "Oops! Something went wrong. Please try again later.";
@@ -75,7 +75,7 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
                             <p>Are you sure you want to delete this engagement? This action cannot be undone.</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="engagements.php" class="btn btn-default">No</a>
+                                <a href="opportunity-read.php?" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>
