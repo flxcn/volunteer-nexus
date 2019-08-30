@@ -29,7 +29,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["opportunity_id"])){
     if(mysqli_stmt_execute($stmt)){
       // Opportunity deleted successfully. Redirect to landing page
       //NOTE: link may be broken
-      header('location: read.php?event_id=". $param_event_id ."');
+      header('location: engagement-read.php?event_id=". $param_event_id ."');
       exit();
     } else{
       echo "Oops! Something went wrong. Please try again later.";
