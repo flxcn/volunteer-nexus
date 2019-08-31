@@ -55,7 +55,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_id"];
-                    $sql = "SELECT * FROM engagements INNER JOIN events ON engagements.event_id = events.event_id WHERE engagements.student_id = '{$_SESSION['student_id']}' AND engagements.sponsor_id = '{$_GET['sponsor_id']}'";
+                    $sql = "SELECT *
+                    FROM engagements INNER JOIN events ON engagements.event_id = events.event_id
+                    WHERE engagements.student_id = '{$_SESSION['student_id']}' AND engagements.sponsor_id = '{$_GET['sponsor_id']}'";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -68,8 +70,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                         echo "<th>Location</th>";
                                         echo "<th>Contact Name</th>";
                                         echo "<th>Contact Email</th>";
-                                        echo "<th>Event Start</th>";
-                                        echo "<th>Event End</th>";
+                                        echo "<th>Event Duration</th>";
                                         echo "<th>Contribution Value</th>";
 
                                     echo "</tr>";
@@ -83,14 +84,8 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                         echo "<td>" . $row['location'] . "</td>";
                                         echo "<td>" . $row['contact_name'] . "</td>";
                                         echo "<td>" . $row['contact_email'] . "</td>";
-                                        echo "<td>" . $row['event_start'] . "</td>";
-                                        echo "<td>" . $row['event_end'] . "</td>";
+                                        echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>" . $row['contribution_value'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='opportunity-read.php?event_id=". $row['event_id'] ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                        //     echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                        //     echo "<a href='event-delete.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";
