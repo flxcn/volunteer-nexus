@@ -56,41 +56,30 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                     // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
-                    $sql = "SELECT * FROM events WHERE sponsor_name = '{$_SESSION['sponsor_name']}'";
+                    $sql = "SELECT * FROM events
+                    WHERE sponsor_name = '{$_SESSION['sponsor_name']}'
+                    ORDER BY registration_end DESC";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
+                                        echo "<th>Reg. Deadline</th>";
                                         echo "<th>Event Name</th>";
-                                        echo "<th>Sponsor</th>";
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
-                                        echo "<th>Contact Name</th>";
-                                        echo "<th>Contact Phone</th>";
-                                        echo "<th>Contact Email</th>";
-                                        echo "<th>Registration End</th>";
-                                        echo "<th>Event Start</th>";
-                                        echo "<th>Event End</th>";
-
+                                        echo "<th>Event Duration</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['event_id'] . "</td>";
+                                        echo "<td>" . $row['registration_end'] . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['sponsor_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
-                                        echo "<td>" . $row['contact_name'] . "</td>";
-                                        echo "<td>" . $row['contact_phone'] . "</td>";
-                                        echo "<td>" . $row['contact_email'] . "</td>";
-                                        echo "<td>" . $row['registration_end'] . "</td>";
-                                        echo "<td>" . $row['event_start'] . "</td>";
-                                        echo "<td>" . $row['event_end'] . "</td>";
+                                        echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
