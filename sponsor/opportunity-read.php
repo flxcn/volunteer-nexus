@@ -133,10 +133,11 @@ if(isset($_GET["opportunity_id"])){
 
                     <?php
                     // Attempt select query execution
-                    $sql = "SELECT engagements.time_submitted AS time_submitted, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address
+                    $sql = "SELECT engagements.time_submitted AS time_submitted, engagements.opportunity_id AS opportunity_id, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address
                     FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id
                     WHERE engagements.opportunity_id = '{$_GET['opportunity_id']}'
                     GROUP BY engagements.time_submitted, volunteers.first_name, volunteers.last_name, volunteers.username";
+
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -153,7 +154,7 @@ if(isset($_GET["opportunity_id"])){
                                         echo "<td>" . $row['time_submitted'] . "</td>";
                                         echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='engagement-delete.php?engagement_id=". $param_engagement_id ."&opportunity_id="  "' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='engagement-delete.php?engagement_id=". $row['engagement_id'] ."&opportunity_id=". $row['opportunity_id'] ."' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
