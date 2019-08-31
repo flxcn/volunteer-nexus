@@ -153,7 +153,7 @@ if(isset($_GET["opportunity_id"])){
                                         echo "<td>" . $row['time_submitted'] . "</td>";
                                         echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
