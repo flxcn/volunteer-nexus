@@ -1,13 +1,3 @@
-<?php
-// Initialize the session
-session_start();
-
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
-    header("location: login.php");
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,8 +41,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     </div>
 
                     <?php
-                    // Include config file
-                    require_once "../config.php";
                     // Attempt select query execution
 
                     $sql = "SELECT sponsors.sponsor_name AS sponsor_name, sponsors.sponsor_id AS sponsor_id, SUM(engagements.contribution_value) AS total_contribution_value FROM sponsors LEFT JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id WHERE student_id = '{$_SESSION['student_id']}' AND status = 1 GROUP BY sponsors.sponsor_name";
@@ -87,9 +75,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
-
-                    // Close connection
-                    mysqli_close($link);
                     ?>
                 </div>
             </div>
