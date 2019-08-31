@@ -55,6 +55,7 @@
                                         echo "<th>End Date</th>";
                                         echo "<th>Event Name</th>";
                                         echo "<th>Opportunity Name</th>";
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
