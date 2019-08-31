@@ -170,9 +170,9 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
                     <?php
                     // Attempt select query execution
-                    $sql = "SELECT role_name, description, start_date, start_time, end_date, end_time, total_positions, COUNT(engagement_id) AS positions_filled
+                    $sql = "SELECT opportunities.opportunity_id, role_name, description, start_date, start_time, end_date, end_time, total_positions, COUNT(engagement_id) AS positions_filled
                     FROM opportunities LEFT JOIN engagements ON opportunities.opportunity_id = engagements.opportunity_id
-                    WHERE event_id = '{$_GET["event_id"]}'";
+                    WHERE opportunities.event_id = '{$_GET["event_id"]}' GROUP BY role_name, description, start_date, start_time, end_date, end_time, total_positions, opportunities.opportunity_id";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -188,12 +188,11 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['opportunity_id'] . "</td>";
                                         echo "<td>" . $row['role_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['start_date'] . " " . $row['start_time'] ."</td>";
                                         echo "<td>" . $row['end_date'] . " " . $row['end_time'] . "</td>";
-                                        echo "<td>" . $row['positions_filled'] . "/" . $row['total_positions'] . "</td>"; 
+                                        echo "<td>" . $row['positions_filled'] . "/" . $row['total_positions'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='opportunity-read.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='opportunity-update.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='Update Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
