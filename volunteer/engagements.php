@@ -51,8 +51,8 @@
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Start Date/Time</th>";
-                                        echo "<th>End Date/Time</th>";
+                                        echo "<th>Start Date</th>";
+                                        echo "<th>End Date</th>";
                                         echo "<th>Event Name</th>";
                                         echo "<th>Opportunity Name</th>";
                                     echo "</tr>";
