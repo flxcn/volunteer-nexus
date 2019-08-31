@@ -21,7 +21,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
     <style type="text/css">
         .wrapper{
-            width: 650px;
             margin: 0 auto;
         }
         .page-header h2{
@@ -56,40 +55,30 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     // Include config file
                     require_once "../config.php";
                     // Attempt select query execution
-                    $sql = "SELECT * FROM events";
+                    $sql = "SELECT * FROM events WHERE registration_start <= CURDATE() AND registration_end >= CURDATE() ORDER BY registration_end";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
+                                        echo "<th>Reg. Deadline</th>";
                                         echo "<th>Event Name</th>";
                                         echo "<th>Sponsor Name</th>";
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
-                                        echo "<th>Contact Name</th>";
-                                        echo "<th>Contact Phone</th>";
-                                        echo "<th>Contact Email</th>";
-                                        echo "<th>Registration End</th>";
-                                        echo "<th>Event Start</th>";
-                                        echo "<th>Event End</th>";
+                                        echo "<th>Event Duration</th>";
 
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['event_id'] . "</td>";
+                                        echo "<td>" . $row['registration_end'] . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
                                         echo "<td>" . $row['sponsor_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
-                                        echo "<td>" . $row['contact_name'] . "</td>";
-                                        echo "<td>" . $row['contact_phone'] . "</td>";
-                                        echo "<td>" . $row['contact_email'] . "</td>";
-                                        echo "<td>" . $row['registration_end'] . "</td>";
-                                        echo "<td>" . $row['event_start'] . "</td>";
-                                        echo "<td>" . $row['event_end'] . "</td>";
+                                        echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                         echo "</td>";
