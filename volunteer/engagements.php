@@ -55,7 +55,11 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     require_once "../config.php";
                     // Attempt select query execution
 
-                    $sql = "SELECT engagements.engagement_id AS engagement_id, opportunities.opportunity_id AS opportunity_id, opportunities.start_date AS start_date, opportunities.end_date AS end_date, opportunities.start_time AS start_time, opportunities.end_time AS end_time, events.event_name AS event_name, opportunities.role_name AS role_name FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id LEFT JOIN events ON events.event_id = engagements.event_id LEFT JOIN opportunities ON opportunities.opportunity_id = engagements.opportunity_id WHERE engagements.student_id = '{$_SESSION['student_id']}' AND opportunities.end_date >= NOW() GROUP BY opportunities.start_date, opportunities.end_date, opportunities.start_time, opportunities.end_time, engagements.engagement_id, events.event_name, opportunities.role_name, opportunities.opportunity_id";
+                    $sql =
+                    "SELECT engagements.engagement_id AS engagement_id, opportunities.opportunity_id AS opportunity_id, opportunities.start_date AS start_date, opportunities.end_date AS end_date, opportunities.start_time AS start_time, opportunities.end_time AS end_time, events.event_name AS event_name, opportunities.role_name AS role_name
+                    FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id LEFT JOIN events ON events.event_id = engagements.event_id LEFT JOIN opportunities ON opportunities.opportunity_id = engagements.opportunity_id
+                    WHERE engagements.student_id = '{$_SESSION['student_id']}' AND opportunities.end_date >= CURDATE() 
+                    GROUP BY opportunities.start_date, opportunities.end_date, opportunities.start_time, opportunities.end_time, engagements.engagement_id, events.event_name, opportunities.role_name, opportunities.opportunity_id";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
