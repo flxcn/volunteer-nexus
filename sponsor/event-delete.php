@@ -52,7 +52,9 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 <head>
     <meta charset="UTF-8">
     <title>View Event</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+        <!--Load required libraries-->
+        <?php include '../head.php'?>
     <style type="text/css">
         .wrapper{
             width: 500px;

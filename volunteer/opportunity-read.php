@@ -72,7 +72,10 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 <head>
     <meta charset="UTF-8">
     <title>View Opportunity</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+        <!--Load required libraries-->
+        <?php include '../head.php'?>
+        
     <style type="text/css">
         .wrapper{
             width: 500px;

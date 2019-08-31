@@ -251,8 +251,10 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 <head>
     <meta charset="UTF-8">
     <title>Update Event</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 
+        <!--Load required libraries-->
+        <?php include '../head.php'?>
+        
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>

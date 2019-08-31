@@ -53,7 +53,10 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
 <head>
     <meta charset="UTF-8">
     <title>Delete Engagement</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+        <!--Load required libraries-->
+        <?php include '../head.php'?>
+
     <style type="text/css">
         .wrapper{
             width: 500px;

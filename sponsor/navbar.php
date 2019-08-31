@@ -20,7 +20,8 @@
 		<ul class="nav navbar-nav">
 			<li <?php if ($thisPage === 'Home') {echo 'class="active"';} ?>><a href="#">Home</a></li>
 			<li <?php if ($thisPage === 'Events') {echo 'class="active"';} ?>><a href="events.php">Sponsored Events</a></li>
-			<li <?php if ($thisPage === 'Engagements') {echo 'class="active"';} ?>><a href="events.php">Pending Engagements</a></li>
+			<li <?php if ($thisPage === 'Engagements') {echo 'class="active"';} ?>><a href="engagements.php">Pending Engagements</a></li>
+			<li <?php if ($thisPage === 'Affiliations') {echo 'class="active"';} ?>><a href="affiliations.php">Affiliations</a></li>
 		</ul>
 
 		<ul class="nav navbar-nav navbar-right">
