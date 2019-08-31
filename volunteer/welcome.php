@@ -20,6 +20,26 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     </style>
 </head>
 <body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <img src="/images/logo.png">
+        <a class="navbar-brand" href="#">VolunteerNexus</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="events.php">Find Events</a></li>
+        <li><a href="affiliations.php">My Contributions</a></li>
+        <li><a href="engagements.php">My Upcoming Engagements</a></li>
+        <li><a href="reset.php">Reset My Password</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
+        <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </nav>
     <div class="page-header">
         <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["first_name"]); ?></b>. Welcome to <b>VolunteerNexus</b>.</h1>
     </div>
