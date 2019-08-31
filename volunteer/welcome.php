@@ -14,19 +14,23 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; }
     </style>
 </head>
 <body>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
 
       <!--hamburger-->
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#theNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -36,18 +40,18 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
       <a class="navbar-brand" href="#">VolunteerNexus</a>
     </div>
 
-    <div class="collapse navbar-collapse" id="navbar">
+    <div class="collapse navbar-collapse" id="theNavbar">
 
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Dashboard</a></li>
+        <li class="active"><a href="#">Home</a></li>
         <li><a href="events.php">Find Events</a></li>
         <li><a href="engagements.php">My Upcoming Engagements</a></li>
         <li><a href="affiliations.php">My Contributions</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="reset.php"><span class="glyphicon glyphicon-user"></span>Account</a></li>
-        <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+        <li><a href="reset.php"><span class="glyphicon glyphicon-user"></span> Account</a></li>
+        <li><a href="/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       </ul>
 
     </div>
