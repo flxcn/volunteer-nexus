@@ -65,6 +65,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 
 <body>
+  <?php $thisPage='Engagements'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">

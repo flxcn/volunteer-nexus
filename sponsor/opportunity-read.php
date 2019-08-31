@@ -77,6 +77,9 @@ if(isset($_GET["opportunity_id"])){
     </style>
 </head>
 <body>
+
+  <?php $thisPage='Events'; include 'navbar.php';?>
+
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">

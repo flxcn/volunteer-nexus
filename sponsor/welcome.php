@@ -20,6 +20,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     </style>
 </head>
 <body>
+
+    <?php $thisPage='Home'; include 'navbar.php';?>
     <div class="page-header">
         <h1>Hello, <b><?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?></b>. Welcome to <b>VolunteerNexus</b>.</h1>
     </div>

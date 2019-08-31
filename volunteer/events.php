@@ -43,6 +43,10 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
 
 <body>
+
+  <!--Navigation Bar-->
+  <?php $thisPage='Events'; include 'navbar.php';?>
+
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">

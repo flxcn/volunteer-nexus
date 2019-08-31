@@ -232,6 +232,8 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && $_POST["opportunit
 
 </head>
 <body>
+
+  <?php $thisPage='Events'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">

@@ -81,6 +81,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
     </style>
 </head>
 <body>
+  <?php $thisPage='Events'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
