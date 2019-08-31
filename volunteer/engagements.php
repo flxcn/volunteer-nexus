@@ -4,9 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Upcoming Engagements</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
     <style type="text/css">
         .wrapper{
             width: 650px;
@@ -40,16 +37,16 @@
                     </div>
 
                     <?php
-                    require_once "/config.php";
+                    require_once "../config.php";
                     // Attempt select query execution
 
-                    $sql2 =
+                    $sql =
                     "SELECT engagements.engagement_id AS engagement_id, opportunities.opportunity_id AS opportunity_id, opportunities.start_date AS start_date, opportunities.end_date AS end_date, opportunities.start_time AS start_time, opportunities.end_time AS end_time, events.event_name AS event_name, opportunities.role_name AS role_name
                     FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id LEFT JOIN events ON events.event_id = engagements.event_id LEFT JOIN opportunities ON opportunities.opportunity_id = engagements.opportunity_id
                     WHERE engagements.student_id = '{$_SESSION['student_id']}' AND opportunities.end_date >= CURDATE()
                     GROUP BY opportunities.start_date, opportunities.end_date, opportunities.start_time, opportunities.end_time, engagements.engagement_id, events.event_name, opportunities.role_name, opportunities.opportunity_id";
 
-                    if($result = mysqli_query($link, $sql2)){
+                    if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
@@ -69,6 +66,7 @@
                                         echo "<td>" . $row['role_name'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='engagement-read.php?engagement_id=" . $row['engagement_id'] . "&opportunity_id=" . $row['opportunity_id'] . "' title='View This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<br>";
                                             echo "<a href='engagement-delete.php?engagement_id=" . $row['engagement_id'] . "' title='Delete This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
@@ -81,7 +79,7 @@
                             echo "<p class='lead'><em>No upcoming engagements were found.</em></p>";
                         }
                     } else{
-                        echo "ERROR: Could not able to execute $sql2. " . mysqli_error($link);
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
 
                     // Close connection

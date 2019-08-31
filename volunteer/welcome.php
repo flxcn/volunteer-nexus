@@ -15,10 +15,11 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     <meta charset="UTF-8">
     <title>Welcome</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
+    
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; }
     </style>
@@ -45,8 +46,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="events.php">Find Events</a></li>
-        <li><a href="engagements.php">My Upcoming Engagements</a></li>
-        <li><a href="affiliations.php">My Contributions</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
