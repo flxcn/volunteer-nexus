@@ -1,13 +1,3 @@
-<?php
-// Initialize the session
-session_start();
-
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
-    header("location: login.php");
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,21 +37,19 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Upcoming Engagements</h2>
-                        <a href="events.php" class="btn btn-success pull-right">Find New Engagements</a>
                     </div>
 
                     <?php
-                    // Include config file
-                    require_once "../config.php";
+                    require_once "/config.php";
                     // Attempt select query execution
 
-                    $sql =
+                    $sql2 =
                     "SELECT engagements.engagement_id AS engagement_id, opportunities.opportunity_id AS opportunity_id, opportunities.start_date AS start_date, opportunities.end_date AS end_date, opportunities.start_time AS start_time, opportunities.end_time AS end_time, events.event_name AS event_name, opportunities.role_name AS role_name
                     FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id LEFT JOIN events ON events.event_id = engagements.event_id LEFT JOIN opportunities ON opportunities.opportunity_id = engagements.opportunity_id
-                    WHERE engagements.student_id = '{$_SESSION['student_id']}' AND opportunities.end_date >= CURDATE() 
+                    WHERE engagements.student_id = '{$_SESSION['student_id']}' AND opportunities.end_date >= CURDATE()
                     GROUP BY opportunities.start_date, opportunities.end_date, opportunities.start_time, opportunities.end_time, engagements.engagement_id, events.event_name, opportunities.role_name, opportunities.opportunity_id";
 
-                    if($result = mysqli_query($link, $sql)){
+                    if($result = mysqli_query($link, $sql2)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
@@ -93,7 +81,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                             echo "<p class='lead'><em>No upcoming engagements were found.</em></p>";
                         }
                     } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        echo "ERROR: Could not able to execute $sql2. " . mysqli_error($link);
                     }
 
                     // Close connection

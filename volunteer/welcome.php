@@ -65,13 +65,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
     <?php include 'affiliations.php';?>
     <?php include 'engagements.php';?>
-    
-    <p>
-        <a href="events.php" class="btn btn-primary">Find Events</a>
-        <a href="affiliations.php" class="btn btn-warning">Check My Contributions</a>
-        <a href="engagements.php" class="btn btn-primary">My Upcoming Engagements</a>
-        <a href="reset.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
+
 </body>
 </html>
