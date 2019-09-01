@@ -13,7 +13,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Dashboard</title>
 
     <!--Load required libraries-->
     <?php include '../head.php'?>
@@ -24,11 +24,11 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 </head>
 <body>
 
-    <?php $thisPage='Home'; include 'navbar.php';?>
+    <?php $thisPage='Dashboard'; include 'navbar.php';?>
 
 
     <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["first_name"]); ?></b>. Welcome to <b>VolunteerNexus</b>.</h1>
+        <h1>Howdy, <b><?php echo htmlspecialchars($_SESSION["first_name"]); ?></b>!</h1>
     </div>
 
     <?php include 'affiliations.php';?>

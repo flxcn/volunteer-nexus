@@ -2,7 +2,7 @@
 // Initialize the session
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to welcome page
+// Check if the user is already logged in, if yes then redirect him to dashboard
 if(isset($_SESSION["volunteer_"]) && $_SESSION["volunteer_"] === true){
     header("location: dashboard.php");
     exit;
@@ -67,9 +67,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["first_name"] = $first_name;
                             $_SESSION["last_name"] = $last_name;
                             $_SESSION["graduation_year"] = $graduation_year;
-                            //$_SESSION["name"] = $username;
 
-                            // Redirect user to welcome page
+                            // Redirect user to dashboard
                             header("location: dashboard.php");
                         } else{
                             // Display an error message if password is not valid

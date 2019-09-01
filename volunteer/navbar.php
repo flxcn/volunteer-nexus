@@ -18,7 +18,7 @@
 	<div class="collapse navbar-collapse" id="theNavbar">
 
 		<ul class="nav navbar-nav">
-			<li <?php if ($thisPage === 'Home') {echo 'class="active"';} ?>><a href="dashboard.php">Home</a></li>
+			<li <?php if ($thisPage === 'Dashboard') {echo 'class="active"';} ?>><a href="dashboard.php">Dashboard</a></li>
 			<li <?php if ($thisPage === 'Events') {echo 'class="active"';} ?>><a href="events.php">Find Events</a></li>
 		</ul>
 

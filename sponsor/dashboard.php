@@ -13,7 +13,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Dashboard</title>
 
     <!--Load required libraries-->
     <?php include '../head.php'?>
@@ -24,7 +24,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 </head>
 <body>
 
-    <?php $thisPage='Home'; include 'navbar.php';?>
+    <?php $thisPage='Dashboard'; include 'navbar.php';?>
     <div class="page-header">
         <h1>Hello, <b><?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?></b>. Welcome to <b>VolunteerNexus</b>.</h1>
     </div>

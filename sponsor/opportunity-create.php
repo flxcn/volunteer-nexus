@@ -291,7 +291,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <input type="hidden" name="sponsor_id" value="<?php echo $sponsor_id;?>">
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="welcome.php" class="btn btn-default">Cancel</a>
+                        <a href="dashboard.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>
