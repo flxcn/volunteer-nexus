@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["sponsor_loggedin"]) && $_SESSION["sponsor_loggedin"] === true){
-    header("location: welcome.php");
+    header("location: dashboard.php");
     exit;
 }
 
@@ -67,8 +67,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["sponsor_name"] = $sponsor_name;
                             $_SESSION["contribution_type"] = $contribution_type;
 
-                            // Redirect user to welcome page
-                            header("location: welcome.php");
+                            // Redirect user to dashboard
+                            header("location: dashboard.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_error = "The password you entered was not valid.";

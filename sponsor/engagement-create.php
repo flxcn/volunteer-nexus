@@ -78,8 +78,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $location = $input_location;
     }
 
-    // WARNING: issues with the variable names, they are incorrect, change before you use them
-    // Validate contribution_type // NOTE: refer to-do list {3}
+    // Validate contribution_type
     $input_contribution = trim($_POST["contribution_type"]);
     if(empty($input_contribution)){
         $contribution_error = "Please enter a contribution type.";
@@ -87,7 +86,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $contribution_type = $contribution_type;
     }
 
-    // Validate contact_name // NOTE: refer to-do list {3}
+    // Validate contact_name
     $input_contact_name = trim($_POST["contact_name"]);
     if(empty($input_contact_name)){
         $contact_name_error = "Please enter a contact name.";
@@ -95,7 +94,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $description = $input_description;
     }
 
-    // Validate contact_phone // NOTE: refer to-do list {3}
+    // Validate contact_phone
     $input_contact_phone = trim($_POST["contact_phone"]);
     if(empty($input_contact_phone)){
         $contact_phone_error = "Please enter a contact phone.";
@@ -103,7 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $contact_phone = $input_contact_phone;
     }
 
-    // Validate contact_email // NOTE: refer to-do list {3}
+    // Validate contact_email
     $input_contact_email = trim($_POST["contact_email"]);
     if(empty($input_contact_email)){
         $contact_email_error = "Please enter a contact email.";
@@ -111,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $contact_email = $input_contact_email;
     }
 
-    // Validate registration_start // NOTE: refer to-do list {3}
+    // Validate registration_start
     $input_registration_start = trim($_POST["registration_start"]);
     if(empty($input_registration_start)){
         $registration_start_error = "Please enter a registration start date.";
@@ -119,7 +118,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $registration_start = $input_registration_start;
     }
 
-    // Validate registration_end // NOTE: refer to-do list {3}
+    // Validate registration_end
     $input_registration_end = trim($_POST["registration_end"]);
     if(empty($input_registration_end)){
         $registration_end_error = "Please enter a registration end date.";
@@ -127,7 +126,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $registration_end = $input_registration_end;
     }
 
-    // Validate event_start // NOTE: refer to-do list {3}
+    // Validate event_start
     $input_event_start = trim($_POST["event_start"]);
     if(empty($input_event_start)){
         $event_start_error = "Please enter an event start date.";
@@ -135,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $event_start = $input_event_start;
     }
 
-    // Validate event_end // NOTE: refer to-do list {3}
+    // Validate event_end
     $input_event_end = trim($_POST["event_end"]);
     if(empty($input_event_end)){
         $event_end_error = "Please enter an event end date.";
@@ -192,12 +191,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create Event</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
-<!-- Bootstrap Date-Picker Plugin -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <!-- Bootstrap Date-Picker Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
     <!--datepicker-->
     <script>
@@ -220,6 +219,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             margin: 0 auto;
         }
     </style>
+
 </head>
 <body>
     <div class="wrapper">
@@ -319,7 +319,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="welcome.php" class="btn btn-default">Cancel</a>
+                        <a href="dashboard.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>

@@ -78,7 +78,7 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
                             <p>Are you sure you want to delete this engagement? This action cannot be undone.</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="welcome.php" class="btn btn-default">No</a>
+                                <a href="dashboard.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>

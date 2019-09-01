@@ -49,15 +49,16 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Affiliated Volunteers</h2>
-                        <!-- <a href="affiliation-create.php" class="btn btn-success pull-right">Add New Affiliation</a> -->
                     </div>
 
                     <?php
                     // Include config file
                     require_once "../config.php";
-                    // Attempt select query execution
 
-                    $sql = "SELECT volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value FROM volunteers INNER JOIN affiliations ON volunteers.student_id = affiliations.student_id LEFT JOIN engagements ON affiliations.student_id = engagements.student_id WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
+                    // Run SQL Query
+                    $sql = "SELECT volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value
+                    FROM volunteers INNER JOIN affiliations ON volunteers.student_id = affiliations.student_id LEFT JOIN engagements ON affiliations.student_id = engagements.student_id
+                    WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -72,13 +73,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>"; //NOTE: this needs work!
-                                        echo "<td>" . $row['email_address'] . "</td>"; //NOTE: this needs work!
-                                        echo "<td>" . $row['total_contribution_value'] . "</td>"; //NOTE: this needs work!
-                                        // echo "<td>";
-                                        //     //echo "<a href='affiliation-read.php?sponsor_id=". $row['sponsor_id'] ."' title='View My Contributions' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                        //     //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        // echo "</td>";
+                                        echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
+                                        echo "<td>" . $row['email_address'] . "</td>";
+                                        echo "<td>" . $row['total_contribution_value'] . "</td>";
+
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";
@@ -86,7 +84,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                             // Free result set
                             mysqli_free_result($result);
                         } else{
-                            echo "<p class='lead'><em>No members were found.</em></p>";
+                            echo "<p class='lead'><em>No affiliated volunteers were found.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
