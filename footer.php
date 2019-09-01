@@ -1,15 +1,14 @@
 <footer>
-<p>Powered by VolunteerNexus</p>
-<p>
-&copy; 2019
-</p>
-
-<address>
+	<p>Powered by VolunteerNexus</p>
 	<p>
-		Created by Felix Chen
-
+	&copy; 2019. All rights reserved.
 	</p>
-
-	<p><a href="mailto:felix@volunteernexus.com">felix@volunteernexus.com</a></p>
-</address>
+	<address>
+		<p>
+			Created by Felix Chen
+		</p>
+		<p>
+			<a href="mailto:felix@volunteernexus.com">felix@volunteernexus.com</a>
+		</p>
+	</address>
 </footer>
