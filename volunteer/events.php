@@ -20,7 +20,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
     <style type="text/css">
         .wrapper{
             width: 650px;
@@ -108,5 +108,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
             </div>
         </div>
     </div>
+
+    <?php include '../footer.php';?>
 </body>
 </html>

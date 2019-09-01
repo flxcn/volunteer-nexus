@@ -180,6 +180,6 @@ if(isset($_GET["opportunity_id"])){
             </div>
         </div>
     </div>
-
+    <?php include '../footer.php';?>
 </body>
 </html>

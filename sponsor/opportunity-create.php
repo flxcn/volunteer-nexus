@@ -184,7 +184,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
 
 
 <!-- Bootstrap Date-Picker Plugin -->
@@ -297,5 +297,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
         </div>
     </div>
+    <?php include '../footer.php';?>
 </body>
 </html>

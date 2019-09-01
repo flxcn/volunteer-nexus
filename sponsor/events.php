@@ -17,7 +17,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
     <style type="text/css">
         .wrapper{
             width: 650px;
@@ -108,5 +108,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
             </div>
         </div>
     </div>
+    <?php include '../footer.php';?>
 </body>
 </html>

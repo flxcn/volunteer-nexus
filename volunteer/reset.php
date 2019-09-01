@@ -81,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
     <style type="text/css">
         body{ font: 14px sans-serif; }
         .wrapper{ width: 350px; padding: 20px; }
@@ -112,5 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
         </form>
     </div>
+
+    <?php include '../footer.php';?>
 </body>
 </html>

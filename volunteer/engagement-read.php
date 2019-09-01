@@ -75,7 +75,7 @@ if(isset($_GET["engagement_id"]) && isset($_GET["opportunity_id"])){
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
     <style type="text/css">
         .wrapper{
             width: 500px;
@@ -132,6 +132,6 @@ if(isset($_GET["engagement_id"]) && isset($_GET["opportunity_id"])){
 
         </div>
     </div>
-
+    <?php include '../footer.php';?>
 </body>
 </html>

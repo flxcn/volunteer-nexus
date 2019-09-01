@@ -225,5 +225,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
         </div>
     </div>
 
+    <?php include '../footer.php';?>
 </body>
 </html>

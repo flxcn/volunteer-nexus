@@ -15,10 +15,8 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     <meta charset="UTF-8">
     <title>Welcome</title>
 
-
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-        
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; }
@@ -35,6 +33,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
     <?php include 'affiliations.php';?>
     <?php include 'engagements.php';?>
+    <?php include '../footer.php';?>
 
 </body>
 </html>

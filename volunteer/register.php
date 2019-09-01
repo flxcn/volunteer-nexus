@@ -173,7 +173,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
     <style type="text/css">
         body{ font: 14px sans-serif; }
         .wrapper{ width: 350px; padding: 20px; }
@@ -243,5 +243,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <p>Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
     </div>
+
+    <?php include '../footer.php';?>
 </body>
 </html>

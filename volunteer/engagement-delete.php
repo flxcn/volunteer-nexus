@@ -56,7 +56,7 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
-        
+
     <style type="text/css">
         .wrapper{
             width: 500px;

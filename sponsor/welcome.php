@@ -30,10 +30,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     </div>
     <p>
         <a href="events.php" class="btn btn-primary">My Sponsored Events</a>
-        <a href="affiliations.php" class="btn btn-primary">My Members</a>
+        <a href="affiliations.php" class="btn btn-primary">My Affiliated Volunteers</a>
         <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
-        <a href="reset.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
+
+    <?php include '../footer.php';?>
 </body>
 </html>

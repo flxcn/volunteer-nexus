@@ -86,5 +86,6 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
             </div>
         </div>
     </div>
+    <?php include '../footer.php';?>
 </body>
 </html>
