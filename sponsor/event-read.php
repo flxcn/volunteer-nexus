@@ -164,7 +164,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Relevant Opportunities</h2>
+                        <h2 class="pull-left">Opportunities</h2>
                         <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
                     </div>
 
@@ -196,7 +196,9 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<td>" . $row['positions_filled'] . "/" . $row['total_positions'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='opportunity-read.php?event_id=" . $_GET["event_id"] . "&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<br>";
                                             echo "<a href='opportunity-update.php?event_id=" . $_GET["event_id"] . "&opportunity_id=". $row['opportunity_id'] ."' title='Update Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<br>";
                                             echo "<a href='opportunity-delete.php?event_id=" . $_GET["event_id"] . "&opportunity_id=". $row['opportunity_id'] ."' title='Delete Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
