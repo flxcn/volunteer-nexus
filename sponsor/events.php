@@ -72,6 +72,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
                                         echo "<th>Event Duration</th>";
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -84,7 +85,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<br>";
                                             echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<br>";
                                             echo "<a href='event-delete.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
