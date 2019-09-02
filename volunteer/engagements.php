@@ -37,6 +37,7 @@
                     </div>
 
                     <?php
+                    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
                     require_once "../config.php";
                     // Attempt select query execution
 
