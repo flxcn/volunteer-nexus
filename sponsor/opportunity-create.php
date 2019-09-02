@@ -183,6 +183,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Create Opportunity</title>
 
         <!--Load required libraries-->
+        <?php $pageContent='Form'?>
         <?php include '../head.php'?>
 
 

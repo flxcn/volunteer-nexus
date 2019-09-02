@@ -185,6 +185,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Create Event</title>
 
         <!--Load required libraries-->
+        <?php $pageContent='Form'?>
         <?php include '../head.php'?>
 
 

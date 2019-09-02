@@ -253,6 +253,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     <title>Update Event</title>
 
         <!--Load required libraries-->
+        <?php $pageContent='Form'?>
         <?php include '../head.php'?>
 
     <!-- Bootstrap Date-Picker Plugin -->

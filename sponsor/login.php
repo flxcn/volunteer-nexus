@@ -99,6 +99,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sponsor Login</title>
 
         <!--Load required libraries-->
+        <?php $pageContent='Form'?>
         <?php include '../head.php'?>
 
     <style type="text/css">

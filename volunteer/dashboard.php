@@ -17,10 +17,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
     <!--Load required libraries-->
     <?php include '../head.php'?>
-
-    <style type="text/css">
-        body{ font: 14px sans-serif; text-align: center; }
-    </style>
 </head>
 <body>
 
