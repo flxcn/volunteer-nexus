@@ -42,12 +42,14 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
 
 <body>
+  <?php $thisPage='Dashboard'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">My Past Engagements For This Affiliation</h2>
+                        <a href='dashboard.php' class="btn btn-primary">Back</a>
                     </div>
 
                     <?php

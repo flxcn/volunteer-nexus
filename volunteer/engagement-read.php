@@ -125,7 +125,7 @@ if(isset($_GET["engagement_id"]) && isset($_GET["opportunity_id"])){
                     </div>
 
                     <p>
-                      <a href='engagements.php' class="btn btn-primary">Back</a>
+                      <a href='dashboard.php' class="btn btn-primary">Back</a>
                     </p>
                 </div>
             </div>
