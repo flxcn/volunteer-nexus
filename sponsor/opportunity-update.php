@@ -32,7 +32,7 @@ $contribution_value_error = "";
 
 
 // Processing form data when form is submitted
-if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && $_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
+if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
     // Get hidden input value
     $event_id = $_POST["event_id"];
     $opportunity_id = $_POST["opportunity_id"];
