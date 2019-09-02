@@ -42,6 +42,10 @@ body
 	background-color: #f5f5f5;
 }
 
+th
+{
+	text-align:center;
+}
 
 
 </style>
