@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
   <style>
   .bd-placeholder-img {
     font-size: 1.125rem;
@@ -26,16 +27,18 @@
   <link href="css/index.css" rel="stylesheet">
 </head>
 
+
 <body class="text-center">
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
       <div class="inner">
         <h3 class="masthead-brand">VolunteerNexus</h3>
         <nav class="nav nav-masthead justify-content-center">
-          <a class="nav-link active" href="volunteer/login.php">Volunteer Login</a>
-          <a class="nav-link" href="volunteer/register.php">Volunteer Register</a>|
+          <a class="nav-link active" href="#">Home</a>
+          <a class="nav-link" href="volunteer/login.php">Volunteer Login</a>
+          <a class="nav-link" href="volunteer/register.php">Volunteer Register</a>
           <a class="nav-link" href="sponsor/login.php">Sponsor Login</a>
-          <a class="nav-link" href="sponsor/register.php">Sponsor Register</a>|
+          <a class="nav-link" href="sponsor/register.php">Sponsor Register</a>
           <!-- <a class="nav-link" href="">About</a> -->
         </nav>
       </div>
