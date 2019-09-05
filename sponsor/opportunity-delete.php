@@ -14,7 +14,7 @@ if(isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"]) && isset(
   require_once "../config.php";
 
   // Prepare a delete statement
-  $sql = "DELETE FROM opportunities WHERE opportunity_id = ? AND student_id = {$_SESSION['student_id']}";
+  $sql = "DELETE FROM opportunities WHERE opportunity_id = ? AND sponsor_id = {$_SESSION['sponsor_id']}";
 
   if($stmt = mysqli_prepare($link, $sql)){
     // Bind variables to the prepared statement as parameters
