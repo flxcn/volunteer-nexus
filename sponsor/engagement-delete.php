@@ -27,7 +27,7 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
     // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){
       // Records deleted successfully. Redirect to landing page
-      header('location: opportunity-read.php?opportunity_id=". $param_opportunity_id ."'); //NOTE: FIX THIS!!!!!
+      header("location: opportunity-read.php?opportunity_id=". $param_opportunity_id);
       exit();
     } else{
       echo "Oops! Something went wrong. Please try again later.";
