@@ -122,7 +122,7 @@ if(isset($_GET["opportunity_id"])){
                         <p class="form-control-static"><?php echo $row["total_positions"]; ?></p>
                     </div>
                     <!--This button does not work properly-->
-                    <p><a href='event-read.php?event_id="<?php echo $row["event_id"] ?>"' class="btn btn-primary">Back</a></p>
+                    <p><a href='event-read.php?event_id="<?php echo $_GET['event_id'] ?>"' class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>
@@ -138,10 +138,10 @@ if(isset($_GET["opportunity_id"])){
 
                     <?php
                     // Attempt select query execution
-                    $sql = "SELECT engagements.time_submitted AS time_submitted, engagements.opportunity_id AS opportunity_id, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address
+                    $sql = "SELECT engagements.time_submitted AS time_submitted, engagements.opportunity_id AS opportunity_id, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address, engagements.engagement_id AS engagement_id
                     FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id
                     WHERE engagements.opportunity_id = '{$_GET['opportunity_id']}'
-                    GROUP BY engagements.time_submitted, volunteers.first_name, volunteers.last_name, volunteers.username";
+                    GROUP BY engagements.time_submitted, volunteers.first_name, volunteers.last_name, volunteers.username, engagements.engagement_id";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -150,6 +150,7 @@ if(isset($_GET["opportunity_id"])){
                                     echo "<tr>";
                                         echo "<th>Time Submitted</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Email</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -157,8 +158,9 @@ if(isset($_GET["opportunity_id"])){
                                     echo "<tr>";
                                         echo "<td>" . $row['time_submitted'] . "</td>";
                                         echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
+                                        echo "<td>" . $row['email_address'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."&engagement_id=". $row['engagement_id'] ."' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
