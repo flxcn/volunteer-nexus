@@ -15,7 +15,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
 <head>
     <meta charset="UTF-8">
-    <title>Events</title>
+    <title>Find Events</title>
 
 
         <!--Load required libraries-->
