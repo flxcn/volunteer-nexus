@@ -9,19 +9,18 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 }
 
 // Process delete operation after confirmation
-if(isset($_POST["event_id"]) && !empty($_POST["opportunity_id"])){
+if(isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"]) && isset($_POST["event_id"]) && !empty($_POST["event_id"])){
   // Include config file
   require_once "../config.php";
 
   // Prepare a delete statement
-  $sql = "DELETE FROM opportunities WHERE opportunity_id = ?";
+  $sql = "DELETE FROM opportunities WHERE opportunity_id = ? AND student_id = {$_SESSION['student_id']}";
 
   if($stmt = mysqli_prepare($link, $sql)){
     // Bind variables to the prepared statement as parameters
     mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
 
     // Set parameters
-    $param_event_id = trim($_POST["event_id"]);
     $param_opportunity_id = trim($_POST["opportunity_id"]);
 
 
@@ -76,11 +75,12 @@ if(isset($_POST["event_id"]) && !empty($_POST["opportunity_id"])){
                     </div>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
-                            <input type="hidden" name="event_id" value="<?php echo trim($_GET["opportunity_id"]); ?>"/>
+                            <input type="hidden" name="opportunity_id" value="<?php echo trim($_GET["opportunity_id"]); ?>"/>
+                            <input type="hidden" name="event_id" value="<?php echo trim($_GET["event_id"]); ?>"/>
                             <p>Are you sure you want to delete this opportunity?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="read.php" class="btn btn-default">No</a>
+                                <a href="opportunity-read.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>
