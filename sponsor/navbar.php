@@ -10,7 +10,7 @@
 		</button>
 
 		<!--logo-->
-		<a class="navbar-brand" href="#">VolunteerNexus</a>
+		<a class="navbar-brand" href="dashboard.php">VolunteerNexus</a>
 
 	</div>
 
