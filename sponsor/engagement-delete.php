@@ -75,6 +75,8 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
                             <input type="hidden" name="engagement_id" value="<?php echo trim($_GET["engagement_id"]); ?>"/>
+                            <input type="hidden" name="opportunity_id" value="<?php echo trim($_GET["opportunity_id"]); ?>"/>
+
                             <p>Are you sure you want to delete this engagement? This action cannot be undone.</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
