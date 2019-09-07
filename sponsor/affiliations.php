@@ -12,24 +12,12 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <title>Affiliations</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
-    <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
-    </style>
+    <!--Toggle Bootstrap tooltip-->
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -47,7 +35,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="page-header clearfix">
+                    <div class="page-header">
                         <h2 class="pull-left">Affiliated Volunteers</h2>
                     </div>
 
@@ -62,7 +50,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Member Name</th>";
