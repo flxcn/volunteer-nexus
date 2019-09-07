@@ -2,20 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <title>Upcoming Engagements</title>
-    <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
-    </style>
+
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
+
+    <!-- Toggle Bootstrap tooltips -->
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
