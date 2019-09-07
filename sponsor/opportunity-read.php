@@ -122,7 +122,7 @@ if(isset($_GET["opportunity_id"])){
                         <p class="form-control-static"><?php echo $row["total_positions"]; ?></p>
                     </div>
                     <!--This button does not work properly-->
-                    <p><a href='event-read.php?event_id="<?php echo $_GET['event_id'] ?>"' class="btn btn-primary">Back</a></p>
+                    <p><a href='event-read.php?event_id="<?php echo $_GET['event_id']; ?>"' class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>

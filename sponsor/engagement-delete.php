@@ -27,7 +27,8 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
     // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){
       // Records deleted successfully. Redirect to landing page
-      header("location: opportunity-read.php?opportunity_id=". $param_opportunity_id);
+      $opportunity_id = $_POST['opportunity_id'];
+      header("Location: opportunity-read.php?opportunity_id=$opportunity_id");
       exit();
     } else{
       echo "Oops! Something went wrong. Please try again later.";
@@ -80,7 +81,7 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
                             <p>Are you sure you want to delete this engagement? This action cannot be undone.</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="opportunity-read.php?" class="btn btn-default">No</a>
+                                <a href="opportunity-read.php?opportunity_id=<?php echo $_GET['opportunity_id'];?>" class="btn btn-default">No</a> <!--BUG-->
                             </p>
                         </div>
                     </form>
