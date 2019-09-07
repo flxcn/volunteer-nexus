@@ -52,11 +52,10 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Delete Engagement</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
     <style type="text/css">
         .wrapper{
