@@ -202,9 +202,9 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     <meta charset="UTF-8">
     <title>Update Opportunity</title>
 
-        <!--Load required libraries-->
-        <?php $pageContent='Form'?>
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php $pageContent='Form'?>
+    <?php include '../head.php'?>
 
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -260,7 +260,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
 
                       <!--form for start_date-->
                       <div class="form-group <?php echo (!empty($start_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                          <label>Opportunity Start Date</label>
+                          <label>Start Date</label>
                           <input type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
                           <span class="help-block"><?php echo $start_date_error;?></span>
                       </div>
@@ -300,9 +300,10 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                           <span class="help-block"><?php echo $contribution_value_error;?></span>
                       </div>
 
-                        <input type="hidden" name="opportunity_id" value="<?php echo $opportunity_id; ?>"/>
+                        <input type="hidden" name="opportunity_id" value="<?php echo $_GET['opportunity_id']; ?>"/>
+                        <input type="hidden" name="event_id" value="<?php echo $_GET['event_id']; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-default">Cancel</a>
+                        <a href="events.php?event_id=<?php echo $_GET['event_id'];?>" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>
