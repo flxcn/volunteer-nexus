@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
                   if($_GET["status"] == 1)
                     echo "<b>Confirmed!</b>";
                   if($_GET["status"] == 0)
-                    echo "<b>Denied!</b>";
+                    echo "<b>Denied!</b><a onclick='showStatus(" . $row['engagement_id'] .", NULL)' class='btn btn-outline-secondary'><>Undo</a>";
               }
               else
               {
