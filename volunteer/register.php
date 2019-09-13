@@ -189,49 +189,49 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for first name-->
           <div class="form-group <?php echo (!empty($first_name_error)) ? 'has-error' : ''; ?>">
               <label>First Name</label>
-              <input type="text" name="first_name" class="form-control" value="<?php echo $first_name; ?>">
+              <input type="text" name="first_name" class="form-control" placeholder="First Name" value="<?php echo $first_name; ?>">
               <span class="help-block"><?php echo $first_name_error; ?></span>
           </div>
 
           <!--form for last name-->
           <div class="form-group <?php echo (!empty($last_name_error)) ? 'has-error' : ''; ?>">
               <label>Last Name</label>
-              <input type="text" name="last_name" class="form-control" value="<?php echo $last_name; ?>">
+              <input type="text" name="last_name" class="form-control" placeholder="Last Name" value="<?php echo $last_name; ?>">
               <span class="help-block"><?php echo $last_name_error; ?></span>
           </div>
 
           <!--form for graduation_year-->
           <div class="form-group <?php echo (!empty($graduation_year_error)) ? 'has-error' : ''; ?>">
               <label>Graduation Year</label>
-              <input type="number" name="graduation_year" maxlength="4" size="4" class="form-control" value="<?php echo $graduation_year; ?>">
+              <input type="number" name="graduation_year" maxlength="4" size="4" class="form-control" placeholder="Graduation Year" value="<?php echo $graduation_year; ?>">
               <span class="help-block"><?php echo $graduation_year_error; ?></span>
           </div>
 
           <!--form for student ID-->
           <div class="form-group <?php echo (!empty($student_id_error)) ? 'has-error' : ''; ?>">
               <label>Student ID</label>
-              <input type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
+              <input type="number" name="student_id" maxlength="5" size="5" class="form-control" placeholder="Student ID" value="<?php echo $student_id; ?>">
               <span class="help-block"><?php echo $student_id_error; ?></span>
           </div>
 
           <!--form for username-->
           <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
               <label>Email Address</label>
-              <input type="email" name="username"  size="30" class="form-control" value="<?php echo $username; ?>">
+              <input type="email" name="username"  size="30" class="form-control" placeholder="Email Address" value="<?php echo $username; ?>">
               <span class="help-block"><?php echo $username_error; ?></span>
           </div>
 
             <!--form for password-->
             <div class="form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+                <input type="password" name="password" class="form-control" placeholder="Password" value="<?php echo $password; ?>">
                 <span class="help-block"><?php echo $password_error; ?></span>
             </div>
 
             <!--form for confirm password-->
             <div class="form-group <?php echo (!empty($confirm_password_error)) ? 'has-error' : ''; ?>">
                 <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+                <input type="password" name="confirm_password" class="form-control" placeholder="Password" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_error; ?></span>
             </div>
 

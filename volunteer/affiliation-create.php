@@ -125,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for sponsor_name-->
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor Name</label>
-              <input type="text" name="sponsor_name"  size="30" class="form-control" value="<?php echo $sponsor_name; ?>">
+              <input type="text" name="sponsor_name"  size="30" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
           </div>
 
