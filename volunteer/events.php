@@ -65,7 +65,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     $sql = "SELECT * FROM events WHERE registration_start <= CURDATE() AND registration_end >= CURDATE() ORDER BY registration_end";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-bordered table-hover'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Reg. Deadline</th>";
