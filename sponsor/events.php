@@ -64,7 +64,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-bordered table-condensed'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Reg. Deadline</th>";
@@ -75,7 +75,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
-                                echo "<tbody>";
+                                echo "<tbody table-hover>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['registration_end'] . "</td>";
