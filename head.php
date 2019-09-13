@@ -31,11 +31,17 @@ table
 {
 	/* set table color to white */
 	background-color: #ffffff;
+	text-align: left;
+}
+
+thead
+{
+	text-align:left;
 }
 
 th
 {
-	text-align:center;
+	text-align:left;
 }
 
 </style>
