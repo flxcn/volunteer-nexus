@@ -29,9 +29,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
         .page-header h2{
             margin-top: 0;
         }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
