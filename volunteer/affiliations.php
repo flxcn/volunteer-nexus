@@ -12,9 +12,6 @@
         .page-header h2{
             margin-top: 0;
         }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -45,7 +42,7 @@
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-bordered'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Affiliated Sponsor</th>";
