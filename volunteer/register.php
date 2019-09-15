@@ -109,7 +109,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validate graduation_year
-    if(empty(trim($_POST["graduation_year"]))){
+    if(trim($_POST["graduation_year"])=="Select year"){
         $graduation_year_error = "Please enter a graduation year.";
     } else{
         $graduation_year = trim($_POST["graduation_year"]);
@@ -203,7 +203,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for graduation_year-->
           <div class="form-group <?php echo (!empty($graduation_year_error)) ? 'has-error' : ''; ?>">
               <label>Graduation Year</label>
-              <input type="number" name="graduation_year" maxlength="4" size="4" class="form-control" placeholder="Graduation Year" value="<?php echo $graduation_year; ?>">
+              <select class="form-control" name="graduation_year" placeholder="Graduation Year" value="<?php echo $graduation_year; ?>">
+                <option>Select year</option>
+                <option>2020</option>
+                <option>2021</option>
+                <option>2022</option>
+                <option>2023</option>
+              </select>
               <span class="help-block"><?php echo $graduation_year_error; ?></span>
           </div>
 
