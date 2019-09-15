@@ -74,7 +74,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     if(empty($input_start_date)){
         $start_date_error = "Please enter an opportunity start date.";
     } else{
-        $registration_start = $input_registration_start;
+        $registration_start = $input_start_date;
     }
 
     // Validate start_time // NOTE: refer to-do list {3}
