@@ -5,6 +5,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <style type="text/css">
 
+html
+{
+	height: 100%;
+}
+
 body
 {
 	height: 100%;
@@ -16,9 +21,8 @@ body
 	margin-bottom: 60px;
 }
 
-.wrapper{
-	width: 650px;
 
+.wrapper{
 	/* centered in page */
 	margin: 0 auto;
 }
