@@ -190,7 +190,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <?php include '../head.php'?>
 
     <style type="text/css">
-        body{ font: 14px sans-serif; }
         .wrapper{ width: 350px; padding: 20px; }
     </style>
 </head>
@@ -203,21 +202,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for sponsor name-->
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor Name</label>
-              <input required type="text" name="sponsor_name" class="form-control" value="<?php echo $sponsor_name; ?>">
+              <p>What is the organization this account will represent?</p>
+              <input required type="text" name="sponsor_name" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
           </div>
 
           <!--form for username-->
           <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
               <label>Username (Email Address)</label>
-              <input required type="email" name="username"  size="30" class="form-control" value="<?php echo $username; ?>">
+              <input required type="email" name="username"  size="30" class="form-control" placeholder="Email" value="<?php echo $username; ?>">
               <span class="help-block"><?php echo $username_error; ?></span>
           </div>
 
           <!--form for password-->
           <div class="form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>">
               <label>Password</label>
-              <input required type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+              <input required type="password" name="password" class="form-control" placeholder="Password" value="<?php echo $password; ?>">
               <span class="help-block"><?php echo $password_error; ?></span>
           </div>
 
