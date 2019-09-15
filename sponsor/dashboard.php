@@ -21,11 +21,16 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
     <?php $thisPage='Dashboard'; include 'navbar.php';?>
     <div class="page-header">
-        <h1>Hello, <b><?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?></b>. Welcome to <b>VolunteerNexus</b>.</h1>
+        <h1>Hello, <b><?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?></h1>
+        <p></b>. Welcome to <b>VolunteerNexus</b>.</p>
     </div>
     <p>
-        <a href="events.php" class="btn btn-primary">My Sponsored Events</a>
-        <a href="affiliations.php" class="btn btn-primary">My Affiliated Volunteers</a>
+        <a href="events.php" class="btn btn-primary">Sponsored Events</a>
+    </p>
+    <p>
+        <a href="affiliations.php" class="btn btn-primary">Affiliated Volunteers</a>
+    </p>
+    <p>
         <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
     </p>
 
