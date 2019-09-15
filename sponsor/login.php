@@ -103,7 +103,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <?php include '../head.php'?>
 
     <style type="text/css">
-        body{ font: 14px sans-serif; }
         .wrapper{ width: 350px; padding: 20px; }
     </style>
 </head>
@@ -114,12 +113,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
                 <label>Email Address</label>
-                <input type="email" name="username" class="form-control" value="<?php echo $username; ?>">
+                <input type="email" name="username" class="form-control" placeholder="Email" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_error; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control">
+                <input type="password" name="password" placeholder="Password" class="form-control">
                 <span class="help-block"><?php echo $password_error; ?></span>
             </div>
             <div class="form-group">
