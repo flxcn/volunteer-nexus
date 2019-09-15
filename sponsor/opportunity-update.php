@@ -74,7 +74,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     if(empty($input_start_date)){
         $start_date_error = "Please enter an opportunity start date.";
     } else{
-        $registration_start = $input_start_date;
+        $start_date = $input_start_date;
     }
 
     // Validate start_time // NOTE: refer to-do list {3}
@@ -126,7 +126,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: index.php");
+                header("Location: event-read.php?event_id=$event_id");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later.";
@@ -303,7 +303,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                         <input type="hidden" name="opportunity_id" value="<?php echo $_GET['opportunity_id']; ?>"/>
                         <input type="hidden" name="event_id" value="<?php echo $_GET['event_id']; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="events.php?event_id=<?php echo $_GET['event_id'];?>" class="btn btn-default">Cancel</a>
+                        <a href="event-read.php?event_id=<?php echo $_GET['event_id'];?>" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>
