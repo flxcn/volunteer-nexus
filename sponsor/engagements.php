@@ -12,22 +12,14 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <title>Engagements</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
     <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
-        }
         .page-header h2{
             margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 15px;
         }
     </style>
     <script type="text/javascript">
@@ -37,27 +29,27 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     </script>
 
     <script>
-    function showStatus(id,num) {
-      if (id == "" && num=="")
-      {
-        return;
-      }
-      else
-      {
-        if (window.XMLHttpRequest)
+      function showStatus(id,num) {
+        if (id == "" && num=="")
         {
-          xmlhttp = new XMLHttpRequest();
+          return;
         }
-
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("statusOf"+id).innerHTML = this.responseText;
+        else
+        {
+          if (window.XMLHttpRequest)
+          {
+            xmlhttp = new XMLHttpRequest();
           }
-        };
-        xmlhttp.open("GET","engagement-verify.php?engagement_id="+id+"&status="+num,true);
-        xmlhttp.send();
+
+          xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              document.getElementById("statusOf"+id).innerHTML = this.responseText;
+            }
+          };
+          xmlhttp.open("GET","engagement-verify.php?engagement_id="+id+"&status="+num,true);
+          xmlhttp.send();
+        }
       }
-    }
     </script>
 </head>
 
@@ -66,7 +58,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 
 <body>
-  <?php $thisPage='Engagements'; include 'navbar.php';?>
+    <?php $thisPage='Engagements'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">

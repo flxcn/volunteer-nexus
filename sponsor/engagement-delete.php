@@ -60,7 +60,6 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
     <style type="text/css">
         .wrapper{
             width: 500px;
-            margin: 0 auto;
         }
     </style>
 </head>
