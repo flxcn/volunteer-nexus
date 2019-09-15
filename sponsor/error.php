@@ -21,7 +21,7 @@
                         <h1>Something's wrong...</h1>
                     </div>
                     <div class="alert alert-danger fade in">
-                        <p>Look's like something went wrong. Click <a href="dashboard.php" class="alert-link">here</a> to go back to the dashboard. If the issue persists, please send an email to felix@schoolwide.net detailing what happened. </p>
+                      <p>Look's like something went wrong. Click <a href="dashboard.php" class="alert-link">here</a> to go back to the dashboard. If the issue persists, please send an email to <a href="mailto:felix@volunteernexus.com?Subject=VolunteerNexus%20Issue%20Report" target="_blank">felix@volunteernexus.com</a> detailing what happened. </p>
                     </div>
                 </div>
             </div>
