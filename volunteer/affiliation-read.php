@@ -15,19 +15,19 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     <meta charset="UTF-8">
     <title>My Contributions</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
     <style type="text/css">
+        body{
+          font: 10px sans-serif;
+        }
         .wrapper{
             width: 650px;
             margin: 0 auto;
         }
         .page-header h2{
             margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 15px;
         }
     </style>
     <script type="text/javascript">
@@ -64,24 +64,21 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-bordered'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Time Submitted</th>";
                                         echo "<th>Event Name</th>";
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
                                         echo "<th>Contact Name</th>";
                                         echo "<th>Contact Email</th>";
                                         echo "<th>Event Duration</th>";
-                                        echo "<th>Contribution Value</th>";
-
+                                        echo "<th>Value</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['time_submitted'] . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
