@@ -17,6 +17,16 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     <!--Load required libraries-->
     <?php include '../head.php'?>
 
+    <style type="text/css">
+        .wrapper{
+            width: 650px;
+            margin: 0 auto;
+        }
+        .page-header h2{
+            margin-top: 0;
+        }
+    </style>
+
     <!--Toggle Bootstrap tooltip-->
     <script type="text/javascript">
         $(document).ready(function(){

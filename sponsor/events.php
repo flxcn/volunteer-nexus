@@ -15,8 +15,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     <meta charset="UTF-8">
     <title>Events</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
     <style type="text/css">
         .wrapper{
@@ -26,10 +26,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
         .page-header h2{
             margin-top: 0;
         }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
     </style>
+
+    <!-- toggle Bootstrap tooltip functionality -->
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
