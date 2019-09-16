@@ -268,19 +268,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <!--form for advisor2_name-->
               <div class="form-group <?php echo (!empty($advisor2_name_error)) ? 'has-error' : ''; ?>">
                   <label>Teacher Advisor #2 Name</label>
-                  <input type="text" name="advisor2_name" class="form-control" placeholder="Name" value="<?php echo $advisor2_name; ?>">
+                  <input type="text" name="advisor2_name" class="form-control" placeholder="Name (optional)" value="<?php echo $advisor2_name; ?>">
                   <span class="help-block"><?php echo $advisor2_name_error; ?></span>
               </div>
               <!--form for advisor2_email-->
               <div class="form-group <?php echo (!empty($advisor2_email_error)) ? 'has-error' : ''; ?>">
                   <label>Teacher Advisor #2 Email</label>
-                  <input type="email" name="advisor2_email" class="form-control" placeholder="Email" value="<?php echo $advisor2_email; ?>">
+                  <input type="email" name="advisor2_email" class="form-control" placeholder="Email (optional)" value="<?php echo $advisor2_email; ?>">
                   <span class="help-block"><?php echo $advisor2_email_error; ?></span>
               </div>
               <!--form for advisor2_phone-->
               <div class="form-group <?php echo (!empty($advisor2_phone_error)) ? 'has-error' : ''; ?>">
                   <label>Teacher Advisor #2 Phone Number</label>
-                  <input type="tel" name="advisor2_phone" class="form-control" placeholder="Phone Number" value="<?php echo $advisor2_phone; ?>">
+                  <input type="tel" name="advisor2_phone" class="form-control" placeholder="Phone Number (optional)" value="<?php echo $advisor2_phone; ?>">
                   <span class="help-block"><?php echo $advisor2_phone_error; ?></span>
               </div>
 
@@ -288,19 +288,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <!--form for advisor3_name-->
               <div class="form-group <?php echo (!empty($advisor3_name_error)) ? 'has-error' : ''; ?>">
                   <label>Teacher Advisor #3 Name</label>
-                  <input type="text" name="advisor3_name" class="form-control" placeholder="Name" value="<?php echo $advisor3_name; ?>">
+                  <input type="text" name="advisor3_name" class="form-control" placeholder="Name (optional)" value="<?php echo $advisor3_name; ?>">
                   <span class="help-block"><?php echo $advisor3_name_error; ?></span>
               </div>
               <!--form for advisor3_email-->
               <div class="form-group <?php echo (!empty($advisor3_email_error)) ? 'has-error' : ''; ?>">
                   <label>Teacher Advisor #3 Email</label>
-                  <input type="email" name="advisor3_email" class="form-control" placeholder="Email" value="<?php echo $advisor3_email; ?>">
+                  <input type="email" name="advisor3_email" class="form-control" placeholder="Email (optional)" value="<?php echo $advisor3_email; ?>">
                   <span class="help-block"><?php echo $advisor3_email_error; ?></span>
               </div>
               <!--form for advisor3_phone-->
               <div class="form-group <?php echo (!empty($advisor3_phone_error)) ? 'has-error' : ''; ?>">
                   <label>Teacher Advisor #3 Phone Number</label>
-                  <input type="tel" name="advisor3_phone" class="form-control" placeholder="Phone Number" value="<?php echo $advisor3_phone; ?>">
+                  <input type="tel" name="advisor3_phone" class="form-control" placeholder="Phone Number (optional)" value="<?php echo $advisor3_phone; ?>">
                   <span class="help-block"><?php echo $advisor3_phone_error; ?></span>
               </div>
           </div>
