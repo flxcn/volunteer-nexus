@@ -117,11 +117,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $advisor1_email = trim($_POST["advisor1_email"]);
     }
     // Validate advisor1_phone
-    if(empty(trim($_POST["advisor1_phone"]))){
-        $advisor1_phone_error = "Please enter your teacher advisor's phone number.";
-    } else{
-        $advisor1_phone = trim($_POST["advisor1_phone"]);
-    }
+    $advisor1_phone = trim($_POST["advisor1_phone"]);
 
     // Validate advisor2 information
     $advisor2_name = trim($_POST["advisor2_name"]);
@@ -239,7 +235,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
           <!--form for contribution_type-->
           <div class="form-group <?php echo (!empty($contribution_type_error)) ? 'has-error' : ''; ?>">
-              <label>Contribution Type</label>
+              <label>Contribution Type (points, hours, etc.)</label>
               <input required type="text" name="contribution_type" class="form-control" placeholder="Contribution Type" value="<?php echo $contribution_type; ?>">
               <span class="help-block"><?php echo $contribution_type_error; ?></span>
           </div>
@@ -259,7 +255,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for advisor1_phone-->
           <div class="form-group <?php echo (!empty($advisor1_phone_error)) ? 'has-error' : ''; ?>">
               <label>Teacher Advisor #1 Phone Number</label>
-              <input required type="tel" name="advisor1_phone" class="form-control" placeholder="Phone Number" value="<?php echo $advisor1_phone; ?>">
+              <input required type="tel" name="advisor1_phone" class="form-control" placeholder="Phone Number (optional)" value="<?php echo $advisor1_phone; ?>">
               <span class="help-block"><?php echo $advisor1_phone_error; ?></span>
           </div>
 
