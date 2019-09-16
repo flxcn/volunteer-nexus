@@ -260,7 +260,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           </div>
 
           <p>
-            <button class="btn btn-link" onclick="toggleOptionalFields()" id="toggleButton">Add more advisors</button>
+            <button class="btn btn-link" onclick="toggleOptionalFields()" type="button" id="toggleButton">Add more advisors</button>
           </p>
 
           <!-- optional information -->
