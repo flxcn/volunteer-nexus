@@ -79,7 +79,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                header("location: affiliations.php");
+                header("location: dashboard.php");
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -115,23 +115,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <p>Please fill out this form to join an affiliation.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-          <!--form for student ID-->
-          <div class="form-group <?php echo (!empty($student_id_error)) ? 'has-error' : ''; ?>">
-              <label>Student ID</label>
-              <input readonly type="number" name="student_id" maxlength="5" size="5" class="form-control" value="<?php echo $student_id; ?>">
-              <span class="help-block"><?php echo $student_id_error; ?></span>
-          </div>
-
-          <!--form for sponsor_name-->
+          <!--form for sponsor_name, student ID-->
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor Name</label>
-              <input type="text" name="sponsor_name"  size="30" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
+              <select class="form-control" name="sponsor_name" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
+                <option>Select sponsor</option>
+                <option>Student Council</option>
+                <option>Model UN</option>
+              </select>
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
+              <input type="hidden" name="student_id" value="<?php echo $student_id; ?>">
           </div>
 
           <div class="form-group">
               <input type="submit" class="btn btn-primary" value="Submit">
-              <a href="affiliations.php" class="btn btn-primary">Back</a>
+              <a href="dashboard.php" class="btn btn-default">Back</a>
           </div>
 
         </form>
