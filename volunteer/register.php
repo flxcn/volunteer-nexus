@@ -3,7 +3,6 @@
 require_once "../config.php";
 
 // Define variables and initialize with empty values
-$student_id = "";
 $username = "";
 $password = "";
 $confirm_password = "";
@@ -11,7 +10,6 @@ $graduation_year = "";
 $first_name = "";
 $last_name = "";
 
-$student_id_error = "";
 $username_error = "";
 $password_error = "";
 $confirm_password_error = "";
@@ -55,40 +53,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       mysqli_stmt_close($stmt);
   }
 
-
-    // Validate student_id
-    if(empty(trim($_POST["student_id"]))){
-        $student_id_error = "Please enter your five-digit student ID.";
-    } else{
-        // Prepare a select statement
-        $sql = "SELECT student_id FROM volunteers WHERE student_id = ?";
-
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "i", $param_student_id);
-
-            // Set parameters
-            $param_student_id = trim($_POST["student_id"]);
-
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    $student_id_error = "This student ID is already in use.";
-                } else{
-                    $student_id = trim($_POST["student_id"]);
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-        }
-
-        // Close statement
-        mysqli_stmt_close($stmt);
-    }
-
     // Validate password
     if(empty(trim($_POST["password"]))){
         $password_error = "Please enter a password.";
@@ -130,17 +94,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Check input errors before inserting in database
-    if(empty($student_id_error) && empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($first_name_error) && empty($last_name_error)){
+    if(empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($first_name_error) && empty($last_name_error)){
 
         // Prepare an insert statement
-        $sql = "INSERT INTO volunteers (student_id, username, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO volunteers (username, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ississ", $param_student_id, $param_username, $param_password, $param_graduation_year, $param_first_name, $param_last_name);
+            mysqli_stmt_bind_param($stmt, "ssiss", $param_username, $param_password, $param_graduation_year, $param_first_name, $param_last_name);
 
             // Set parameters
-            $param_student_id = $student_id;
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             $param_graduation_year = $graduation_year;
@@ -211,13 +174,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <option>2023</option>
               </select>
               <span class="help-block"><?php echo $graduation_year_error; ?></span>
-          </div>
-
-          <!--form for student ID-->
-          <div class="form-group <?php echo (!empty($student_id_error)) ? 'has-error' : ''; ?>">
-              <label>Student ID</label>
-              <input type="number" name="student_id" maxlength="5" size="5" class="form-control" placeholder="Student ID" value="<?php echo $student_id; ?>">
-              <span class="help-block"><?php echo $student_id_error; ?></span>
           </div>
 
           <!--form for username-->
