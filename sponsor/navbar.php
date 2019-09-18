@@ -25,7 +25,15 @@
 		</ul>
 
 		<ul class="nav navbar-nav navbar-right">
-			<li <?php if ($thisPage === 'Reset') {echo 'class="active"';} ?>><a href="reset.php"><span class="glyphicon glyphicon-user"></span> Account</a></li>
+			<li ><a href="reset.php">Account</a></li>
+      <li <?php if ($thisPage === 'Account') {echo 'class="active"';} ?> class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="account.php">
+					<span class="glyphicon glyphicon-user"></span> Account <span class="caret"></span>
+				</a>
+        <ul class="dropdown-menu">
+          <li><a href="reset.php">Reset Password</a></li>
+        </ul>
+      </li>
 			<li><a href="../logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		</ul>
 
