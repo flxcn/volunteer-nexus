@@ -30,7 +30,7 @@ $start_time = "";
 $end_time = "";
 $total_positions = "";
 $contribution_value = "";
-$type = "time";
+$confirmation = "0";
 
 //define and initialize error message variables
 $event_id_error = "";
