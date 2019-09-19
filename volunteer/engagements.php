@@ -4,9 +4,6 @@
 <head>
     <title>Upcoming Engagements</title>
 
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
-
     <!-- Toggle Bootstrap tooltips -->
     <script type="text/javascript">
         $(document).ready(function(){
