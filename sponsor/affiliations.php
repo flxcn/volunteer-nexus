@@ -55,7 +55,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
                     // Run SQL Query
                     $sql = "SELECT volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value
-                    FROM volunteers INNER JOIN affiliations ON volunteers.student_id = affiliations.student_id LEFT JOIN engagements ON affiliations.student_id = engagements.student_id
+                    FROM volunteers INNER JOIN affiliations ON volunteers.volunteer_id = affiliations.volunteer_id LEFT JOIN engagements ON affiliations.volunteer_id = engagements.volunteer_id
                     WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
 
                     if($result = mysqli_query($link, $sql)){

@@ -14,15 +14,15 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
   require_once "../config.php";
 
   // Prepare a delete statement
-  $sql = "DELETE FROM engagements WHERE engagement_id = ? AND student_id = ?";
+  $sql = "DELETE FROM engagements WHERE engagement_id = ? AND volunteer_id = ?";
 
   if($stmt = mysqli_prepare($link, $sql)){
     // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt, "ii", $param_engagement_id, $param_student_id);
+    mysqli_stmt_bind_param($stmt, "ii", $param_engagement_id, $param_volunteer_id);
 
     // Set parameters
     $param_engagement_id = trim($_POST["engagement_id"]);
-    $param_student_id = trim($_SESSION["student_id"]);
+    $param_volunteer_id = trim($_SESSION["volunteer_id"]);
 
     // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){

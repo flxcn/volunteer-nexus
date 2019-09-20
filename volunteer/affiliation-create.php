@@ -12,11 +12,11 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 require_once "../config.php";
 
 // Define variables and initialize with empty values
-$student_id = $_SESSION["student_id"];
+$volunteer_id = $_SESSION["volunteer_id"];
 $sponsor_name = "";
 $sponsor_id = "";
 
-$student_id_error = "";
+$volunteer_id_error = "";
 $sponsor_name_error = "";
 $sponsor_id_error = "";
 
@@ -66,14 +66,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($sponsor_name_error) && empty($sponsor_id_error)){
 
         // Prepare an insert statement
-        $sql = "INSERT INTO affiliations (student_id, sponsor_id) VALUES (?, ?)";
+        $sql = "INSERT INTO affiliations (volunteer_id, sponsor_id) VALUES (?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ii", $param_student_id, $param_sponsor_id);
+            mysqli_stmt_bind_param($stmt, "ii", $param_volunteer_id, $param_sponsor_id);
 
             // Set parameters
-            $param_student_id = $student_id;
+            $param_volunteer_id = $volunteer_id;
             $param_sponsor_id = $sponsor_id;
 
             // Attempt to execute the prepared statement
@@ -124,7 +124,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <option>Model United Nations</option>
               </select>
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
-              <input type="hidden" name="student_id" value="<?php echo $student_id; ?>">
+              <input type="hidden" name="volunteer_id" value="<?php echo $volunteer_id; ?>">
           </div>
 
           <div class="form-group">

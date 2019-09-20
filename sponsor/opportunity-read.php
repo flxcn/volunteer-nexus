@@ -139,7 +139,7 @@ if(isset($_GET["opportunity_id"])){
                     <?php
                     // Attempt select query execution
                     $sql = "SELECT engagements.time_submitted AS time_submitted, engagements.opportunity_id AS opportunity_id, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address, engagements.engagement_id AS engagement_id
-                    FROM engagements LEFT JOIN volunteers ON volunteers.student_id = engagements.student_id
+                    FROM engagements LEFT JOIN volunteers ON volunteers.volunteer_id = engagements.volunteer_id
                     WHERE engagements.opportunity_id = '{$_GET['opportunity_id']}'
                     GROUP BY engagements.time_submitted, volunteers.first_name, volunteers.last_name, volunteers.username, engagements.engagement_id";
 

@@ -37,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_error) && empty($password_error)){
         // Prepare a select statement
-        $sql = "SELECT student_id, first_name, last_name, graduation_year, username, password FROM volunteers WHERE username = ?";
+        $sql = "SELECT volunteer_id, first_name, last_name, graduation_year, username, password FROM volunteers WHERE username = ?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $student_id, $first_name, $last_name, $graduation_year, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $volunteer_id, $first_name, $last_name, $graduation_year, $username, $hashed_password);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                             // Store data in session variables
                             $_SESSION["volunteer_loggedin"] = true;
-                            $_SESSION["student_id"] = $student_id;
+                            $_SESSION["volunteer_id"] = $volunteer_id;
                             $_SESSOPM["username"] = $username;
                             $_SESSION["first_name"] = $first_name;
                             $_SESSION["last_name"] = $last_name;
