@@ -121,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <select class="form-control" name="sponsor_name" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
                 <option>Select sponsor</option>
                 <option>Student Council</option>
-                <option>Model UN</option>
+                <option>Model United Nations</option>
               </select>
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
               <input type="hidden" name="student_id" value="<?php echo $student_id; ?>">
