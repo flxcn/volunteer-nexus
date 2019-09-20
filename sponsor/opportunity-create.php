@@ -30,7 +30,7 @@ $start_time = "";
 $end_time = "";
 $total_positions = "";
 $contribution_value = "";
-$confirmation = "0";
+$needs_verification = "0";
 
 //define and initialize error message variables
 $event_id_error = "";
@@ -43,7 +43,7 @@ $start_time_error = "";
 $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
-$type_error = "";
+$needs_verification = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -122,11 +122,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validate type
-    $input_type = trim($_POST["type"]);
-    if(empty($input_type)){
-        $type_error = "Please enter an opportunity type.";
+    $input_needs_verification = trim($_POST["needs_verification"]);
+    if(empty($input_needs_verification)){
+        $needs_verification_error = "Please enter whether or not an opportunity needs verification.";
     } else{
-        $type = $input_type;
+        $needs_verification = $input_needs_verification;
     }
 
     // Check input errors before inserting in database
