@@ -11,7 +11,6 @@
   </div>
 
   <p>
-
       <span>
         <a href="volunteer/login.php" class="btn btn-primary">I'm a Volunteer</a>
         <a href="sponsor/login.php" class="btn btn-primary">I'm a Sponsor</a>
