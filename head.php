@@ -7,12 +7,12 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <!-- Local if CDN not accessible -->
-<script>
+<!-- <script>
   if (! $.fn.modal) {
-    document.write('<script src="js/bootstrap.min.js"></script>');
-    document.write('<link rel="stylesheet" href="css/bootstrap.min.css">');
+    document.write("</script><script src='js/bootstrap.min.js'></script>");
+    document.write("<link rel='stylesheet' href='css/bootstrap.min.css'><script>");
   }
-</script>
+</script> -->
 
 <style type="text/css">
 
