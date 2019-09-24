@@ -42,6 +42,10 @@ body
 	margin-top: 0;
 }
 
+.col-md-12{
+	overflow: auto;
+}
+
 table
 {
 	/* set table color to white */
