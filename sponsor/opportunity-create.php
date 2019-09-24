@@ -30,7 +30,7 @@ $start_time = "";
 $end_time = "";
 $total_positions = "";
 $contribution_value = "";
-$needs_verification = "0";
+$needs_verification = 0;
 
 //define and initialize error message variables
 $event_id_error = "";
@@ -43,7 +43,7 @@ $start_time_error = "";
 $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
-$needs_verification = "";
+$needs_verification_error = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -136,7 +136,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssiis", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification);
+            mysqli_stmt_bind_param($stmt, "iissssssiii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification);
 
             // Set parameters
             $param_event_id = $event_id;
@@ -283,8 +283,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                         <!--form for type-->
                         <div class="form-group <?php echo (!empty($needs_verification_error)) ? 'has-error' : ''; ?>">
-                            <label>Does volunteers in this opportunity need their contribution verified?</label>
-                            <input type="text" name="type" class="form-control" value="<?php echo $needs_verification; ?>">
+                            <label for="needs_verification">Needs confirmation?</label>
+                            <p>Do volunteers in this opportunity need their contribution verified?</p>
+                            <input type="checkbox" name="needs_verification" class="form-control" value="1">
                             <span class="help-block"><?php echo $needs_verification_error;?></span>
                         </div>
 
