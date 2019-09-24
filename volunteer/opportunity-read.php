@@ -41,6 +41,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                 $end_time = $row["end_time"];
                 $total_positions = $row["total_positions"];
                 $contribution_value = $row["contribution_value"];
+                $needs_verification = $row["needs_verification"];
                 //{7} $positions_available = $[];
 
             } else{
@@ -141,6 +142,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                         <input type="hidden" name="sponsor_id" value="<?php echo $row["sponsor_id"];?>">
                         <input type="hidden" name="volunteer_id" value="<?php echo trim($_SESSION["volunteer_id"]); ?>">
                         <input type="hidden" name="contribution_value" value="<?php echo $row["contribution_value"];?>">
+                        <input type="hidden" name="needs_verification" value="<?php echo $row["needs_verification"];?>">
                         <input type="submit" class="btn btn-primary" value="Sign up!">
                       </form>
                     </div>

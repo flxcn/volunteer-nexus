@@ -121,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $contribution_value = $input_contribution_value;
     }
 
-    // Validate type
+    // Validate needs_verification
     $input_needs_verification = trim($_POST["needs_verification"]);
     if(empty($input_needs_verification)){
         $needs_verification_error = "Please enter whether or not an opportunity needs verification.";
@@ -130,13 +130,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Check input errors before inserting in database
-    if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($type_error)){
+    if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssiis", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_type);
+            mysqli_stmt_bind_param($stmt, "iissssssiis", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification);
 
             // Set parameters
             $param_event_id = $event_id;
@@ -149,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_end_time = $end_time;
             $param_total_positions = $total_positions;
             $param_contribution_value = $contribution_value;
-            $param_type = $type;
+            $param_needs_verification = $needs_verification;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -282,10 +282,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <!--form for type-->
-                        <div class="form-group <?php echo (!empty($type_error)) ? 'has-error' : ''; ?>">
-                            <label>Type</label>
-                            <input type="text" name="type" class="form-control" value="<?php echo $type; ?>">
-                            <span class="help-block"><?php echo $type_error;?></span>
+                        <div class="form-group <?php echo (!empty($needs_verification_error)) ? 'has-error' : ''; ?>">
+                            <label>Does volunteers in this opportunity need their contribution verified?</label>
+                            <input type="text" name="type" class="form-control" value="<?php echo $needs_verification; ?>">
+                            <span class="help-block"><?php echo $needs_verification_error;?></span>
                         </div>
 
                         <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
