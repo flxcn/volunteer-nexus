@@ -193,7 +193,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<td>" . $row['end_date'] . " " . $row['end_time'] . "</td>";
                                         echo "<td>" . $row['positions_filled'] . "/" . $row['total_positions'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='opportunity-read.php?event_id=". $param_event_id ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='opportunity-read.php?event_id=". $_GET["event_id"] ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
