@@ -27,6 +27,10 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
         <h1>Howdy, <b><?php echo htmlspecialchars($_SESSION["first_name"]); ?></b>!</h1>
     </div>
 
+    <p>
+        <a href="events.php" class="btn btn-primary">Find Events!</a>
+    </p>
+
     <?php include 'affiliations.php';?>
     <?php include 'engagements.php';?>
     <?php include '../footer.php';?>
