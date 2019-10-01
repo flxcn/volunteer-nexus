@@ -123,10 +123,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate needs_verification
     $input_needs_verification = trim($_POST["needs_verification"]);
-    if(empty($input_needs_verification)){
-        $needs_verification_error = "Please enter whether or not an opportunity needs verification.";
-    } else{
-        $needs_verification = $input_needs_verification;
+    if($input_needs_verification = 1)
+    {
+      $needs_verification = $input_needs_verification;
     }
 
     // Check input errors before inserting in database
