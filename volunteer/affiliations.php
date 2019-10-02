@@ -39,8 +39,8 @@
                     // Attempt select query execution
 
                     $sql = "SELECT sponsors.sponsor_name AS sponsor_name, sponsors.sponsor_id AS sponsor_id, SUM(engagements.contribution_value) AS total_contribution_value
-                    FROM sponsors LEFT JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id
-                    WHERE volunteer_id = '{$_SESSION['volunteer_id']}' AND status = 1 
+                    FROM sponsors INNER JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id
+                    WHERE volunteer_id = '{$_SESSION['volunteer_id']}' AND status = 1
                     GROUP BY sponsors.sponsor_name";
 
                     if($result = mysqli_query($link, $sql)){
