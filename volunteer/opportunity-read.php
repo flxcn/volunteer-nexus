@@ -143,7 +143,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                         <input type="hidden" name="volunteer_id" value="<?php echo trim($_SESSION["volunteer_id"]); ?>">
                         <input type="hidden" name="contribution_value" value="<?php echo $row["contribution_value"];?>">
                         <input type="hidden" name="needs_verification" value="<?php echo $row["needs_verification"];?>">
-                        <input type="submit" class="btn btn-primary" value="Sign up!">
+                        <input type="submit" class="btn btn-success" value="Sign up!">
                       </form>
                     </div>
 
