@@ -28,12 +28,13 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     </div>
 
     <p>
-        <a href="events.php" class="btn btn-primary">Find Events!</a>
+        <a href="events.php" class="btn btn-success">Find Events!</a>
     </p>
 
     <?php include 'affiliations.php';?>
     <?php include 'engagements.php';?>
     <?php include '../footer.php';?>
+
 
 </body>
 </html>
