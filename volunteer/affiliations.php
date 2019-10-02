@@ -69,7 +69,7 @@
                             // Free result set
                             mysqli_free_result($result);
                         } else{
-                            echo "<p class='lead'><em>No affiliations were found.</em></p>";
+                            echo "<p class='lead'><em>As you participate in opportunities and they are validated, your progress will automatically appear here.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
