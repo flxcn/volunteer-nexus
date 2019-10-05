@@ -20,10 +20,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
     <style type="text/css">
         body{
-          font: 10px sans-serif;
+          font: 12px sans-serif;
         }
         .wrapper{
-            width: 650px;
             margin: 0 auto;
         }
         .page-header h2{
@@ -48,7 +47,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">My Past Engagements For This Affiliation</h2>
+                        <h2 class="pull-left">Affiliation's Past Engagements</h2>
                         <a href='dashboard.php' class="btn btn-primary">Back</a>
                     </div>
 
