@@ -5,10 +5,6 @@
     <meta charset="UTF-8">
     <title>Affiliations</title>
     <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
-        }
         .page-header h2{
             margin-top: 0;
         }
