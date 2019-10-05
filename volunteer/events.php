@@ -23,7 +23,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
     <style type="text/css">
         .wrapper{
-            width: 650px;
             margin: 0 auto;
         }
         .page-header h2{

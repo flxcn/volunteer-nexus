@@ -20,7 +20,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
     <style type="text/css">
         .wrapper{
-            width: 650px;
             margin: 0 auto;
         }
         .page-header h2{
