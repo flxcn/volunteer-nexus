@@ -20,6 +20,7 @@ $end_date = "";
 $end_time = "";
 $total_positions = "";
 $contribution_value = "";
+$needs_verification = "";
 
 $role_name_error = "";
 $description_error = "";
@@ -29,6 +30,7 @@ $end_date_error = "";
 $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
+$param_needs_verification = "";
 
 
 // Processing form data when form is submitted
@@ -45,7 +47,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $role_name = $input_role_name;
     }
 
-    // Validate description // NOTE: refer to-do list {3}
+    // Validate description
     $input_description = trim($_POST["description"]);
     if(empty($input_description)){
         $description_error = "Please enter a description.";
@@ -53,7 +55,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $description = $input_description;
     }
 
-    // Validate contribution_value // NOTE: refer to-do list {3}
+    // Validate contribution_value
     $input_contribution_value = trim($_POST["contribution_value"]);
     if(empty($input_contribution_value)){
         $contribution_value_error = "Please enter a contribution value.";
@@ -61,7 +63,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $contribution_value = $input_contribution_value;
     }
 
-    // Validate total_positions // NOTE: refer to-do list {3}
+    // Validate total_positions
     $input_total_positions = trim($_POST["total_positions"]);
     if(empty($input_total_positions)){
         $total_positions_error = "Please enter the total number of positions.";
@@ -69,7 +71,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $total_positions = $input_total_positions;
     }
 
-    // Validate start_date // NOTE: refer to-do list {3}
+    // Validate start_date
     $input_start_date = trim($_POST["start_date"]);
     if(empty($input_start_date)){
         $start_date_error = "Please enter an opportunity start date.";
@@ -77,7 +79,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $start_date = $input_start_date;
     }
 
-    // Validate start_time // NOTE: refer to-do list {3}
+    // Validate start_time
     $input_start_time = trim($_POST["start_time"]);
     if(empty($input_start_time)){
         $start_time_error = "Please enter a opportunity start time.";
@@ -85,7 +87,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $start_time = $input_start_time;
     }
 
-    // Validate end_date // NOTE: refer to-do list {3}
+    // Validate end_date
     $input_end_date = trim($_POST["end_date"]);
     if(empty($input_end_date)){
         $end_date_error = "Please enter an opportunity end date.";
@@ -93,7 +95,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $end_date = $input_end_date;
     }
 
-    // Validate end_time // NOTE: refer to-do list {3}
+    // Validate end_time
     $input_end_time = trim($_POST["end_time"]);
     if(empty($input_end_time)){
         $end_time_error= "Please enter an opportunity end time.";
@@ -101,15 +103,19 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
         $end_time = $input_end_time;
     }
 
+    // Validate needs_verification
+    $input_needs_verification = trim($_POST["needs_verification"]);
+    $needs_verification = $input_needs_verification;
+
 
     // Check input errors before inserting in database
     if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an update statement
-        $sql = "UPDATE opportunities SET role_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=? WHERE opportunity_id=?";
+        $sql = "UPDATE opportunities SET role_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=? needs_verification=? WHERE opportunity_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssiii", $param_role_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $opportunity_id);
+            mysqli_stmt_bind_param($stmt, "ssssssiiii", $param_role_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $opportunity_id);
 
             // Set parameters
             $param_role_name = $role_name;
@@ -120,13 +126,14 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
             $param_end_time = $end_time;
             $param_total_positions = $total_positions;
             $param_contribution_value = $contribution_value;
+            $param_needs_verification = $needs_verification;
 
             $param_opportunity_id = $opportunity_id;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("Location: event-read.php?event_id=$event_id");
+                header("Location: event-read.php?event_id=" . $event_id);
                 exit();
             } else{
                 echo "Something went wrong. Please try again later.";
@@ -171,6 +178,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                     $end_time = $row["end_time"];
                     $total_positions = $row["total_positions"];
                     $contribution_value = $row["contribution_value"];
+                    $needs_verification = $row["needs_verification"];
 
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -298,6 +306,15 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                           <label>Contribution Value</label>
                           <input type="number" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
                           <span class="help-block"><?php echo $contribution_value_error;?></span>
+                      </div>
+
+                      <!--form for needs_verification-->
+                      <div class="form-group <?php echo (!empty($needs_verification_error)) ? 'has-error' : ''; ?>">
+                          <label for="needs_verification">Needs verification?</label>
+                          <p>Do volunteers need their contribution verified in this opportunity?</p>
+                          <input type="radio" name="needs_verification" value="1" <?php if($needs_verification==1){echo "checked";}?>> Yes
+                          <input type="radio" name="needs_verification" value="0" <?php if($needs_verification==0){echo "checked";}?>> No
+                          <span class="help-block"><?php echo $needs_verification_error;?></span>
                       </div>
 
                         <input type="hidden" name="opportunity_id" value="<?php echo $_GET['opportunity_id']; ?>"/>
