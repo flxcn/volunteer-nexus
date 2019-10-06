@@ -30,7 +30,7 @@ $start_time = "";
 $end_time = "";
 $total_positions = "";
 $contribution_value = "";
-$needs_verification = 0;
+$needs_verification = "";
 
 //define and initialize error message variables
 $event_id_error = "";
@@ -123,9 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate needs_verification
     $input_needs_verification = trim($_POST["needs_verification"]);
-    if($input_needs_verification == 1){
-        $needs_verification = $input_needs_verification;
-    }
+    $needs_verification = $input_needs_verification;
 
 
     // Check input errors before inserting in database
@@ -157,7 +155,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Close statement
                 mysqli_stmt_close($stmt);
 
-                header("location: event-read.php?event_id=".$event_id);
+                header("Location: event-read.php?event_id=" . $event_id);
                 exit();
             } else{
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
@@ -280,12 +278,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <span class="help-block"><?php echo $contribution_value_error;?></span>
                         </div>
 
-                        <!--form for type-->
+                        <!--form for needs_verification-->
                         <div class="form-group <?php echo (!empty($needs_verification_error)) ? 'has-error' : ''; ?>">
                             <label for="needs_verification">Needs verification?</label>
                             <p>Do volunteers need their contribution verified in this opportunity?</p>
-                            <input type="radio" name="needs_verification" class="form-control" value="1"> Yes
-                            <input type="radio" name="needs_verification_default" class="form-control" value="0" checked> No
+                            <input type="radio" name="needs_verification" value="1"> Yes
+                            <input type="radio" name="needs_verification" value="0" checked> No
                             <span class="help-block"><?php echo $needs_verification_error;?></span>
                         </div>
 
