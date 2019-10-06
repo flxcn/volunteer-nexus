@@ -30,7 +30,7 @@ $end_date_error = "";
 $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
-$param_needs_verification = "";
+$needs_verification_error = "";
 
 
 // Processing form data when form is submitted
@@ -111,7 +111,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     // Check input errors before inserting in database
     if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an update statement
-        $sql = "UPDATE opportunities SET role_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=? needs_verification=? WHERE opportunity_id=?";
+        $sql = "UPDATE opportunities SET role_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=?, needs_verification=? WHERE opportunity_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
