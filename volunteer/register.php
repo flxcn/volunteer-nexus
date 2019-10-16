@@ -1,8 +1,7 @@
 <?php
-// Include config file
 require_once "../config.php";
 
-// Define variables and initialize with empty values
+// Define variables
 $username = "";
 $password = "";
 $confirm_password = "";
@@ -17,7 +16,7 @@ $graduation_year_error = "";
 $first_name_error = "";
 $last_name_error = "";
 
-// Processing form data when form is submitted
+//Data Validation and SQL Insertion
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   // Validate username (email)
@@ -28,18 +27,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $sql = "SELECT volunteer_id FROM volunteers WHERE username = ?";
 
       if($stmt = mysqli_prepare($link, $sql)){
-          // Bind variables to the prepared statement as parameters
           mysqli_stmt_bind_param($stmt, "s", $param_username);
 
-          // Set parameters
+          // Set params
           $param_username = trim($_POST["username"]);
 
-          // Attempt to execute the prepared statement
           if(mysqli_stmt_execute($stmt)){
-              /* store result */
               mysqli_stmt_store_result($stmt);
 
-              if(mysqli_stmt_num_rows($stmt) == 1){
+              if(mysqli_stmt_num_rows($stmt) > 0){
                   $username_error = "This username is already taken.";
               } else{
                   $username = trim($_POST["username"]);
@@ -55,26 +51,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate password
     if(empty(trim($_POST["password"]))){
-        $password_error = "Please enter a password.";
-    } elseif(strlen(trim($_POST["password"])) < 6){
-        $password_error = "Password must have at least 6 characters.";
+        $password_error = "Please enter your password.";
     } else{
         $password = trim($_POST["password"]);
     }
 
     // Validate confirm password
     if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_error = "Please confirm password.";
+        $confirm_password_error = "Please confirm your password.";
     } else{
         $confirm_password = trim($_POST["confirm_password"]);
-        if(empty($password_error) && ($password != $confirm_password)){
+        if($password != $confirm_password)){
             $confirm_password_error = "Password did not match.";
         }
     }
 
     // Validate graduation_year
     if(trim($_POST["graduation_year"])=="Select year"){
-        $graduation_year_error = "Please enter a graduation year.";
+        $graduation_year_error = "Please enter your graduation year.";
     } else{
         $graduation_year = trim($_POST["graduation_year"]);
     }
@@ -93,37 +87,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $last_name = trim($_POST["last_name"]);
     }
 
-    // Check input errors before inserting in database
+    // Making sure there are no errors
     if(empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($first_name_error) && empty($last_name_error)){
 
         // Prepare an insert statement
         $sql = "INSERT INTO volunteers (username, password, graduation_year, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ssiss", $param_username, $param_password, $param_graduation_year, $param_first_name, $param_last_name);
 
-            // Set parameters
+            // Set params
             $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_password = password_hash($password, PASSWORD_DEFAULT);
             $param_graduation_year = $graduation_year;
             $param_first_name = $first_name;
             $param_last_name = $last_name;
 
-            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Redirect to login page
+                // Success!
                 header("location: login.php");
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "ERROR! There appears to be an issue...";
             }
         }
 
-        // Close statement
         mysqli_stmt_close($stmt);
     }
 
-    // Close connection
     mysqli_close($link);
 }
 ?>
@@ -138,10 +128,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <?php $pageContent='Form'?>
         <?php include '../head.php'?>
 
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
 </head>
 <body>
     <div class="wrapper">

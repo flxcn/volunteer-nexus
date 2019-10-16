@@ -2,65 +2,57 @@
 // Initialize the session
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to dashboard
+// Check to see if user is logged in; if they are already in, then redirect them to the dashboard
 if(isset($_SESSION["sponsor_loggedin"]) && $_SESSION["sponsor_loggedin"] === true){
     header("location: dashboard.php");
     exit;
 }
 
-// Include config file
 require_once "../config.php";
 
-// Define variables and initialize with empty values
+// Define all variables
 $username = "";
 $password = "";
 $username_error = "";
 $password_error = "";
 
-// Processing form data when form is submitted
+// Data Validation + SQL
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Check if username is empty
+    // Validate usernaem
     if(empty(trim($_POST["username"]))){
         $username_error = "Please enter your email address.";
     } else{
         $username = trim($_POST["username"]);
     }
 
-    // Check if password is empty
+    // Validate password
     if(empty(trim($_POST["password"]))){
         $password_error = "Please enter your password.";
     } else{
         $password = trim($_POST["password"]);
     }
 
-    // Validate credentials
+    // Validate username and password combo
     if(empty($username_error) && empty($password_error)){
-        // Prepare a select statement
         $sql = "SELECT sponsor_id, sponsor_name, contribution_type, username, password FROM sponsors WHERE username = ?";
 
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
 
-            // Set parameters
             $param_username = $username;
 
-            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Store result
                 mysqli_stmt_store_result($stmt);
-
-                // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){
-                    // Bind result variables
                     mysqli_stmt_bind_result($stmt, $sponsor_id, $sponsor_name, $contribution_type, $username, $hashed_password);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
+
+                            //start new session
                             if(session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-                            // Store data in session variables
+                            // Initialize session variables // NOTE: These will be used across VolunteerNexus
                             $_SESSION["sponsor_loggedin"] = true;
                             $_SESSION["sponsor_id"] = $sponsor_id;
                             $_SESSOPM["username"] = $username;
@@ -70,16 +62,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // Redirect user to dashboard
                             header("location: dashboard.php");
                         } else{
-                            // Display an error message if password is not valid
-                            $password_error = "The password you entered was not valid.";
+                            //NOTE: ERROR! Wrong Password.
+                            $password_error = "The password you entered was incorrect. Try again.";
                         }
                     }
                 } else{
-                    // Display an error message if username doesn't exist
+                    //NOTE: ERROR! Wrong Username.
                     $username_error = "No account found with that email.";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "ERROR! Something went wrong...";
             }
         }
 
@@ -102,14 +94,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <?php $pageContent='Form'?>
         <?php include '../head.php'?>
 
-    <style type="text/css">
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
 </head>
 <body>
     <div class="wrapper">
         <h2>Sponsor Login</h2>
-        <p>Please fill in your credentials to login.</p>
+        <p>Please fill in your account information to login.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
                 <label>Email Address</label>
@@ -124,7 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            <p>Don't have an account? <a href="register.php">Sign up now!</a>.</p>
         </form>
     </div>
 </body>

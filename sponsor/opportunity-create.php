@@ -1,17 +1,15 @@
 <?php
-// Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+// Make sure that the user is logged in
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == false){
+    header("Location: login.php");
     exit;
 }
 
-// Include config file
 require_once '../config.php';
 
-// Define variable
+// Define all variables
 if(isset($_GET["event_id"]))
 {
   $event_id = trim($_GET["event_id"]);
@@ -45,7 +43,7 @@ $total_positions_error = "";
 $contribution_value_error = "";
 $needs_verification_error = "";
 
-// Processing form data when form is submitted
+//Data validation + SQL
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $event_id = trim($_POST["event_id"]);
@@ -128,11 +126,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Check input errors before inserting in database
     if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error)){
-        // Prepare an insert statement
         $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "iissssssiii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification);
 
             // Set parameters
@@ -148,13 +143,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_contribution_value = $contribution_value;
             $param_needs_verification = $needs_verification;
 
-            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Records created successfully. Redirect to landing page
-
-                // Close statement
+                //NOTE: SUCCESS!
                 mysqli_stmt_close($stmt);
-
                 header("Location: event-read.php?event_id=" . $event_id);
                 exit();
             } else{
@@ -167,7 +158,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     }
 
-    // Close connection
     mysqli_close($link);
 }
 ?>
@@ -182,8 +172,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <!--Load required libraries-->
         <?php $pageContent='Form'?>
         <?php include '../head.php'?>
-
-
 
 <!-- Bootstrap Date-Picker Plugin -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -203,13 +191,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       date_input.datepicker(options);
     })
     </script>
-
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <body>
     <div class="wrapper">
