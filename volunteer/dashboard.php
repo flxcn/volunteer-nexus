@@ -2,7 +2,7 @@
 // Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
+// Make sure user is logged in
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -14,7 +14,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-
     <!--Load required libraries-->
     <?php include '../head.php'?>
 </head>

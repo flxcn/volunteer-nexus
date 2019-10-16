@@ -1,37 +1,30 @@
 <?php
-// Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
+// Make sure user is logged in
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
-// Check existence of id parameter before processing further
+// Data Validation + SQL
 if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
-    // Include config file
     require_once "../config.php";
 
-    // Prepare a select statement
     $sql = "SELECT * FROM events WHERE event_id = ?";
 
     if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "i", $param_event_id);
 
-        // Set parameters
+        // Set params
         $param_event_id = trim($_GET["event_id"]);
 
-        // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
             $result = mysqli_stmt_get_result($stmt);
 
             if(mysqli_num_rows($result) == 1){
-                /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-                // Retrieve individual field value
                 $event_name = $row["event_name"];
                 $sponsor_name = $row["sponsor_name"];
                 $description = $row["description"];
@@ -45,8 +38,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 $event_start = $row["event_start"];
                 $event_end = $row["event_end"];
             } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
+                //NOTE: Error!
+                header("Location: error.php");
                 exit();
             }
 
@@ -55,14 +48,11 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
         }
     }
 
-    // Close statement
     mysqli_stmt_close($stmt);
 
-    // Close connection
-    //mysqli_close($link);
 } else{
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
+    //NOTE: Error!
+    header("Location: error.php");
     exit();
 }
 ?>
@@ -70,23 +60,18 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Record</title>
+    <title>View Event</title>
 
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <body>
 
   <!--Navigation Bar-->
   <?php $thisPage='Events'; include 'navbar.php';?>
+
+    <!-- Event -->
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -161,6 +146,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
         </div>
     </div>
 
+    <!-- View Opportunities -->
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -170,7 +156,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                     </div>
 
                     <?php
-                    // Attempt select query execution
                     $sql = "SELECT opportunities.opportunity_id AS opportunity_id, opportunities.event_id AS event_id, role_name, description, start_date, start_time, end_date, end_time, total_positions, COUNT(engagement_id) AS positions_filled
                     FROM opportunities LEFT JOIN engagements ON opportunities.opportunity_id = engagements.opportunity_id
                     WHERE opportunities.event_id = '{$_GET["event_id"]}'
@@ -203,7 +188,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                 }
                                 echo "</tbody>";
                             echo "</table>";
-                            // Free result set
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>No opportunities were found.</em></p>";
@@ -212,7 +196,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
 
-                    // Close connection
                     mysqli_close($link);
                     ?>
                 </div>

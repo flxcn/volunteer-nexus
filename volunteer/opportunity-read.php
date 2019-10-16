@@ -1,37 +1,31 @@
 <?php
-// Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
+// Make sure user is logged in
+if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] == FALSE){
     header("location: login.php");
     exit;
 }
 
-// Check existence of id parameter before processing further
-if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
-    // Include config file
-    require_once "../config.php";
+require_once "../config.php";
 
-    // Prepare a select statement
+//Data Validation
+if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
+
     $sql = "SELECT * FROM opportunities WHERE opportunity_id = ?";
 
     if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
 
-        // Set parameters
+        // Set params
         $param_opportunity_id = trim($_GET["opportunity_id"]);
 
-        // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
             $result = mysqli_stmt_get_result($stmt);
 
             if(mysqli_num_rows($result) == 1){
-                /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-                // Retrieve individual field value
                 $sponsor_id = $row["sponsor_id"];
                 $role_name = $row["role_name"];
                 $description = $row["description"];
@@ -45,25 +39,21 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                 //{7} $positions_available = $[];
 
             } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
+                //NOTE: Error!
+                header("Location: error.php");
                 exit();
             }
 
         } else{
-            echo "Oops! Something went wrong. Please try again later.";
+            echo "ERROR! Something went wrong...";
         }
     }
 
-    // Close statement
     mysqli_stmt_close($stmt);
-
-
-    // Close connection
     mysqli_close($link);
 
 } else{
-    // URL doesn't contain id parameter. Redirect to error page
+    //NOTE: Error!
     header("location: error.php");
     exit();
 }
@@ -73,16 +63,9 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 <head>
     <meta charset="UTF-8">
     <title>View Opportunity</title>
+    <!--Load required libraries-->
+    <?php include '../head.php'?>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <body>
 
