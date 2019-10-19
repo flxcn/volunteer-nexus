@@ -66,6 +66,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
+    // Validate last name
+    if(empty(trim($_POST["last_name"]))){
+        $last_name_error = "Please enter your last name.";
+    } else{
+        $last_name = trim($_POST["last_name"]);
+    }
+
     // Validate graduation_year
     if(trim($_POST["graduation_year"])=="Select year"){
         $graduation_year_error = "Please enter your graduation year.";
@@ -80,12 +87,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $first_name = trim($_POST["first_name"]);
     }
 
-    // Validate last name
-    if(empty(trim($_POST["last_name"]))){
-        $last_name_error = "Please enter your last name.";
-    } else{
-        $last_name = trim($_POST["last_name"]);
-    }
+
 
     // Making sure there are no errors
     if(empty($password_error) && empty($confirm_password_error) && empty($graduation_year_error) && empty($first_name_error) && empty($last_name_error)){
@@ -143,15 +145,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           </div>
 
           <!--form for last name-->
-          <div class="form-group <?php echo (!empty($last_name_error)) ? 'has-error' : ''; ?>">
-              <label>Last Name</label>
+          <div class="form-group <?php if(!empty($last_name_error)){echo'has-error';} ?>">
+              <label for="last_name">Last Name</label>
               <input type="text" name="last_name" class="form-control" placeholder="Last Name" value="<?php echo $last_name; ?>">
               <span class="help-block"><?php echo $last_name_error; ?></span>
           </div>
 
           <!--form for graduation_year-->
-          <div class="form-group <?php echo (!empty($graduation_year_error)) ? 'has-error' : ''; ?>">
-              <label>Graduation Year</label>
+          <div class="form-group <?php if(!empty($graduation_year_error)){echo'has-error';}  ?>">
+              <label for="graduation_year">Graduation Year</label>
               <select class="form-control" name="graduation_year" placeholder="Graduation Year" value="<?php echo $graduation_year; ?>">
                 <option>Select year</option>
                 <option>2020</option>
