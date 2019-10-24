@@ -1,15 +1,17 @@
 <?php
+// Initialize the session
 session_start();
 
-//Make sure user is logged in
+// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
+// Include config file
 require_once "../config.php";
 
-//Define all variables
+// Define variables and initialize with empty values
 $event_name = "";
 
 //NOTE: this value will be readonly {1}
@@ -28,7 +30,6 @@ $registration_end = "";
 $event_start = "";
 $event_end = "";
 
-//Define all error varibles
 $event_name_error = "";
 $sponsor_name_error = "";
 $description_error = "";
@@ -42,9 +43,9 @@ $registration_end_error = "";
 $event_start_error = "";
 $event_end_error = "";
 
-// Data Validation + SQL
+// Processing form data when form is submitted
 if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
-
+    // Get hidden input value
     $event_id = $_POST["event_id"];
 
     // Validate event name
@@ -143,13 +144,16 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
         $event_end = $input_event_end;
     }
 
+    // Check input errors before inserting in database
     if(empty($event_name_error) && empty($sponsor_name_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
+        // Prepare an update statement
         $sql = "UPDATE events SET event_name=?, sponsor_name=?, description=?, location=?, contribution_type=?, contact_name=?, contact_phone=?, contact_email=?, registration_start=?, registration_end=?, event_start=?, event_end=? WHERE event_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ssssssssssssi", $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end, $param_event_id);
 
-            // Set params
+            // Set parameters
             $param_event_name = $event_name;
             $param_sponsor_name = $sponsor_name;
             $param_description = $description;
@@ -165,8 +169,9 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
 
             $param_event_id = $event_id;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                //NOTE: Success!
+                // Records updated successfully. Redirect to landing page
                 header("location: events.php");
                 exit();
             } else{
@@ -181,20 +186,26 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
     // Close connection
     mysqli_close($link);
 } else{
+    // Check existence of id parameter before processing further
     if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
+        // Get URL parameter
         $event_id =  trim($_GET["event_id"]);
 
+        // Prepare a select statement
         $sql = "SELECT * FROM events WHERE event_id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "i", $param_event_id);
 
-            // Set params
+            // Set parameters
             $param_event_id = $event_id;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
 
                 if(mysqli_num_rows($result) == 1){
+                    /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                     // Retrieve individual field value
@@ -212,21 +223,23 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                     $event_end = $row["event_end"];
 
                 } else{
-                    //NOTE: Error!
+                    // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
                     exit();
                 }
 
             } else{
-                echo "ERROR! Soemthing went wrong...";
+                echo "Oops! Something went wrong. Please try again later.";
             }
         }
 
+        // Close statement
         mysqli_stmt_close($stmt);
-        mysqli_close($link);
 
+        // Close connection
+        mysqli_close($link);
     }  else{
-        //NOTE: ERROR!
+        // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
     }
@@ -261,6 +274,14 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
       date_input.datepicker(options);
     })
     </script>
+
+    <!--CSS-->
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 
 </head>
 <body>

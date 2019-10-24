@@ -9,8 +9,6 @@
             margin-top: 0;
         }
     </style>
-
-    <!--Activate the bootstrap tooltips-->
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -34,6 +32,7 @@
 
                     <?php
                     require_once "../config.php";
+                    // Attempt select query execution
 
                     $sql = "SELECT sponsors.sponsor_name AS sponsor_name, sponsors.sponsor_id AS sponsor_id, SUM(engagements.contribution_value) AS total_contribution_value
                     FROM sponsors INNER JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id
@@ -63,6 +62,7 @@
                                 }
                                 echo "</tbody>";
                             echo "</table>";
+                            // Free result set
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>As you participate in opportunities, your progress will automatically appear here.</em></p>";

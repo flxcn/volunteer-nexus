@@ -1,19 +1,25 @@
 <?php
+// Initialize the session
 session_start();
 
-// Make sure user is logged in
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == true){
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
+// Include config file
 require_once '../config.php';
 
-// Define all variables
-$email = ""; //NOTE: this value will be readonly {1}
+// Define variables and initialize with empty values
+$email = "";
+
+//NOTE: this value will be readonly {1}
 $event_name = "";
 $role_name = "";
-$sponsor_id = $_SESSION["sponsor_id"]; //NOTE: this value will be readonly {1}
+$sponsor_id = $_SESSION["sponsor_id"];
+
+//NOTE: this value will be readonly {1}
 $contribution_value = "";
 $status = "";
 $contact_phone = "";
@@ -23,7 +29,7 @@ $registration_end = "";
 $event_start = "";
 $event_end = "";
 
-//Define all error variables
+//define and initialize error message variables
 $event_name_error = "";
 $sponsor_error = "";
 $description_error = "";
@@ -37,7 +43,7 @@ $registration_end_error = "";
 $event_start_error = "";
 $event_end_error = "";
 
-// Data Validation + SQL
+// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate event name
@@ -136,12 +142,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $event_end = $input_event_end;
     }
 
-    // Check to make sure all errors are clear
+    // Check input errors before inserting in database
     if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
-
+        // Prepare an insert statement
         $sql = "INSERT INTO events (event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_event_name, $param_sponsor, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
 
             // Set parameters
@@ -158,8 +165,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_event_start = $event_start;
             $param_event_end = $event_end;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                //NOTE: Success!
+                // Records created successfully. Redirect to landing page
                 header("Location: index.php");
                 exit();
             } else{
@@ -203,7 +211,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       date_input.datepicker(options);
     })
     </script>
-    
 </head>
 <body>
     <div class="wrapper">

@@ -4,9 +4,10 @@
 </head>
 <body>
 <?php
+// Initialize the session
 session_start();
 
-//Make sure user is loged in
+// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -17,22 +18,25 @@ require_once '../config.php';
 
 if($_SERVER["REQUEST_METHOD"] == "GET")
 {
-    // Check that engagement_id and status are set
+    // Check input errors before inserting in database
     if(isset($_GET["engagement_id"]) && isset($_GET["status"]))
     {
+        // Prepare an insert statement
         $sql = "UPDATE engagements SET status=? WHERE engagement_id=?";
 
         if($stmt = mysqli_prepare($link, $sql))
         {
+              // Bind variables to the prepared statement as parameters
               mysqli_stmt_bind_param($stmt, "ii", $param_status, $param_engagement_id);
 
-              // Set params
+              // Set parameters
               $param_engagement_id = $_GET["engagement_id"];
               $param_status = $_GET["status"];
 
+              // Attempt to execute the prepared statement
               if(mysqli_stmt_execute($stmt))
               {
-                  //NOTE: ERROR!
+                  // Records created successfully. Redirect to landing page
                   if($_GET["status"] == 1)
                     echo "<b>Confirmed!</b>";
                   if($_GET["status"] == 0)
@@ -45,6 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 
           }
 
+          // Close statement
           mysqli_stmt_close($stmt);
     }
 

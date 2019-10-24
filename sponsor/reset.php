@@ -2,22 +2,23 @@
 // Initialize the session
 session_start();
 
-// Make sure user is logged in
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FALSE){
+// Check if the user is logged in, if not then redirect to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
+// Include config file
 require_once "../config.php";
 
-// Define all variables
+// Define variables and initialize with empty values
 $new_password = "";
 $confirm_password = "";
 
 $new_password_error = "";
 $confirm_password_error = "";
 
-//Data Validation and SQL
+// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate new password
@@ -39,26 +40,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
-    // Check that all error variables are clear
+    // Check input errors before updating the database
     if(empty($new_password_error) && empty($confirm_password_error)){
         // Prepare an update statement
         $sql = "UPDATE sponsors SET password = ? WHERE username = ?";
 
         if($stmt = mysqli_prepare($link, $sql)){
-
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_password, $param_username);
 
-            // Set params
+            // Set parameters
             $param_password = password_hash($new_password, PASSWORD_DEFAULT);
             $param_username = $_SESSION["username"];
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                //Success!
+                // Password updated successfully. Destroy the session, and redirect to login page
                 session_destroy();
-                header("Location: login.php");
+                header("location: login.php");
                 exit();
             } else{
-                echo "Something went wrong...";
+                echo "Oops! Something went wrong. Please try again later.";
             }
         }
 
@@ -80,6 +82,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <!--Load required libraries-->
         <?php include '../head.php'?>
 
+    <style type="text/css">
+        .wrapper{ width: 350px; padding: 20px; }
+    </style>
 </head>
 <body>
     <?php $thisPage='Reset'; include 'navbar.php';?>

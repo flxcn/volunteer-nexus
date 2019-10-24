@@ -2,27 +2,31 @@
 // Initialize the session
 session_start();
 
-// Make sure user is logged in
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FALSE){
-    header("Location: login.php");
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
+    header("location: login.php");
     exit;
 }
 
+// Process delete operation after confirmation
 if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
+  // Include config file
   require_once "../config.php";
 
-  //SQL: Delete Engagement
+  // Prepare a delete statement
   $sql = "DELETE FROM engagements WHERE engagement_id = ? AND sponsor_id = ?";
 
   if($stmt = mysqli_prepare($link, $sql)){
+    // Bind variables to the prepared statement as parameters
     mysqli_stmt_bind_param($stmt, "ii", $param_engagement_id, $param_sponsor_id);
 
-    // Set params
+    // Set parameters
     $param_engagement_id = trim($_POST["engagement_id"]);
     $param_sponsor_id = trim($_SESSION["sponsor_id"]);
 
+    // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){
-      //SUCCESS!
+      // Records deleted successfully. Redirect to landing page
       $opportunity_id = $_POST['opportunity_id'];
       header("Location: opportunity-read.php?opportunity_id=$opportunity_id");
       exit();
@@ -31,13 +35,15 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
     }
   }
 
+  // Close statement
   mysqli_stmt_close($stmt);
+
+  // Close connection
   mysqli_close($link);
 } else{
-
-  // Check that engagement_id is present
+  // Check existence of id parameter
   if(empty(trim($_GET["engagement_id"]))){
-    //NOTE: ERROR!
+    // URL doesn't contain id parameter. Redirect to error page
     header("location: error.php");
     exit();
   }
@@ -50,6 +56,12 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"]) && isset($_
 
     <!--Load required libraries-->
     <?php include '../head.php'?>
+
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">

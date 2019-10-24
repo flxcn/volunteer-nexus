@@ -2,9 +2,9 @@
 // Initialize the session
 session_start();
 
-//Make sure user is logged in
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FALSE){
-    header("Location: login.php");
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
+    header("location: login.php");
     exit;
 }
 ?>
@@ -51,7 +51,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FAL
                     </div>
 
                     <?php
+                    // Include config file
                     require_once "../config.php";
+                    // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
                     $sql = "SELECT * FROM events
@@ -90,6 +92,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FAL
                                 }
                                 echo "</tbody>";
                             echo "</table>";
+                            // Free result set
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>No events were found.</em></p>";
@@ -98,6 +101,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FAL
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
 
+                    // Close connection
                     mysqli_close($link);
                     ?>
                 </div>

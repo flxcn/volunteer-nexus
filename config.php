@@ -5,7 +5,7 @@ define('USERNAME', 'root');
 define('PASSWORD', 'root');
 define('DB_NAME', 'volunteer_nexus');
 
-/*only for MAMP server (testing) Change to the bluehost one*/
+/*only for MAMP server (testing)*/
 define('PORT', 8889);
 
 $link = mysqli_connect(HOST, USERNAME, PASSWORD, DB_NAME, PORT);
@@ -17,7 +17,7 @@ if($link === false){
 /*only for testing; reports all errors, disable in release*/
 ini_set('display_errors',1); error_reporting(E_ALL);
 
-//OLD; Check web server for updated config file
+
 /*for bluehost*/
 /*
 define('DB_SERVER', 'localhost');

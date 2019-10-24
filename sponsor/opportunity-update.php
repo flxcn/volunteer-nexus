@@ -1,12 +1,14 @@
 <?php
+// Initialize the session
 session_start();
 
-//Make sure user is logged in
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FALSE){
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
+// Include config file
 require_once "../config.php";
 
 // Define variables and initialize with empty values
@@ -31,9 +33,9 @@ $contribution_value_error = "";
 $needs_verification_error = "";
 
 
-//Data Validation + SQL
+// Processing form data when form is submitted
 if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
-
+    // Get hidden input value
     $event_id = $_POST["event_id"];
     $opportunity_id = $_POST["opportunity_id"];
 
@@ -106,15 +108,16 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     $needs_verification = $input_needs_verification;
 
 
-    // Check that all error variables are clear
+    // Check input errors before inserting in database
     if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an update statement
         $sql = "UPDATE opportunities SET role_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=?, needs_verification=? WHERE opportunity_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ssssssiiii", $param_role_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $opportunity_id);
 
-            // Set params
+            // Set parameters
             $param_role_name = $role_name;
             $param_description = $description;
             $param_start_date = $start_date;
@@ -127,12 +130,13 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
 
             $param_opportunity_id = $opportunity_id;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                //Success!
+                // Records updated successfully. Redirect to landing page
                 header("Location: event-read.php?event_id=" . $event_id);
                 exit();
             } else{
-                echo "ERROR! Something went wrong...";
+                echo "Something went wrong. Please try again later.";
             }
         }
 
@@ -143,23 +147,26 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     // Close connection
     mysqli_close($link);
 } else{
-    // Check for opportunity_id
+    // Check existence of id parameter before processing further
     if(isset($_GET["opportunity_id"]) && !empty(trim($_GET["opportunity_id"]))){
-
+        // Get URL parameter
         $opportunity_id =  trim($_GET["opportunity_id"]);
 
+        // Prepare a select statement
         $sql = "SELECT * FROM opportunities WHERE opportunity_id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
-
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
 
-            // Set params
+            // Set parameters
             $param_opportunity_id = $opportunity_id;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
 
                 if(mysqli_num_rows($result) == 1){
+                    /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
                     // Retrieve individual field value
@@ -174,7 +181,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                     $needs_verification = $row["needs_verification"];
 
                 } else{
-                    //NOTE: Error!
+                    // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
                     exit();
                 }
@@ -184,11 +191,13 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
             }
         }
 
+        // Close statement
         mysqli_stmt_close($stmt);
-        mysqli_close($link);
 
+        // Close connection
+        mysqli_close($link);
     }  else{
-        //NOTE: Error!
+        // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
     }
@@ -223,6 +232,14 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
       date_input.datepicker(options);
     })
     </script>
+
+    <!--CSS-->
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 
 </head>
 <body>

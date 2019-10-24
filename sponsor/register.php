@@ -1,7 +1,8 @@
 <?php
+// Include config file
 require_once "../config.php";
 
-// Define all variables
+// Define variables and initialize with empty values
 //$sponsor_id = "";
 $sponsor_name = "";
 $username = "";
@@ -34,7 +35,7 @@ $advisor3_name_error = "";
 $advisor3_email_error = "";
 $advisor3_phone_error = "";
 
-// Data Validation + SQL
+// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   // Validate username (email)
@@ -45,11 +46,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $sql = "SELECT sponsor_id FROM sponsors WHERE username = ?";
 
       if($stmt = mysqli_prepare($link, $sql)){
+          // Bind variables to the prepared statement as parameters
           mysqli_stmt_bind_param($stmt, "s", $param_username);
 
+          // Set parameters
           $param_username = trim($_POST["username"]);
 
+          // Attempt to execute the prepared statement
           if(mysqli_stmt_execute($stmt)){
+              /* store result */
               mysqli_stmt_store_result($stmt);
 
               if(mysqli_stmt_num_rows($stmt) == 1){
@@ -62,6 +67,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           }
       }
 
+      // Close statement
       mysqli_stmt_close($stmt);
   }
 
@@ -126,15 +132,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 
-    // Check that all error variables are clear
+    // Check input errors before inserting in database
     if(empty($username_error) && empty($password_error) && empty($confirm_password_error) && empty($contribution_type_error) && empty($sponsor_name_error)  && empty($advisor1_name_error) && empty($advisor1_email_error) && empty($advisor1_phone_error)){
 
+        // Prepare an insert statement
         $sql = "INSERT INTO sponsors (sponsor_name, username, password, contribution_type, advisor1_name, advisor1_email, advisor1_phone, advisor2_name, advisor2_email, advisor2_phone, advisor3_name, advisor3_email, advisor3_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "sssssssssssss", $param_sponsor_name, $param_username, $param_password, $param_contribution_type, $param_advisor1_name, $param_advisor1_email, $param_advisor1_phone, $param_advisor2_name, $param_advisor2_email, $param_advisor2_phone, $param_advisor3_name, $param_advisor3_email, $param_advisor3_phone);
 
-            // Set params
+            // Set parameters
             $param_sponsor_name = $sponsor_name;
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
@@ -149,8 +157,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_advisor3_email = $advisor3_email;
             $param_advisor3_phone = $advisor3_phone;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // SUCCESS!
+                // Redirect to login page
                 header("location: login.php");
             } else{
                 echo "Something went wrong. Please try again later.";
@@ -186,6 +195,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
     </script>
+    <style type="text/css">
+        .wrapper{ width: 350px; padding: 20px; }
+    </style>
 </head>
 <body>
     <div class="wrapper">

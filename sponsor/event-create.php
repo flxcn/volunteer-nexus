@@ -1,15 +1,17 @@
 <?php
+// Initialize the session
 session_start();
 
-//Make sure user is logged in
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FALSE){
-    header("Location: login.php");
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
+    header("location: login.php");
     exit;
 }
 
+// Include config file
 require_once '../config.php';
 
-// Define all variables
+// Define variables and initialize with empty values
 $sponsor_id = $_SESSION["sponsor_id"];
 $event_name = "";
 
@@ -21,7 +23,6 @@ $location = "";
 
 //NOTE: this value will be readonly {1}
 $contribution_type = $_SESSION["contribution_type"];
-
 $contact_name = "";
 $contact_phone = "";
 $contact_email = "";
@@ -30,7 +31,7 @@ $registration_end = "";
 $event_start = "";
 $event_end = "";
 
-//Define all error variables
+//define and initialize error message variables
 $event_name_error = "";
 $sponsor_name_error = "";
 $description_error = "";
@@ -44,7 +45,7 @@ $registration_end_error = "";
 $event_start_error = "";
 $event_end_error = "";
 
-// Data Validation + SQL
+// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Validate event name
@@ -55,6 +56,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $event_name = $input_event_name;
     }
 
+    // Validate sponsor //NOTE: refer to-do list {1}
     $sponsor_name = trim($_POST["sponsor_name"]);
 
     // Validate description // NOTE: refer to-do list {3}
@@ -138,9 +140,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $sql = "INSERT INTO events (sponsor_id, event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "issssssssssss", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
 
-            // Set params
+            // Set parameters
             $param_sponsor_id = $sponsor_id;
             $param_event_name = $event_name;
             $param_sponsor_name = $sponsor_name;
@@ -155,12 +158,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_event_start = $event_start;
             $param_event_end = $event_end;
 
+            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                //NOTE: Succes!
-                header("Location: events.php");
+                // Records created successfully. Redirect to landing page
+                header("location: events.php");
                 exit();
             } else{
-                echo "Something went wrong... If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
+                echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
             }
         }
 
@@ -204,6 +208,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       date_input.datepicker(options);
     })
     </script>
+
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
