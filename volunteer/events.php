@@ -1,10 +1,11 @@
 <?php
+// Initialize the session
 session_start();
 
-//Make sure user is logged in
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] == FALSE)
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true)
 {
-    header("Location: login.php");
+    header("location: login.php");
     exit;
 }
 ?>
@@ -16,9 +17,18 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] ==
     <meta charset="UTF-8">
     <title>Find Events</title>
 
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
 
+        <!--Load required libraries-->
+        <?php include '../head.php'?>
+
+    <style type="text/css">
+        .wrapper{
+            margin: 0 auto;
+        }
+        .page-header h2{
+            margin-top: 0;
+        }
+    </style>
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -45,8 +55,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] ==
                     </div>
 
                     <?php
+                    // Include config file
                     require_once "../config.php";
-
+                    // Attempt select query execution
                     $sql = "SELECT * FROM events WHERE registration_start <= CURDATE() AND registration_end >= CURDATE() ORDER BY registration_end";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -77,6 +88,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] ==
                                 }
                                 echo "</tbody>";
                             echo "</table>";
+                            // Free result set
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>No events were found.</em></p>";
@@ -85,6 +97,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] ==
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
 
+                    // Close connection
                     mysqli_close($link);
                     ?>
                 </div>

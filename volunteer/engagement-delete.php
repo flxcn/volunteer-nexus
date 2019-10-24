@@ -1,42 +1,49 @@
 <?php
+// Initialize the session
 session_start();
 
-// Make sure user is logged in
+// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
-require_once "../config.php";
-
+// Process delete operation after confirmation
 if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
+  // Include config file
+  require_once "../config.php";
 
+  // Prepare a delete statement
   $sql = "DELETE FROM engagements WHERE engagement_id = ? AND volunteer_id = ?";
 
   if($stmt = mysqli_prepare($link, $sql)){
+    // Bind variables to the prepared statement as parameters
     mysqli_stmt_bind_param($stmt, "ii", $param_engagement_id, $param_volunteer_id);
 
-    // Set params
+    // Set parameters
     $param_engagement_id = trim($_POST["engagement_id"]);
     $param_volunteer_id = trim($_SESSION["volunteer_id"]);
 
+    // Attempt to execute the prepared statement
     if(mysqli_stmt_execute($stmt)){
-      //NOTE: Success!
-      header("Location: dashboard.php");
+      // Records deleted successfully. Redirect to landing page
+      header("location: dashboard.php");
       exit();
     } else{
       echo "Oops! Something went wrong. Please try again later.";
     }
   }
 
+  // Close statement
   mysqli_stmt_close($stmt);
-  mysqli_close($link);
 
+  // Close connection
+  mysqli_close($link);
 } else{
-  // Make sure engagement_id is not empty
+  // Check existence of id parameter
   if(empty(trim($_GET["engagement_id"]))){
-    //Error!
-    header("Location: error.php");
+    // URL doesn't contain id parameter. Redirect to error page
+    header("location: error.php");
     exit();
   }
 }
@@ -47,9 +54,15 @@ if(isset($_POST["engagement_id"]) && !empty($_POST["engagement_id"])){
     <meta charset="UTF-8">
     <title>Delete Engagement</title>
 
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
+        <!--Load required libraries-->
+        <?php include '../head.php'?>
 
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">

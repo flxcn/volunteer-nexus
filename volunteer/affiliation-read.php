@@ -1,7 +1,8 @@
 <?php
+// Initialize the session
 session_start();
 
-// Make sure user is logged in
+// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -28,8 +29,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
             margin-top: 0;
         }
     </style>
-
-    <!-- Toggle Bootstrap Tooltips -->
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -53,7 +52,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     </div>
 
                     <?php
+                    // Include config file
                     require_once "../config.php";
+                    // Attempt select query execution
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_id"];
                     $sql = "SELECT *
@@ -88,6 +89,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                 }
                                 echo "</tbody>";
                             echo "</table>";
+                            // Free result set
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>No past engagements were found.</em></p>";

@@ -28,6 +28,7 @@
                     <?php
                     if(session_status() !== PHP_SESSION_ACTIVE) session_start();
                     require_once "../config.php";
+                    // Attempt select query execution
 
                     $sql =
                     "SELECT engagements.engagement_id AS engagement_id, opportunities.opportunity_id AS opportunity_id, opportunities.start_date AS start_date, opportunities.end_date AS end_date, opportunities.start_time AS start_time, opportunities.end_time AS end_time, events.event_name AS event_name, opportunities.role_name AS role_name
@@ -63,6 +64,7 @@
                                 }
                                 echo "</tbody>";
                             echo "</table>";
+                            // Free result set
                             mysqli_free_result($result);
                         } else{
                             echo "<p class='lead'><em>No upcoming engagements were found.</em></p>";

@@ -1,8 +1,9 @@
 <?php
+// Initialize the session
 session_start();
 
-// Make sure user is logged in
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] == FALSE)
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true)
 {
     header("location: login.php");
     exit;
