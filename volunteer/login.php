@@ -23,8 +23,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate username
     if(empty(trim($_POST["username"]))) {
         $username_error = "Please enter your email address.";
-    } else if (strpos(trim($_POST["username"]), "@eanesisd.net") !== false) {
-        $username_error = "Sorry, email must be in the eanesisd.net domain";
+    } else if (strpos($mystring, "@eanesisd.net") !== false) {
+     echo "The string '$findme' was found in the string '$mystring'";
+         echo " and exists at position $pos";
+    }){
+
     } else {
         $username = trim($_POST["username"]);
     }
