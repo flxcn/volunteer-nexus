@@ -30,10 +30,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FAL
         });
     </script>
 
-    <!-- AJAX -->
+    <!--AJAX-->
     <script>
       function showStatus(id,num) {
-        // check for parameters
         if (id == "" && num == ""){
           return;
         } else
@@ -45,11 +44,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] == FAL
 
           xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-              // replaces the element with the response from the php file
               document.getElementById("statusOf"+id).innerHTML = this.responseText;
             }
           };
-          // sends the parameters to engagement_verify to be processed
           xmlhttp.open("GET","engagement-verify.php?engagement_id="+id+"&status="+num,true);
           xmlhttp.send();
         }
