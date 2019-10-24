@@ -18,6 +18,7 @@ if(isset($_SESSION["sponsor_id"])){
     if($stmt = mysqli_prepare($link, $sql)){
         mysqli_stmt_bind_param($stmt, "i", $param_sponsor_id);
 
+        // params
         $param_sponsor_id = trim($_SESSION["sponsor_id"]);
 
         if(mysqli_stmt_execute($stmt)){
@@ -33,6 +34,9 @@ if(isset($_SESSION["sponsor_id"])){
                 header("location: error.php");
                 exit();
             }
+
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
         }
     }
 
