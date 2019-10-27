@@ -23,10 +23,15 @@ $sponsor_id_error = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-  // Validate username (email)
-  if(empty(trim($_POST["sponsor_name"]))){
+  // Validate sponsor name
+  if(empty(trim($_POST["sponsor_name"])))
+  {
       $sponsor_name_error = "Please enter a sponsor name.";
-  } else{
+  } else if((trim($_POST["sponsor_name"]))=="Select sponsor")
+  {
+      $sponsor_name_error = "Please enter a sponsor name.";
+  }
+    else{
       // Prepare a select statement
       $sql = "SELECT sponsor_id FROM sponsors WHERE sponsor_name = ?";
 
@@ -100,14 +105,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <title>Affiliation Sign Up</title>
 
-        <!--Load required libraries-->
-        <?php $pageContent='Form'?>
-        <?php include '../head.php'?>
-
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
+    <!--Load required libraries-->
+    <?php $pageContent='Form'?>
+    <?php include '../head.php'?>
 </head>
 <body>
     <div class="wrapper">
@@ -121,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               <select class="form-control" name="sponsor_name" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
                 <option>Select sponsor</option>
                 <option>Student Council</option>
-                <option>Model United Nations</option>
+                <!-- <option>Model United Nations</option> -->
               </select>
               <span class="help-block"><?php echo $sponsor_name_error; ?></span>
               <input type="hidden" name="volunteer_id" value="<?php echo $volunteer_id; ?>">
