@@ -58,7 +58,8 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
                     //NOTE: may need to sanitize the data in $_SESSION["sponsor_id"];
                     $sql = "SELECT *
-                    FROM engagements INNER JOIN events ON engagements.event_id = events.event_id
+                    FROM engagements
+                    INNER JOIN events ON engagements.event_id = events.event_id
                     WHERE engagements.volunteer_id = '{$_SESSION['volunteer_id']}' AND engagements.sponsor_id = '{$_GET['sponsor_id']}'";
 
                     if($result = mysqli_query($link, $sql)){
