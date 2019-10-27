@@ -78,8 +78,18 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
         <?php include '../head.php'?>
 
     <style type="text/css">
+        body{
+          font: 12px sans-serif;
+        }
         .wrapper{
             margin: 0 auto;
+        }
+        .page-header h2{
+            margin-top: 0;
+        }
+        .table-details{
+          table-layout: fixed;
+          border: none;
         }
     </style>
 </head>
@@ -92,47 +102,46 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="page-header">
+                    <!-- <div class="page-header">
                         <h1>View Opportunity</h1>
-                    </div>
-                    <div class="form-group">
-                        <label>Role Name</label>
-                        <p class="form-control-static"><?php echo $row["role_name"]; ?></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <p class="form-control-static"><?php echo $row["description"]; ?></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Start Date</label>
-                        <p class="form-control-static"><?php echo $row["start_date"]; ?></p>
+                    </div> -->
+                    <div class="page-header clearfix">
+                        <h2 class="pull-left">View Opportunity</h2>
+                        <p><a href='event-read.php?event_id=<?php echo $_GET["event_id"]; ?>' class="btn btn-primary pull-right">Back</a></p>
                     </div>
 
-                    <div class="form-group">
-                        <label>Start Time</label>
-                        <p class="form-control-static"><?php echo $row["start_time"]; ?></p>
-                    </div>
+                    <table class='table table-details'>
+                        <tr>
+                          <th>Role Name</th>
+                          <td><?php echo $row["role_name"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Description</th>
+                          <td><?php echo $row["description"]; ?></td>
+                        </tr>
+                      </table>
 
-                    <div class="form-group">
-                        <label>End Date</label>
-                        <p class="form-control-static"><?php echo $row["end_date"]; ?></p>
-                    </div>
+                      <table class="table table-details">
+                        <tr>
+                          <th>On what date(s)?</th>
+                          <td>From <?php echo $row["start_date"]; ?> to <?php echo $row["end_date"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>At what time(s)?</th>
+                          <td>From <?php echo $row["start_time"]; ?> to <?php echo $row["end_time"]; ?></td>
+                        </tr>
+                    </table>
 
-                    <div class="form-group">
-                        <label>End Time</label>
-                        <p class="form-control-static"><?php echo $row["end_time"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contribution Value</label>
-                        <p class="form-control-static"><?php echo $row["contribution_value"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Total Positions</label>
-                        <p class="form-control-static"><?php echo $row["total_positions"]; ?></p>
-                    </div>
-
+                    <table class="table table-details">
+                      <tr>
+                        <th>Total Positions</th>
+                        <td><?php echo $row["total_positions"]; ?></td>
+                      </tr>
+                      <tr>
+                        <th>Contribution Value</th>
+                        <td><?php echo $row["contribution_value"]; ?></td>
+                      </tr>
+                    </table>
 
                     <div class="form-group">
                       <form action="engagement-create.php" method="post">
@@ -146,9 +155,6 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                       </form>
                     </div>
 
-                    <p>
-                      <a href='event-read.php?event_id=<?php echo $_GET["event_id"]; ?>' class="btn btn-primary">Back</a>
-                    </p>
                 </div>
             </div>
 
