@@ -70,15 +70,25 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Record</title>
+    <title>View Event</title>
 
 
         <!--Load required libraries-->
         <?php include '../head.php'?>
 
     <style type="text/css">
+        body{
+          font: 12px sans-serif;
+        }
         .wrapper{
             margin: 0 auto;
+        }
+        .page-header h2{
+            margin-top: 0;
+        }
+        .table-details{
+          table-layout: fixed;
+          border: none;
         }
     </style>
 </head>
@@ -90,71 +100,65 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="page-header">
+
+                    <!-- <div class="page-header">
                         <h1>View Event</h1>
+                    </div> -->
+
+                    <div class="page-header clearfix">
+                        <h2 class="pull-left">View Event</h2>
+                        <p><a href="events.php" class="btn btn-primary pull-right">Back</a></p>
                     </div>
 
-                    <div class="form-group">
-                        <label>Event Name</label>
-                        <p class="form-control-static"><?php echo $row["event_name"]; ?></p>
-                    </div>
+                    <table class='table table-details'>
+                        <tr>
+                          <th>Event Name</th>
+                          <td><?php echo $row["event_name"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Sponsor Name</th>
+                          <td><?php echo $row["sponsor_name"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Description</th>
+                          <td><?php echo $row["description"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Location</th>
+                          <td><?php echo $row["location"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Contribution Type</th>
+                          <td><?php echo $row["contribution_type"]; ?></td>
+                        </tr>
+                      </table>
 
-                    <div class="form-group">
-                        <label>Sponsor Name</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
-                    </div>
+                      <table class="table table-details">
+                        <tr>
+                          <th>Contact Name(s)</th>
+                          <td><?php echo $row["contact_name"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Contact Phone(s)</th>
+                          <td><?php echo $row["contact_phone"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Contact Email(s)</th>
+                          <td><?php echo $row["contact_email"]; ?></td>
+                        </tr>
+                      </table>
 
-                    <div class="form-group">
-                        <label>Description</label>
-                        <p class="form-control-static"><?php echo $row["description"]; ?></p>
-                    </div>
+                      <table class="table table-details">
+                        <tr>
+                          <th>Registration Duration</th>
+                          <td><?php echo $row["registration_start"]; ?> to <?php echo $row["registration_start"]; ?></td>
+                        </tr>
+                        <tr>
+                          <th>Event Duration</th>
+                          <td><?php echo $row["event_start"]; ?> to <?php echo $row["event_end"]; ?></td>
+                        </tr>
+                    </table>
 
-                    <div class="form-group">
-                        <label>Location</label>
-                        <p class="form-control-static"><?php echo $row["location"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contribution Type</label>
-                        <p class="form-control-static"><?php echo $row["contribution_type"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact Name(s)</label>
-                        <p class="form-control-static"><?php echo $row["contact_name"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact Phone(s)</label>
-                        <p class="form-control-static"><?php echo $row["contact_phone"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact Email(s)</label>
-                        <p class="form-control-static"><?php echo $row["contact_email"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Registration Start Date</label>
-                        <p class="form-control-static"><?php echo $row["registration_start"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Registration End Date</label>
-                        <p class="form-control-static"><?php echo $row["registration_end"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Event Start Date</label>
-                        <p class="form-control-static"><?php echo $row["event_start"]; ?></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Event End Date</label>
-                        <p class="form-control-static"><?php echo $row["event_end"]; ?></p>
-                    </div>
-
-                    <p><a href="events.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>
         </div>
