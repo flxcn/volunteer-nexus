@@ -105,6 +105,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <!--Load required libraries-->
     <?php $pageContent='Form'?>
     <?php include '../head.php'?>
+    
+    <style type="text/css">
+        .wrapper{ width: 350px; padding: 20px; }
+    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -116,7 +120,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor Name</label>
               <select class="form-control" name="sponsor_name" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
-                <option>Select sponsor</option>
+                <!-- <option>Select sponsor</option> -->
                 <option>Student Council</option>
                 <!-- <option>Model United Nations</option> -->
               </select>
