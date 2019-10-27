@@ -1,14 +1,11 @@
 <?php
-// Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
-// Include config file
 require_once "../config.php";
 
 // Define variables and initialize with empty values
@@ -115,7 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <p>Please fill out this form to join an affiliation.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-          <!--form for sponsor_name, student ID-->
+          <!--form for sponsor_name, volunteer id-->
           <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
               <label>Sponsor Name</label>
               <select class="form-control" name="sponsor_name" class="form-control" placeholder="Sponsor Name" value="<?php echo $sponsor_name; ?>">
