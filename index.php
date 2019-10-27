@@ -40,7 +40,7 @@
         <h2>About</h2>
       </div>
       <p><i>VolunteerNexus</i> provides a unified platform to connect students with service opportunities.</p>
-      <p>Currently, <i>VolunteerNexus</i> is only open to <b>Westlake Student Council</b> and is in its beta release.</p>
+      <p>Currently, <i>VolunteerNexus</i> is only open to <b>Westlake Student Council</b>.</p>
       <p>If you are interested in joining the platform in the future, fill out <a href="#"><strong>this form</strong></a>, and we will send you an invite link when it is open. Thanks!</p>
 
       <div class="page-header">
