@@ -79,7 +79,6 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
     <style type="text/css">
         .wrapper{
-            width: 500px;
             margin: 0 auto;
         }
     </style>
