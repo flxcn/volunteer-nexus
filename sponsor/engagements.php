@@ -99,8 +99,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<td>" . $row['event_name'] . "</td>";
                                         echo "<td>";
                                             echo "<div id='statusOf". $row['engagement_id'] ."'>";
-                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",1)' title='Confirm This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-ok'></span></a>";
-                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",0)' title='Deny This Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-remove'></span></a>";
+                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",1)' title='Confirm This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:green'><span class='glyphicon glyphicon-ok'></span></a>";
+                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",0)' title='Deny This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-remove'></span></a>";
                                             echo "</div>";
                                         echo "</td>";
                                     echo "</tr>";

@@ -160,7 +160,7 @@ if(isset($_GET["opportunity_id"])){
                                         echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
                                         echo "<td>" . $row['email_address'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."&engagement_id=". $row['engagement_id'] ."' title='Delete Engagement' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."&engagement_id=". $row['engagement_id'] ."' title='Delete Engagement' data-toggle='tooltip' style='color:red' class='btn btn-link' ><span class='glyphicon glyphicon-trash'></span> Delete</a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

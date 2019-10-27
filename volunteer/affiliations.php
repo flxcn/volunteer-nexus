@@ -55,7 +55,7 @@
                                         echo "<td>" . $row['sponsor_name'] . "</td>";
                                         echo "<td>" . $row['total_contribution_value'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='affiliation-read.php?sponsor_id=". $row['sponsor_id'] ."' title='View My Contributions' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='affiliation-read.php?sponsor_id=". $row['sponsor_id'] ."' title='View My Contributions' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>";
                                             //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";

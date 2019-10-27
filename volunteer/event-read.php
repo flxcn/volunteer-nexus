@@ -78,7 +78,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
     <style type="text/css">
         .wrapper{
-            width: 500px;
             margin: 0 auto;
         }
     </style>
@@ -186,6 +185,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<th>Start Date</th>";
                                         echo "<th>End Date</th>";
                                         echo "<th>Positions Filled</th>";
+echo "<th>Action</th>";
+
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -197,7 +198,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<td>" . $row['end_date'] . " " . $row['end_time'] . "</td>";
                                         echo "<td>" . $row['positions_filled'] . "/" . $row['total_positions'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='opportunity-read.php?event_id=". $_GET["event_id"] ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='opportunity-read.php?event_id=". $_GET["event_id"] ."&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
