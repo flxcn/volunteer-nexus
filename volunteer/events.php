@@ -70,6 +70,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                         echo "<th>Description</th>";
                                         echo "<th>Location</th>";
                                         echo "<th>Event Duration</th>";
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
