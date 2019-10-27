@@ -150,8 +150,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
                       <table class="table table-details">
                         <tr>
-                          <th>Registration Duration</th>
-                          <td><?php echo $row["registration_start"]; ?> to <?php echo $row["registration_start"]; ?></td>
+                          <th style="color:red">Registration Deadline</th>
+                          <td><?php echo $row["registration_start"]; ?></td>
                         </tr>
                         <tr>
                           <th>Event Duration</th>
@@ -189,8 +189,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                         echo "<th>Start Date</th>";
                                         echo "<th>End Date</th>";
                                         echo "<th>Positions Filled</th>";
-echo "<th>Action</th>";
-
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
