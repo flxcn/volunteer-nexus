@@ -34,6 +34,7 @@ body
 .wrapper{
 	/* centered in page */
 	margin: 0 auto;
+	padding: 20px;
 }
 
 .page-header h2{
