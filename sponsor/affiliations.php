@@ -1,8 +1,6 @@
 <?php
-// Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -13,10 +11,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 <head>
     <title>Affiliations</title>
-
     <!--Load required libraries-->
     <?php include '../head.php'?>
-
     <style type="text/css">
         .wrapper{
             margin: 0 auto;
@@ -57,8 +53,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                     FROM volunteers INNER JOIN affiliations ON volunteers.volunteer_id = affiliations.volunteer_id LEFT JOIN engagements ON affiliations.volunteer_id = engagements.volunteer_id
                     WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
 
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
+                    if($result = mysqli_query($link, $sql)) {
+                        if(mysqli_num_rows($result) > 0) {
                             echo "<table class='table'>";
                                 echo "<thead>";
                                     echo "<tr>";
@@ -80,14 +76,13 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                             echo "</table>";
                             // Free result set
                             mysqli_free_result($result);
-                        } else{
+                        } else
+                        {
                             echo "<p class='lead'><em>No affiliated volunteers were found.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
-
-                    // Close connection
                     mysqli_close($link);
                     ?>
                 </div>
