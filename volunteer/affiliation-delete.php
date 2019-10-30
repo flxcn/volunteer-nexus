@@ -59,7 +59,6 @@ if(isset($_POST["affiliation_id"]) && !empty($_POST["affiliation_id"])){
 
     <style type="text/css">
         .wrapper{
-            width: 500px;
             margin: 0 auto;
         }
     </style>
