@@ -1,9 +1,8 @@
 <?php
-// Initialize the session
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
+if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true)
+{
     header("location: login.php");
     exit;
 }
@@ -119,7 +118,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                           <th>Description</th>
                           <td><?php echo $row["description"]; ?></td>
                         </tr>
-                      </table>
+                    </table>
 
                       <table class="table table-details">
                         <tr>
