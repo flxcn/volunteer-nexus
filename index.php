@@ -7,12 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- (START) For Local -->
-<link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
-
-<script src="jQuery/jquery-3.4.1.min.js"></script>
-
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- (END) For Local -->
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
+  <script src="jQuery/jquery-3.4.1.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- (END) For Local -->
 
   <style type="text/css">
       .jumbotron
@@ -50,7 +48,7 @@
       <div class="page-header">
         <h2>Contact</h2>
       </div>
-      <p>If you have any questions, please reach out to Felix at <a>felix@volunteernexus.com</a></p>
+      <p>If you have any questions, please reach out to Felix at <a href="mailto:felix@volunteernexus.com">felix@volunteernexus.com</a></p>
     </div>
   </div>
 </body>
