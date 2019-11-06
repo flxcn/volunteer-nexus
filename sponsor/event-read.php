@@ -95,7 +95,10 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">View Event</h2>
-                        <p><a href="events.php" class="btn btn-primary pull-right">Back</a></p>
+                        <p>
+                          <a href="event-update.php?event_id=<?php echo $_GET["event_id"];?>" class="btn btn-primary pull-right"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                          <a href="events.php" class="btn btn-default pull-right">Back</a>
+                        </p>
                     </div>
 
                     <table class='table table-details'>
