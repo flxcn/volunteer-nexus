@@ -156,7 +156,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
                   if($result = mysqli_query($link, $sql)){
                       if(mysqli_num_rows($result) > 0){
-                          echo "<table class='table table-bordered table-striped'>";
+                          echo "<table class='table table-bordered'>";
                               echo "<thead>";
                                   echo "<tr>";
                                       echo "<th>Role Name</th>";
