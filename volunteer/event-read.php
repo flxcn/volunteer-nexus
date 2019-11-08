@@ -127,7 +127,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                     <table class="table table-details">
                       <tr>
                         <th style="color:red">Registration Deadline</th>
-                        <td><?php echo $row["registration_start"]; ?></td>
+                        <td><?php echo $row["registration_end"]; ?></td>
                       </tr>
                       <tr>
                         <th>Event Duration</th>
