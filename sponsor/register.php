@@ -313,5 +313,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <p>Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
     </div>
+
+    <!-- jQuery, ensures one-time use of submit button -->
+    <script>
+    $("body").on("submit", "form", function() {
+        $(this).submit(function() {
+            return false;
+        });
+        return true;
+    });
+    </script>
+    
 </body>
 </html>

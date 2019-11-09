@@ -207,6 +207,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </form>
     </div>
 
+    <!-- jQuery, ensures one-time use of submit button -->
+    <script>
+    $("body").on("submit", "form", function() {
+        $(this).submit(function() {
+            return false;
+        });
+        return true;
+    });
+    </script>
+
     <?php include '../footer.php';?>
 </body>
 </html>

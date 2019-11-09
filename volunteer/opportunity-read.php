@@ -153,13 +153,21 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
                         <input type="submit" class="btn btn-success" value="Sign up!">
                       </form>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 
+    <!-- jQuery, ensures one-time use of submit button -->
+    <script>
+    $("body").on("submit", "form", function() {
+        $(this).submit(function() {
+            return false;
+        });
+        return true;
+    });
+    </script>
+    
     <?php include '../footer.php';?>
 </body>
 </html>
