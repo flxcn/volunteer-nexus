@@ -1,31 +1,8 @@
 <?php
 require_once 'config.php';
+require 'mailer.php';
 
-// $host = '127.0.0.1';
-// $db   = 'test';
-// $user = 'root';
-// $pass = '';
-// $charset = 'utf8mb4';
-//
-// $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-// $options = [
-//     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-//     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-//     PDO::ATTR_EMULATE_PREPARES   => false,
-// ];
-// try {
-//      $pdo = new PDO($dsn, $user, $pass, $options);
-// } catch (\PDOException $e) {
-//      throw new \PDOException($e->getMessage(), (int)$e->getCode());
-// }
-
-require_once 'mailer.php';
-
-// search through the database to find all rows with the "reminderSent" row set as false;
-// from these, futher filter to the only ones with the opportunity start date being tomorrow;
-// send a message, using the sendMessage() function
-
-// Run SQL Query
+// SQL query to filter tables to only return information about volunteers engaging in opportunities that will happen the next day
 $sql =
 "SELECT
   volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address,
@@ -47,90 +24,94 @@ if($result = mysqli_query($link, $sql)) {
             while($row = mysqli_fetch_array($result)) {
 
               // set recipient name
-							$recipientName	= $row['first_name'] + ' ' + $row['last_name'];
+							$recipientName	= $row['first_name'] . " " . $row['last_name'];
 
               // set recipient email address
 							$recipientEmail = $row['email_address'];
 
               // set subject
-							$messageSubject	= "Don't forget! " + $row['opportunity_name'] + " - Tomorrow!";
+							$messageSubject	= "Don't forget! " . $row['opportunity_name'] . " - Tomorrow!";
 
-              // create HTML message body
+              // set HTML message body
               $messageBody =
               "
               <body>
-                <h1>Hello" + $row['first_name'] + ",</h1>
-                <p>This is a friendly reminder that the <b>" + $row['opportunity_name'] + "</b> opportunity, in the " + "<b>" + $row['event_name']+"</b>" + "is happening tomorrow! Here are some key details to keep you informed:</p>
+                <h2>Hello " . $row['first_name'] . ",</h2>
+                <p>This is a friendly reminder that the <b>" . $row['opportunity_name'] . "</b> opportunity, part of the " . "<b>" . $row['event_name']."</b>" . " event, is happening tomorrow! Here are some key details to keep you informed:</p>
 
                 <table>
                   <tr>
-                    <td>Start Date & Time:</td>
-                  	<td>" + $row['start_date'] + " " + $row['start_time'] + "</td>
+                    <td><b>Start Date & Time:</b></td>
+                  	<td>" . $row['start_date'] . " " . $row['start_time'] . "</td>
                   </tr>
                   <tr>
-                    <td>End Date & Time:</td>
-                  	<td>" + $row['end_date'] + " " + $row['end_time'] + "</td>
+                    <td><b>End Date & Time:</b></td>
+                  	<td>" . $row['end_date'] . " " . $row['end_time'] . "</td>
+                  </tr>
+                  <tr>
+                  </tr>
+                  <tr>
+                  </tr>
+                  <tr>
+                    <td><b>Sponsor Name:</b></td>
+                  	<td>" . $row['sponsor_name'] . "</td>
+                  </tr>
+                  <tr>
+                    <td><b>Location:</b></td>
+                  	<td>" . $row['location'] . "</td>
+                  </tr>
+                  <tr>
+                    <td><b>Description:</b></td>
+                  	<td>" . $row['description'] . "</td>
+                  </tr>
+                  <tr>
+                  </tr>
+                  <tr>
+                  </tr>
+                  <tr>
+                    <td><b>Contact Name:</b></td>
+                  	<td>" . $row['contact_name'] . "</td>
+                  </tr>
+                  <tr>
+                    <td><b>Contact Email:</b></td>
+                  	<td>" . $row['contact_email'] . "</td>
+                  </tr>
+                  <tr>
+                    <td><b>Contact Phone:</b></td>
+                  	<td>" . $row['contact_phone'] . "</td>
+                  </tr>
+                  <tr>
                   </tr>
                 </table>
 
-                <table>
-                  <tr>
-                    <td>Sponsor Name:</td>
-                  	<td>" + $row['sponsor_name'] + "</td>
-                  </tr>
-                  <tr>
-                    <td>Event Name:</td>
-                  	<td>" + $row['event_name'] + "</td>
-                  </tr>
-                  <tr>
-                    <td>Location:</td>
-                  	<td>" + $row['location'] + "</td>
-                  </tr>
-                  <tr>
-                    <td>Description:</td>
-                  	<td>" + $row['description'] + "</td>
-                  </tr>
-                </table>
+                <p>Best Regards,<br>Felix from VolunteerNexus</p>
 
-                <table>
-                  <tr>
-                    <td>Contact Name:</td>
-                  	<td>" + $row['contact_name'] + "</td>
-                  </tr>
-                  <tr>
-                    <td>Contact Email:</td>
-                  	<td>" + $row['contact_email'] + "</td>
-                  </tr>
-                  <tr>
-                    <td>Contact Phone:</td>
-                  	<td>" + $row['contact_phone'] + "</td>
-                  </tr>
-                </table>
               </body>
               ";
 
-              // create text only email body
+              // set text only email body
 							$messageAltBody =
               "
-              Hello" + $row['first_name'] + ",
+              Hello " . $row['first_name'] . ",
               \n
-              \nThis is a friendly reminder that the " + $row['opportunity_name'] + " opportunity, in the " + $row['event_name'] + " is happening tomorrow! Here are some key details to keep you informed:
+              \nThis is a friendly reminder that the " . $row['opportunity_name'] . " opportunity, in the " . $row['event_name'] . " is happening tomorrow! Here are some key details to keep you informed:
               \n
               \n
-              \nStart Date & Time: " + $row['start_date'] + " " + $row['start_time'] + "
-              \nEnd Date & Time:" + $row['end_date'] + " " + $row['end_time'] + "
+              \nStart Date & Time: " . $row['start_date'] . " " . $row['start_time'] . "
+              \nEnd Date & Time:" . $row['end_date'] . " " . $row['end_time'] . "
               \n
-              \nSponsor Name: " + $row['sponsor_name'] + "
-              \nEvent Name: " + $row['event_name'] + "
-              \nLocation: " + $row['location'] + "
-              \nDescription: " + $row['description'] + "
+              \nSponsor Name: " . $row['sponsor_name'] . "
+              \nEvent Name: " . $row['event_name'] . "
+              \nLocation: " . $row['location'] . "
+              \nDescription: " . $row['description'] . "
               \n
-              \nContact Name: " + $row['contact_name'] + "
-              \nContact Email: " + $row['contact_email'] + "
-              \nContact Phone:" + $row['contact_phone'] + "
+              \nContact Name: " . $row['contact_name'] . "
+              \nContact Email: " . $row['contact_email'] . "
+              \nContact Phone:" . $row['contact_phone'] . "
               ";
 
-              sendMessage($recipientName, $recipientEmail, $messageSubject, $messageBody);
+              // call sendMessage function, found in mailer.php
+              sendMessage($recipientName, $recipientEmail, $messageSubject, $messageBody, $messageAltBody);
             }
 
         mysqli_free_result($result);
