@@ -6,7 +6,7 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-function sendMessage($recipientEmail,$recipientName,$messageSubject,$messageBody,$messageAltBody)
+function sendMessage($recipientName, $recipientEmail, $messageSubject, $messageBody, $messageAltBody)
 {
 	// Instantiation and passing `true` enables exceptions
 	$mail = new PHPMailer(true);
