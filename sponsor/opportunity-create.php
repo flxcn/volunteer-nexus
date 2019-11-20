@@ -22,7 +22,7 @@ else
 }
 
 $sponsor_id = trim($_SESSION["sponsor_id"]);
-$role_name = "";
+$opportunity_name = "";
 $description = "";
 $start_date = "";
 $end_date = "";
@@ -36,7 +36,7 @@ $needs_reminder = "";
 //define and initialize error message variables
 $event_id_error = "";
 $sponsor_id_error = "";
-$role_name_error = "";
+$opportunity_name_error = "";
 $description_error = "";
 $start_date_error = "";
 $end_date_error = "";
@@ -53,12 +53,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $event_id = trim($_POST["event_id"]);
     $sponsor_id = trim($_POST["sponsor_id"]);
 
-    // Validate role_name
-    $input_role_name = trim($_POST["role_name"]);
-    if(empty($input_role_name)){
-        $role_name_error = "Please enter a role name.";
+    // Validate opportunity_name
+    $input_opportunity_name = trim($_POST["opportunity_name"]);
+    if(empty($input_opportunity_name)){
+        $opportunity_name_error = "Please enter a role name.";
     } else{
-        $role_name = $input_role_name;
+        $opportunity_name = $input_opportunity_name;
     }
 
     // Validate description
@@ -133,18 +133,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
     // Check input errors before inserting in database
-    if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error) && empty($needs_reminder_error)){
+    if(empty($event_id_error) && empty($sponsor_id_error) && empty($opportunity_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error) && empty($needs_reminder_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification, needs_reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, opportunity_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification, needs_reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssiiii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder);
+            mysqli_stmt_bind_param($stmt, "iissssssiiii", $param_event_id, $param_sponsor_id, $param_opportunity_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder);
 
             // Set parameters
             $param_event_id = $event_id;
             $param_sponsor_id = $sponsor_id;
-            $param_role_name = $role_name;
+            $param_opportunity_name = $opportunity_name;
             $param_description = $description;
             $param_start_date = $start_date;
             $param_end_date = $end_date;
@@ -230,10 +230,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
                         <!--form for opportunity name-->
-                        <div class="form-group <?php echo (!empty($role_name_error)) ? 'has-error' : ''; ?>">
+                        <div class="form-group <?php echo (!empty($opportunity_name_error)) ? 'has-error' : ''; ?>">
                             <label>Opportunity Name</label>
-                            <input type="text" name="role_name" class="form-control" value="<?php echo $role_name; ?>">
-                            <span class="help-block"><?php echo $role_name_error;?></span>
+                            <input type="text" name="opportunity_name" class="form-control" value="<?php echo $opportunity_name; ?>">
+                            <span class="help-block"><?php echo $opportunity_name_error;?></span>
                         </div>
 
                         <!--form for description-->

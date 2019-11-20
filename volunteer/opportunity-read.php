@@ -32,7 +32,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
                 // Retrieve individual field value
                 $sponsor_id = $row["sponsor_id"];
-                $role_name = $row["role_name"];
+                $opportunity_name = $row["opportunity_name"];
                 $description = $row["description"];
                 $start_date = $row["start_date"];
                 $start_time = $row["start_time"];
@@ -111,8 +111,8 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
 
                     <table class='table table-details'>
                         <tr>
-                          <th>Role Name</th>
-                          <td><?php echo $row["role_name"]; ?></td>
+                          <th>Opportunity Name</th>
+                          <td><?php echo $row["opportunity_name"]; ?></td>
                         </tr>
                         <tr>
                           <th>Description</th>
@@ -167,7 +167,7 @@ if(isset($_GET["event_id"]) && isset($_GET["opportunity_id"])){
         return true;
     });
     </script>
-    
+
     <?php include '../footer.php';?>
 </body>
 </html>
