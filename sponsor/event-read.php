@@ -165,10 +165,10 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
                     <?php
                     // Attempt select query execution
-                    $sql = "SELECT opportunities.opportunity_id AS opportunity_id, opportunities.event_id AS event_id, role_name, description, start_date, start_time, end_date, end_time, total_positions, COUNT(engagement_id) AS positions_filled
+                    $sql = "SELECT opportunities.opportunity_id AS opportunity_id, opportunities.event_id AS event_id, opportunity_name, description, start_date, start_time, end_date, end_time, total_positions, COUNT(engagement_id) AS positions_filled
                     FROM opportunities LEFT JOIN engagements ON opportunities.opportunity_id = engagements.opportunity_id
                     WHERE opportunities.event_id = '{$_GET["event_id"]}'
-                    GROUP BY role_name, description, start_date, start_time, end_date, end_time, total_positions, opportunities.opportunity_id";
+                    GROUP BY opportunity_name, description, start_date, start_time, end_date, end_time, total_positions, opportunities.opportunity_id";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -184,7 +184,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['role_name'] . "</td>";
+                                        echo "<td>" . $row['opportunity_name'] . "</td>";
                                         echo "<td>" . $row['description'] . "</td>";
                                         echo "<td>" . $row['start_date'] . " " . $row['start_time'] ."</td>";
                                         echo "<td>" . $row['end_date'] . " " . $row['end_time'] . "</td>";
