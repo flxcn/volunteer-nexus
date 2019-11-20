@@ -21,6 +21,8 @@ $end_time = "";
 $total_positions = "";
 $contribution_value = "";
 $needs_verification = "";
+$needs_reminder = "";
+
 
 $role_name_error = "";
 $description_error = "";
@@ -31,6 +33,7 @@ $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
 $needs_verification_error = "";
+$needs_reminder_error = "";
 
 
 // Processing form data when form is submitted
@@ -107,6 +110,10 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     $input_needs_verification = trim($_POST["needs_verification"]);
     $needs_verification = $input_needs_verification;
 
+    // Validate needs_reminder
+    $input_needs_verification = trim($_POST["needs_reminder"]);
+    $needs_verification = $input_needs_reminder;
+
 
     // Check input errors before inserting in database
     if(empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
@@ -115,7 +122,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssiiii", $param_role_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $opportunity_id);
+            mysqli_stmt_bind_param($stmt, "ssssssiiiii", $param_role_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder, $param_opportunity_id);
 
             // Set parameters
             $param_role_name = $role_name;
@@ -127,6 +134,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
             $param_total_positions = $total_positions;
             $param_contribution_value = $contribution_value;
             $param_needs_verification = $needs_verification;
+            $param_needs_reminder = $needs_reminder;
 
             $param_opportunity_id = $opportunity_id;
 
@@ -179,6 +187,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                     $total_positions = $row["total_positions"];
                     $contribution_value = $row["contribution_value"];
                     $needs_verification = $row["needs_verification"];
+                    $needs_verification = $row["needs_reminder"];
 
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -315,6 +324,15 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                           <input type="radio" name="needs_verification" value="1" <?php if($needs_verification==1){echo "checked";}?>> Yes
                           <input type="radio" name="needs_verification" value="0" <?php if($needs_verification==0){echo "checked";}?>> No
                           <span class="help-block"><?php echo $needs_verification_error;?></span>
+                      </div>
+
+                      <!--form for needs_reminder-->
+                      <div class="form-group <?php echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
+                          <label for="needs_reminder">Needs reminder?</label>
+                          <p>Do volunteers need a reminder the day before?</p>
+                          <input type="radio" name="needs_reminder" value="1" <?php if($needs_reminder==1){echo "checked";}?>> Yes
+                          <input type="radio" name="needs_reminder" value="0" <?php if($needs_reminder==0){echo "checked";}?>> No
+                          <span class="help-block"><?php echo $needs_reminder_error;?></span>
                       </div>
 
                         <input type="hidden" name="opportunity_id" value="<?php echo $_GET['opportunity_id']; ?>"/>

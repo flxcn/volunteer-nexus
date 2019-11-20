@@ -31,6 +31,7 @@ $end_time = "";
 $total_positions = "";
 $contribution_value = "";
 $needs_verification = "";
+$needs_reminder = "";
 
 //define and initialize error message variables
 $event_id_error = "";
@@ -44,6 +45,7 @@ $end_time_error = "";
 $total_positions_error = "";
 $contribution_value_error = "";
 $needs_verification_error = "";
+$needs_reminder_error = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -125,15 +127,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $input_needs_verification = trim($_POST["needs_verification"]);
     $needs_verification = $input_needs_verification;
 
+    // Validate needs_reminder
+    $input_needs_verification = trim($_POST["needs_reminder"]);
+    $needs_verification = $input_needs_reminder;
+
 
     // Check input errors before inserting in database
-    if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error)){
+    if(empty($event_id_error) && empty($sponsor_id_error) && empty($role_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error) && empty($needs_reminder_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, role_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification, needs_reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssiii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification);
+            mysqli_stmt_bind_param($stmt, "iissssssiiii", $param_event_id, $param_sponsor_id, $param_role_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder);
 
             // Set parameters
             $param_event_id = $event_id;
@@ -147,6 +153,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_total_positions = $total_positions;
             $param_contribution_value = $contribution_value;
             $param_needs_verification = $needs_verification;
+            $param_needs_reminder = $needs_reminder;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -285,6 +292,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="radio" name="needs_verification" value="1"> Yes
                             <input type="radio" name="needs_verification" value="0" checked> No
                             <span class="help-block"><?php echo $needs_verification_error;?></span>
+                        </div>
+
+                        <!--form for needs_reminder-->
+                        <div class="form-group <?php echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
+                            <label for="needs_reminder">Needs reminder?</label>
+                            <p>Do volunteers need a reminder the day before?</p>
+                            <input type="radio" name="needs_reminder" value="1"> Yes
+                            <input type="radio" name="needs_reminder" value="0" checked> No
+                            <span class="help-block"><?php echo $needs_reminder_error;?></span>
                         </div>
 
                         <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
