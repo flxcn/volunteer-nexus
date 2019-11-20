@@ -14,7 +14,7 @@ FROM engagements
   INNER JOIN opportunities ON opportunities.opportunity_id = engagements.opportunity_id
 WHERE
   engagements.status != 0 AND
-  engagements.reminder_sent = 0 AND
+  opportunities.needs_reminder = 1 AND
   DATEDIFF(opportunities.start_date, CURDATE()) = 1;
 ";
 
