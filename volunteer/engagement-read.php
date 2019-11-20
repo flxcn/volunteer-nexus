@@ -33,7 +33,7 @@ if(isset($_GET["engagement_id"]) && isset($_GET["opportunity_id"])){
 
                 // Retrieve individual field value
                 $sponsor_id = $row["sponsor_id"];
-                $role_name = $row["role_name"];
+                $opportunity_name = $row["opportunity_name"];
                 $description = $row["description"];
                 $start_date = $row["start_date"];
                 $start_time = $row["start_time"];
@@ -91,8 +91,8 @@ if(isset($_GET["engagement_id"]) && isset($_GET["opportunity_id"])){
                         <h1>View Engagement</h1>
                     </div>
                     <div class="form-group">
-                        <label>Role Name</label>
-                        <p class="form-control-static"><?php echo $row["role_name"]; ?></p>
+                        <label>Opportunity Name</label>
+                        <p class="form-control-static"><?php echo $row["opportunity_name"]; ?></p>
                     </div>
                     <div class="form-group">
                         <label>Description</label>

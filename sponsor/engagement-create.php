@@ -12,28 +12,18 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 require_once '../config.php';
 
 // Define variables and initialize with empty values
-$email = "";
-
-//NOTE: this value will be readonly {1}
 $event_name = "";
-$role_name = "";
+$event_id = "";
+$opportunity_name = "";
+$opportunity_id = "";
 $sponsor_id = $_SESSION["sponsor_id"];
-
-//NOTE: this value will be readonly {1}
-$contribution_value = "";
+$volunteer_name = "";
 $status = "";
-$contact_phone = "";
-$contact_email = "";
-$registration_start = "";
-$registration_end = "";
-$event_start = "";
-$event_end = "";
 
 //define and initialize error message variables
 $event_name_error = "";
-$sponsor_error = "";
-$description_error = "";
-$location_error = "";
+$opportunity_name_error = "";
+$sponsor_id_error = "";
 $contribution_type_error = "";
 $contact_name_error = "";
 $contact_phone_error = "";
