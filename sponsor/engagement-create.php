@@ -11,149 +11,106 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 // Include config file
 require_once '../config.php';
 
-// Define variables and initialize with empty values
+// Define and intialize variables
+$sponsor_id = $_SESSION["sponsor_id"];
+
+$volunteer_name = "";
+$volunteer_id = "";
+
 $event_name = "";
 $event_id = "";
+
 $opportunity_name = "";
 $opportunity_id = "";
-$sponsor_id = $_SESSION["sponsor_id"];
-$volunteer_name = "";
+
+$contribution_value = "";
 $status = "";
 
-//define and initialize error message variables
-$event_name_error = "";
-$opportunity_name_error = "";
+// Define and initialize error message variables
 $sponsor_id_error = "";
-$contribution_type_error = "";
-$contact_name_error = "";
-$contact_phone_error = "";
-$contact_email_error = "";
-$registration_start_error = "";
-$registration_end_error = "";
-$event_start_error = "";
-$event_end_error = "";
 
-// Processing form data when form is submitted
+$volunteer_name_error = "";
+$volunteer_id_error = "";
+
+$event_name_error = "";
+$event_id_error = "";
+
+$opportunity_name_error = "";
+$opportunity_id_error = "";
+
+$contribution_value_error = '';
+$status_error = "";
+
+// Populate volunteer array for "volunteer name" dropdown boxes
+$query =
+"SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
+FROM volunteers
+INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
+WHERE affiliations.sponsor_id = '$sponsor_id'
+ORDER BY volunteers.last_name ASC";
+$result = $db->query($query);
+
+while($row = $result->fetch_assoc()){
+  $full_name = $row['last_name'] . ", " . $row['first_name'];
+  $volunteers[] = array("volunteer_name" => $full_name, "volunteer_id" => $row['volunteer_id']);
+}
+
+// Populate event_name & event_id array for "event name" dropdown boxes
+$query = "SELECT event_id, event_name FROM events WHERE sponsor_id = '$sponsor_id' ORDER BY start_date DESC";
+$result = $db->query($query);
+
+while($row = $result->fetch_assoc()){
+  $events[] = array("event_name" => $row['event_name'], "event_id" => $row['event_id']);
+}
+
+// Populate opportunity_name, opportunity_id, and event_id array for "opportunity name" dropdown boxes
+$query = "SELECT opportunity_id, contribution_value, event_id, opportunity_name FROM opportunities WHERE sponsor_id = '$sponsor_id' ORDER BY start_date DESC";
+$result = $db->query($query);
+
+while($row = $result->fetch_assoc()){
+  $opportunities[$row['event_id']][] = array("opportunity_id" => $row['opportunity_id'], "opportunity_name" => $row['opportunity_name'], "contribution_value" => $row['contribution_value']);
+}
+
+// Initialize JSON Objects
+$jsonVolunteers = json_encode($volunteers);
+$jsonEvents = json_encode($events);
+$jsonOpportunities = json_encode($opportunities);
+
+
+
+
+
+// Process Form Submission
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Validate event name
-    $input_event_name = trim($_POST["event_name"]);
-    if(empty($input_event_name)){
-        $event_name_error = "Please enter an event name.";
-    }else{
-        $event_name = $input_event_name;
-    }
+    $volunteer_id = $input_volunteer_id;
 
-    // Validate sponsor //NOTE: refer to-do list {1}
-    $input_sponsor = trim($_POST["sponsor"]);
-    if(empty($input_sponsor)){
-        $sponsor_error = "Please enter a sponsor.";
-    } else{
-        $sponsor = $input_sponsor;
-    }
+    $event_id = $input_event_id;
 
-    // Validate description // NOTE: refer to-do list {3}
-    $input_description = trim($_POST["description"]);
-    if(empty($input_description)){
-        $description_error = "Please enter a description.";
-    } else{
-        $description = $input_description;
-    }
+    $opportunity_id = $input_opportunity_id;
 
-    // Validate location // NOTE: refer to-do list {3}
-    $input_location = trim($_POST["location"]);
-    if(empty($input_location)){
-        $location_error = "Please enter a location.";
-    } else{
-        $location = $input_location;
-    }
+    $contribution_value = '';
 
-    // Validate contribution_type
-    $input_contribution = trim($_POST["contribution_type"]);
-    if(empty($input_contribution)){
-        $contribution_error = "Please enter a contribution type.";
-    } else{
-        $contribution_type = $contribution_type;
-    }
+    $status = $input_status;
 
-    // Validate contact_name
-    $input_contact_name = trim($_POST["contact_name"]);
-    if(empty($input_contact_name)){
-        $contact_name_error = "Please enter a contact name.";
-    } else{
-        $description = $input_description;
-    }
-
-    // Validate contact_phone
-    $input_contact_phone = trim($_POST["contact_phone"]);
-    if(empty($input_contact_phone)){
-        $contact_phone_error = "Please enter a contact phone.";
-    } else{
-        $contact_phone = $input_contact_phone;
-    }
-
-    // Validate contact_email
-    $input_contact_email = trim($_POST["contact_email"]);
-    if(empty($input_contact_email)){
-        $contact_email_error = "Please enter a contact email.";
-    } else{
-        $contact_email = $input_contact_email;
-    }
-
-    // Validate registration_start
-    $input_registration_start = trim($_POST["registration_start"]);
-    if(empty($input_registration_start)){
-        $registration_start_error = "Please enter a registration start date.";
-    } else{
-        $registration_start = $input_registration_start;
-    }
-
-    // Validate registration_end
-    $input_registration_end = trim($_POST["registration_end"]);
-    if(empty($input_registration_end)){
-        $registration_end_error = "Please enter a registration end date.";
-    } else{
-        $registration_end = $input_registration_end;
-    }
-
-    // Validate event_start
-    $input_event_start = trim($_POST["event_start"]);
-    if(empty($input_event_start)){
-        $event_start_error = "Please enter an event start date.";
-    } else{
-        $event_start = $input_event_start;
-    }
-
-    // Validate event_end
-    $input_event_end = trim($_POST["event_end"]);
-    if(empty($input_event_end)){
-        $event_end_error = "Please enter an event end date.";
-    } else{
-        $event_end = $input_event_end;
-    }
+    $sponsor_id = $_SESSION["sponsor_id"];
 
     // Check input errors before inserting in database
-    if(empty($event_name_error) && empty($sponsor_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
+    if(/*error*/){
         // Prepare an insert statement
-        $sql = "INSERT INTO events (event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO engagements (volunteer_id, event_id, opportunity_id, sponsor_id, contribution_value, status) VALUES (?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_event_name, $param_sponsor, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "iiiiii", $param_volunteer_id, $param_event_id, $param_opportunity_id, $param_sponsor_id, $param_contribution_value, $param_status);
 
             // Set parameters
-            $param_event_name = $event_name;
-            $param_sponsor = $sponsor;
-            $param_description = $description;
-            $param_location = $location;
-            $param_contribution_type = $contribution_type;
-            $param_contact_name = $contact_name;
-            $param_contact_phone = $contact_phone;
-            $param_contact_email = $contact_email;
-            $param_registration_start = $registration_start;
-            $param_registration_end = $registration_end;
-            $param_event_start = $event_start;
-            $param_event_end = $event_end;
+            $param_volunteer_id = $volunteer_id;
+            $param_event_id = $event_id;
+            $param_opportunity_id = $opportunity_id;
+            $param_sponsor_id = $sponsor_id;
+            $param_contribution_value = $contribution_value;
+            $param_status = $status;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -161,7 +118,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 header("Location: index.php");
                 exit();
             } else{
-                echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
+                echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
             }
         }
 
@@ -177,126 +134,95 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Create Event</title>
+    <title>Create Engagement</title>
 
     <!--Load required libraries-->
     <?php $pageContent='Form'?>
     <?php include '../head.php'?>
 
-    <!-- Bootstrap Date-Picker Plugin -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <script type='text/javascript'>
+      <?php
+        echo "var volunteers = $jsonVolunteers; \n";
+        echo "var events = $jsonEvents; \n";
+        echo "var opportunities = $jsonOpportunities; \n";
+      ?>
 
-    <!--datepicker-->
-    <script>
-    $(document).ready(function(){
-      var date_input=$('input[type="date"]'); //our date input has the type "date"
-      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-      var options={
-        format: 'yyyy-mm-dd',
-        container: container,
-        todayHighlight: true,
-        autoclose: true,
-      };
-      date_input.datepicker(options);
-    })
+      function loadVolunteers(){
+        var select = document.getElementById("volunteersSelect");
+        // NOTE: could add a default option such as "Select Volunteer"; just make sure to adjust the array accordingly. Also validate data later.
+        // select.options[0] = new Option('Select Volunteer','0',true,true);
+        for(var i = 0; i < volunteers.length; i++){
+          select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
+        }
+      }
+
+      function loadEvents(){
+        var select = document.getElementById("eventsSelect");
+        select.onchange = updateOpportunities;
+        // See NOTE above.
+        // select.options[0] = new Option('Select Volunteer','0',true,true);
+        for(var i = 0; i < events.length; i++){
+          select.options[i] = new Option(events[i].event_name, events[i].event_id);
+        }
+      }
+
+      function updateOpportunities(){
+        var eventSelect = this;
+        var eventId = this.value;
+        var opportunitySelect = document.getElementById("opportunitiesSelect");
+        subcatSelect.options.length = 0; //delete all options if any present
+        // See NOTE above.
+        // select.options[0] = new Option('Select Opportunity','0',true,true);
+        for(var i = 0; i < opportunities[eventId].length; i++){
+          var opportunityValue = [opportunities[eventId][i].opportunity_id, opportunities[eventId][i].contribution_value];
+          opportunitiesSelect.options[i] = new Option(opportunities[eventId][i].opportunity_name, opportunityValue);
+        }
+      }
     </script>
 </head>
-<body>
+<!-- onload could be revised to be less obtrusive -->
+<body onload='loadVolunteers(); loadEvents();'>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Create Event</h2>
+                        <h2>Create Engagement</h2>
                     </div>
-                    <p>Please fill this form and submit to add a new event to the database.</p>
+                    <p>Please fill this form and submit to add a new engagement for an affiliated volunteer.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-                        <!--form for event name-->
+                        <!--form for volunteer_name-->
+                        <div class="form-group <?php echo (!empty($volunteer_name_error)) ? 'has-error' : ''; ?>">
+                            <label>Volunteer Name</label>
+                            <select name='volunteer_name' id='volunteersSelect' class="form-control">
+                            </select>
+                            <span class="help-block"><?php echo $volunteer_name_error;?></span>
+                        </div>
+
+                        <!--form for event_name-->
                         <div class="form-group <?php echo (!empty($event_name_error)) ? 'has-error' : ''; ?>">
                             <label>Event Name</label>
-                            <input type="text" name="event_name" class="form-control" value="<?php echo $event_name; ?>">
+                            <select name='event_name' id='eventsSelect' class="form-control">
+                            </select>
                             <span class="help-block"><?php echo $event_name_error;?></span>
                         </div>
 
-                        <!--form for sponsor-->
-                        <div class="form-group <?php echo (!empty($sponsor_error)) ? 'has-error' : ''; ?>">
-                            <label>Sponsor</label>
-                            <input name="sponsor" class="form-control"><?php echo $sponsor; ?>
-                            <span class="help-block"><?php echo $sponsor_error;?></span>
+                        <!--form for opportunity_name-->
+                        <div class="form-group <?php echo (!empty($opportunity_name_error)) ? 'has-error' : ''; ?>">
+                            <label>Opportunity Name</label>
+                            <select name='opportunity_name' id='opportunitiesSelect' class="form-control">
+                            </select>
+                            <span class="help-block"><?php echo $opportunity_name_error;?></span>
                         </div>
 
-                        <!--form for description-->
-                        <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Description</label>
-                            <textarea type="text" name="description" class="form-control" value="<?php echo $description; ?>"></textarea>
-                            <span class="help-block"><?php echo $description_error;?></span>
-                        </div>
-
-                        <!--form for location-->
-                        <div class="form-group <?php echo (!empty($location_error)) ? 'has-error' : ''; ?>">
-                            <label>Location</label>
-                            <input type="text" name="location" class="form-control" value="<?php echo $location; ?>">
-                            <span class="help-block"><?php echo $location_error;?></span>
-                        </div>
-
-                        <!--form for contribution_type-->
-                        <div class="form-group <?php echo (!empty($contribution_type_error)) ? 'has-error' : ''; ?>">
-                            <label>Contribution Type</label>
-                            <input type="text" name="contribution_type" class="form-control"><?php echo $contribution_type; ?>
-                            <span class="help-block"><?php echo $contribution_type_error;?></span>
-                        </div>
-
-                        <!--form for contact_name-->
-                        <div class="form-group <?php echo (!empty($contact_name_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Contact Name</label>
-                            <input type="text" name="contact_name" class="form-control" value="<?php echo $contact_name; ?>">
-                            <span class="help-block"><?php echo $contact_name_error;?></span>
-                        </div>
-
-                        <!--form for contact_phone-->
-                        <div class="form-group <?php echo (!empty($contact_phone_error)) ? 'has-error' : ''; ?>">
-                            <label>Contact Phone</label>
-                            <input type="tel" name="contact_phone" class="form-control" value="<?php echo $contact_phone; ?>">
-                            <span class="help-block"><?php echo $contact_phone_error;?></span>
-                        </div>
-
-                        <!--form for contact_email-->
-                        <div class="form-group <?php echo (!empty($contact_email_error)) ? 'has-error' : ''; ?>">
-                            <label>Contact Email</label>
-                            <input type="email" name="contact_email" class="form-control"><?php echo $contact_email; ?>
-                            <span class="help-block"><?php echo $contact_email_error;?></span>
-                        </div>
-
-
-
-                        <!--form for registration_start-->
-                        <div class="form-group <?php echo (!empty($registration_start_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Registration Start</label>
-                            <input type="date" name="registration_start" class="form-control"><?php echo $registration_start; ?>
-                            <span class="help-block"><?php echo $registration_start_error;?></span>
-                        </div>
-
-                        <!--form for registration_end-->
-                        <div class="form-group <?php echo (!empty($registration_end_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Registration End</label>
-                            <input type="date" name="registration_end" class="form-control"><?php echo $registration_end; ?>
-                            <span class="help-block"><?php echo $registration_end_error;?></span>
-                        </div>
-
-                        <!--form for event_start-->
-                        <div class="form-group <?php echo (!empty($event_start_error)) ? 'has-error' : ''; ?>">
-                            <label>Event Start Date</label>
-                            <input type="date" name="event_start" class="form-control"><?php echo $event_start; ?>
-                            <span class="help-block"><?php echo $event_start_error;?></span>
-                        </div>
-
-                        <!--form for event_end-->
-                        <div class="form-group <?php echo (!empty($event_end_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Event End Date</label>
-                            <input type="date" name="event_end" class="form-control"><?php echo $event_end; ?>
-                            <span class="help-block"><?php echo $event_end_error;?></span>
+                        <!--form for status-->
+                        <div class="form-group <?php echo (!empty($status_error)) ? 'has-error' : ''; ?>">
+                            <label for="status">Verified?</label>
+                            <p>Is this engagement already verified?</p>
+                            <input type="radio" name="status" value="1" checked> Yes
+                            <input type="radio" name="status" value="0"> No
+                            <span class="help-block"><?php echo $status_error;?></span>
                         </div>
 
                         <input type="submit" class="btn btn-primary" value="Submit">
