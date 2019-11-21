@@ -13,62 +13,55 @@ require_once '../config.php';
 
 // Define and intialize variables
 $sponsor_id = $_SESSION["sponsor_id"];
-
-$volunteer_name = "";
 $volunteer_id = "";
-
-$event_name = "";
 $event_id = "";
-
-$opportunity_name = "";
 $opportunity_id = "";
-
 $contribution_value = "";
 $status = "";
 
 // Define and initialize error message variables
 $sponsor_id_error = "";
-
 $volunteer_name_error = "";
-$volunteer_id_error = "";
-
 $event_name_error = "";
-$event_id_error = "";
-
 $opportunity_name_error = "";
-$opportunity_id_error = "";
-
 $contribution_value_error = '';
 $status_error = "";
+
+
+
+
+
 
 // Populate volunteer array for "volunteer name" dropdown boxes
 $query =
 "SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
 FROM volunteers
 INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
-WHERE affiliations.sponsor_id = '$sponsor_id'
-ORDER BY volunteers.last_name ASC";
-$result = $db->query($query);
+WHERE affiliations.sponsor_id = '$sponsor_id'";
+$result = $link->query($query);
 
+$volunteers[] = array("volunteer_name" => 'Select Name', "volunteer_id" => '');
 while($row = $result->fetch_assoc()){
   $full_name = $row['last_name'] . ", " . $row['first_name'];
   $volunteers[] = array("volunteer_name" => $full_name, "volunteer_id" => $row['volunteer_id']);
 }
 
 // Populate event_name & event_id array for "event name" dropdown boxes
-$query = "SELECT event_id, event_name FROM events WHERE sponsor_id = '$sponsor_id' ORDER BY start_date DESC";
-$result = $db->query($query);
+$query = "SELECT event_id, event_name FROM events WHERE sponsor_id = '$sponsor_id'";
+$result = $link->query($query);
 
+$events[] = array("event_name" => 'Select Event', "event_id" => '');
 while($row = $result->fetch_assoc()){
   $events[] = array("event_name" => $row['event_name'], "event_id" => $row['event_id']);
 }
 
 // Populate opportunity_name, opportunity_id, and event_id array for "opportunity name" dropdown boxes
 $query = "SELECT opportunity_id, contribution_value, event_id, opportunity_name FROM opportunities WHERE sponsor_id = '$sponsor_id' ORDER BY start_date DESC";
-$result = $db->query($query);
+$result = $link->query($query);
 
 while($row = $result->fetch_assoc()){
-  $opportunities[$row['event_id']][] = array("opportunity_id" => $row['opportunity_id'], "opportunity_name" => $row['opportunity_name'], "contribution_value" => $row['contribution_value']);
+  //$opportunities[$row['event_id']][] = array("opportunity_name" => 'Select Opportunity', "opportunity_id" => '',  "contribution_value" => '');
+  $opportunities[$row['event_id']][] = array("opportunity_name" => $row['opportunity_name'], "opportunity_id" => $row['opportunity_id'], "contribution_value" => $row['contribution_value']);
 }
 
 // Initialize JSON Objects
@@ -80,23 +73,49 @@ $jsonOpportunities = json_encode($opportunities);
 
 
 
+
 // Process Form Submission
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    $volunteer_id = $input_volunteer_id;
+    // Validate volunteer_id from "volunteer_name" selector
+    $input_volunteer_id = trim($_POST["volunteer_name"]);
+    if(empty($input_volunteer_id)){
+        $volunteer_name_error = "Please select a volunteer.";
+    } else{
+        $volunteer_id = $input_volunteer_id;
+    }
 
-    $event_id = $input_event_id;
+    // Validate event_id from "event_id" selector
+    $input_event_id = trim($_POST["event_name"]);
+    if(empty($input_event_id)){
+        $event_name_error = "Please select an event.";
+    } else{
+        $event_id = $input_event_id;
+    }
 
-    $opportunity_id = $input_opportunity_id;
+    // Validate opportunity_id and contribution value from "opportunity_name" selector
+    $input_opportunity_values = json_decode($_POST["opportunity_name"]);
+    $input_opportunity_id = $input_opportunity_values[0];
+    $input_contribution_value = $input_opportunity_values[1];
+    if(empty($input_opportunity_id) || empty($input_contribution_value)){
+        $volunteer_name_error = "Please select an opportunity.";
+    } else{
+        $opportunity_id = $input_opportunity_id;
+        $contribution_value = $input_contribution_value;
+    }
 
-    $contribution_value = '';
-
+    // Validate needs_verification
+    $input_status = trim($_POST["status"]);
     $status = $input_status;
 
+    // sponsor_id
     $sponsor_id = $_SESSION["sponsor_id"];
 
+
+
+
     // Check input errors before inserting in database
-    if(/*error*/){
+    if(empty($sponsor_id_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error)){
         // Prepare an insert statement
         $sql = "INSERT INTO engagements (volunteer_id, event_id, opportunity_id, sponsor_id, contribution_value, status) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -121,15 +140,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
             }
         }
-
         // Close statement
         mysqli_stmt_close($stmt);
     }
-
     // Close connection
     mysqli_close($link);
 }
 ?>
+
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -140,6 +163,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <?php $pageContent='Form'?>
     <?php include '../head.php'?>
 
+    <style type="text/css">
+        .wrapper{ width: 350px; padding: 20px; }
+    </style>
+
     <script type='text/javascript'>
       <?php
         echo "var volunteers = $jsonVolunteers; \n";
@@ -149,8 +176,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
       function loadVolunteers(){
         var select = document.getElementById("volunteersSelect");
-        // NOTE: could add a default option such as "Select Volunteer"; just make sure to adjust the array accordingly. Also validate data later.
-        // select.options[0] = new Option('Select Volunteer','0',true,true);
         for(var i = 0; i < volunteers.length; i++){
           select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
         }
@@ -159,8 +184,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       function loadEvents(){
         var select = document.getElementById("eventsSelect");
         select.onchange = updateOpportunities;
-        // See NOTE above.
-        // select.options[0] = new Option('Select Volunteer','0',true,true);
         for(var i = 0; i < events.length; i++){
           select.options[i] = new Option(events[i].event_name, events[i].event_id);
         }
@@ -170,13 +193,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         var eventSelect = this;
         var eventId = this.value;
         var opportunitySelect = document.getElementById("opportunitiesSelect");
-        subcatSelect.options.length = 0; //delete all options if any present
-        // See NOTE above.
-        // select.options[0] = new Option('Select Opportunity','0',true,true);
-        for(var i = 0; i < opportunities[eventId].length; i++){
-          var opportunityValue = [opportunities[eventId][i].opportunity_id, opportunities[eventId][i].contribution_value];
-          opportunitiesSelect.options[i] = new Option(opportunities[eventId][i].opportunity_name, opportunityValue);
+        opportunitiesSelect.options.length = 0; // clear previous options
+        opportunitiesSelect.options[0] = new Option('Select Opportunity', "{'opportunity_id':'','contribution_value':''}");
+        if (typeof opportunities[eventId] != 'undefined') {
+          for(var i = 0; i < opportunities[eventId].length; i++){
+            var opportunityValue = [opportunities[eventId][i].opportunity_id, opportunities[eventId][i].contribution_value];
+            opportunitiesSelect.options[1+i] = new Option(opportunities[eventId][i].opportunity_name, JSON.stringify(opportunityValue));
+          }
+          opportunitySelect.onchange = updateContributionValue;
         }
+
+      }
+
+      function updateContributionValue(){
+        var opportunitySelect = document.getElementById('opportunitiesSelect');
+        var contributionValue = document.getElementById('contributionValue');
+        var opportunityValues = JSON.parse(opportunitySelect.value);
+        contributionValue.innerHTML = opportunityValues[1];
+        console.log(opportunityValues[1]);
       }
     </script>
 </head>
@@ -216,6 +250,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <span class="help-block"><?php echo $opportunity_name_error;?></span>
                         </div>
 
+                        <!-- display for contribution value -->
+                        <div class="form-group">
+                            <label>Contribution Value</label>
+                            <p class="form-control-static" id='contributionValue'></p>
+                        </div>
+
                         <!--form for status-->
                         <div class="form-group <?php echo (!empty($status_error)) ? 'has-error' : ''; ?>">
                             <label for="status">Verified?</label>
@@ -224,6 +264,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="radio" name="status" value="0"> No
                             <span class="help-block"><?php echo $status_error;?></span>
                         </div>
+
+
 
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <a href="dashboard.php" class="btn btn-default">Cancel</a>
