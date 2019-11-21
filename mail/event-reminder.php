@@ -30,7 +30,7 @@ if($result = mysqli_query($link, $sql)) {
 							$recipientEmail = $row['email_address'];
 
               // set subject
-							$messageSubject	= "Don't forget! " . $row['opportunity_name'] . " - Tomorrow!";
+							$messageSubject	= "Notice: New Opportunity Added! " . $row['opportunity_name'] . " ";
 
               // set HTML message body
               $messageBody =
