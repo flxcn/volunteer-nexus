@@ -2,6 +2,22 @@
 // Include config file
 require_once "../config.php";
 include "SponsorRegistration.php";
+
+$sponsor_name = "";
+$username = "";
+$password = "";
+$confirm_password = "";
+$contribution_type = "";
+$advisor1_name = "";
+$advisor1_email = "";
+$advisor1_phone = "";
+$advisor2_name = "";
+$advisor2_email = "";
+$advisor2_phone = "";
+$advisor3_name = "";
+$advisor3_email = "";
+$advisor3_phone = "";
+
 // Define variables and initialize with empty values
 $sponsor_name_error = "";
 $username_error = "";
@@ -21,14 +37,28 @@ $advisor3_phone_error = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $obj = new SponsorRegistration();
-  $sponsor_name_error = $obj->setUsername(trim($_POST["username"]));
-  $username_error = $obj->setUsername(trim($_POST["username"]));
-  $password_error = $obj->setPassword(trim($_POST["password"]));
-  $confirm_password_error = $obj->setConfirmPassword(trim($_POST["confirm_password"]));
-  $contribution_type_error = $obj->setContributionType(trim($_POST["contribution_type"]));
-  $obj->addAdvisor(trim($_POST["advisor1_name"]), trim($_POST["advisor1_email"]), trim($_POST["advisor1_phone"]));
-  $obj->addAdvisor(trim($_POST["advisor2_name"]), trim($_POST["advisor2_email"]), trim($_POST["advisor2_phone"]));
-  $obj->addAdvisor(trim($_POST["advisor3_name"]), trim($_POST["advisor3_email"]), trim($_POST["advisor3_phone"]));
+  $sponsor_name = trim($_POST["sponsor_name"]);
+  $sponsor_name_error = $obj->setSponsorName($sponsor_name);
+  $username = trim($_POST["username"]);
+  $username_error = $obj->setUsername($username);
+  $password = trim($_POST["password"]);
+  $password_error = $obj->setPassword($password);
+  $confirm_password = trim($_POST["confirm_password"]);
+  $confirm_password_error = $obj->setConfirmPassword($confirm_password);
+  $contribution_type = trim($_POST["contribution_type"]);
+  $contribution_type_error = $obj->setContributionType($contribution_type);
+  $advisor1_name = trim($_POST["advisor1_name"]);
+  $advisor1_email = trim($_POST["advisor1_email"]);
+  $advisor1_phone = trim($_POST["advisor1_phone"]);
+  $obj->addAdvisor($advisor1_name, $advisor1_email, $advisor1_phone);
+  $advisor2_name = trim($_POST["advisor2_name"]);
+  $advisor2_email = trim($_POST["advisor2_email"]);
+  $advisor2_phone = trim($_POST["advisor2_phone"]);
+  $obj->addAdvisor($advisor2_name, $advisor2_email, $advisor2_phone);
+  $advisor3_name = trim($_POST["advisor3_name"]);
+  $advisor3_email = trim($_POST["advisor3_email"]);
+  $advisor3_phone = trim($_POST["advisor3_phone"]);
+  $obj->addAdvisor($advisor3_name, $advisor3_email, $advisor3_phone);
 
   if(empty($username_error) && empty($password_error) && empty($confirm_password_error) && empty($contribution_type_error) && empty($sponsor_name_error)  && empty($advisor1_name_error) && empty($advisor1_email_error) && empty($advisor1_phone_error))
   {
