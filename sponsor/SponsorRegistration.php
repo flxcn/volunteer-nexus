@@ -1,8 +1,6 @@
 <?php
-declare(strict_types=1);
-
-class SponsorRegistration {
-
+class SponsorRegistration
+{
     protected $pdo = null;
 		private $sponsor_name;
 		private $username;
@@ -23,7 +21,12 @@ class SponsorRegistration {
 
     public function connect()
     {
-			include('config.php');
+			$options = [
+			    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+			    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+			    PDO::ATTR_EMULATE_PREPARES   => false,
+			];
+			$this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
     }
 
 		public function setSponsorName(string $sponsor_name): string
@@ -116,7 +119,7 @@ class SponsorRegistration {
 					'advisor3_email' => $this->advisors[2]["email"],
 					'advisor3_phone' => $this->advisors[2]["phone"],
 				]);
-				
+
       return $status;
     }
 }
