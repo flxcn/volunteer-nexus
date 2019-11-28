@@ -1,7 +1,7 @@
 <?php
 // Include config file
 require_once "../config.php";
-
+include "SponsorRegistration.php";
 // Define variables and initialize with empty values
 $sponsor_name_error = "";
 $username_error = "";
