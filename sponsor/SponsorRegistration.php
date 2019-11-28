@@ -10,24 +10,19 @@ class SponsorRegistration
 		private $advisors;
 
 		public function __construct(){
-			connect();
-			$this->sponsor_name = "";
-			$this->username = "";
-			$this->password = "";
-			$ths->confirm_password = "";
-			$this->contribution_type = "";
-			$this->advisors = array();
-		}
-
-    public function connect()
-    {
-			$options = [
+      $options = [
 			    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
 			    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 			    PDO::ATTR_EMULATE_PREPARES   => false,
 			];
-			$this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
-    }
+      $this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
+			$this->sponsor_name = "";
+			$this->username = "";
+			$this->password = "";
+			$this->confirm_password = "";
+			$this->contribution_type = "";
+			$this->advisors = array();
+		}
 
 		public function setSponsorName(string $sponsor_name): string
 		{
@@ -123,3 +118,4 @@ class SponsorRegistration
       return $status;
     }
 }
+?>
