@@ -37,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
               if(mysqli_stmt_execute($stmt))
               {
                   // Records created successfully. Redirect to landing page
-                  echo "Success! Check-in complete!"
+                  echo "Success! Check-in complete!";
                   exit();
               }
               else
