@@ -14,7 +14,7 @@ require_once '../config.php';
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     // Check input errors before inserting in database
-    if(isset($_POST["event_id"]) && isset($_POST["opportunity_id"]) && isset($_POST["volunteer_id"]) && isset($_POST["sponsor_id"]) && isset($_POST["contribution_value"]) && isset($_POST["status"]))
+    if(isset($_POST["event_id"]) && isset($_POST["opportunity_id"]) && isset($_POST["student_id"]) && isset($_POST["sponsor_id"]) && isset($_POST["contribution_value"]) && isset($_POST["status"]))
     {
         // Prepare an insert statement
         $sql = "INSERT INTO engagements (event_id, opportunity_id, volunteer_id, sponsor_id, contribution_value, status) VALUES (?, ?, ?, ?, ?, ?)";
