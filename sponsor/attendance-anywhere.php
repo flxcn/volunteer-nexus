@@ -221,10 +221,10 @@ $jsonOpportunities = json_encode($opportunities);
   </script>
 
   <script>
-    function confirmAttendance(volunteerId) {
+    function confirmAttendance(studentId) {
       var http = new XMLHttpRequest();
       var url = 'attendance-anywhere-process.php';
-      var params = 'sponsor_id=' + sponsorId + '&event_id=' + eventId + '&opportunity_id=' + opportunityId + '&volunteer_id=' + volunteerId + '&contribution_value=' + contributionValue + '&status=1';
+      var params = 'sponsor_id=' + sponsorId + '&event_id=' + eventId + '&opportunity_id=' + opportunityId + '&student_id=' + studentId + '&contribution_value=' + contributionValue + '&status=1';
       http.open('POST', url, true);
 
       //Send the proper header information along with the request
@@ -232,7 +232,7 @@ $jsonOpportunities = json_encode($opportunities);
 
       http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-          alert("Check-in complete!");
+          alert(http.responseText);
         }
       }
       http.send(params);
