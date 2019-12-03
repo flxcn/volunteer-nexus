@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<script>
-
+        // AJAX Script
 				function showStatus(id,num) {
 					if (id == "" && num=="")
 					{
@@ -28,7 +28,7 @@
 						xmlhttp.send();
 					}
 				}
-				
+
 
 
 		</script>
