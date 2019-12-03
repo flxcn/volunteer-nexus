@@ -16,10 +16,11 @@ class EngagementFormPopulator {
 
 	public function getVolunteers(): ?string
 	{
-		$sql = "SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
+		$sql = "SELECT DISTINCT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
 		FROM volunteers
 		INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
-		WHERE affiliations.sponsor_id = :sponsor_id";
+		WHERE affiliations.sponsor_id = :sponsor_id
+		ORDER BY volunteers.last_name ASC";
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
 		if(!$status) {
