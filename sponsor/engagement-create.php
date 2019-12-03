@@ -37,7 +37,8 @@ $query =
 "SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
 FROM volunteers
 INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
-WHERE affiliations.sponsor_id = '$sponsor_id'";
+WHERE affiliations.sponsor_id = '$sponsor_id'
+ORDER BY volunteers.last_name ASC";
 $result = $link->query($query);
 
 $volunteers[] = array("volunteer_name" => 'Select Name', "volunteer_id" => '');
