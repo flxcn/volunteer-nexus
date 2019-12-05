@@ -38,13 +38,17 @@ class SponsorRegistration
 
 		public function setUsername(string $username): string
 		{
-			$stmt = $this->pdo->prepare('SELECT sponsor_id FROM sponsors WHERE username = :username');
-			$stmt->execute(['username' => $username]);
-			$same_usernames = $stmt->rowCount();
+			$stmt = $this->pdo->prepare('SELECT count(*) FROM sponsors WHERE username = :username');
+			$stmt->execute(['username' => strtolower($username)]);
+			$same_usernames = $stmt->fetchColumn();
 			if($same_usernames > 0){
 				return "This username is already taken.";
-			} else {
-				$this->username = $username;
+			}
+      if(!filter_var($username, FILTER_VALIDATE_EMAIL))
+      {
+        return "This email address is not valid";
+      } else {
+				$this->username = strtolower($username);
 				return "";
 			}
 		}
