@@ -26,10 +26,10 @@ class AttendanceAnywhere
 			$this->status = TRUE;
 		}
 
-		public function setVolunteerId(string $student_id): string
+		public function setVolunteerId(string $student_id): bool
 		{
 			if(empty($sponsor_name) || strlen($student_id) != 6) {
-				return "Invalid Student ID. Please try again.";
+				return false;
 			}
 			else {
 				$sql = "SELECT volunteer_id FROM volunteers WHERE student_id = :student_id";
@@ -39,10 +39,10 @@ class AttendanceAnywhere
 
 				if($volunteer_id) {
 					$this->volunteer_id = $volunteer_id;
-					return "";
+          return true;
 				}
 				else {
-					return "No volunteer with this Student ID found.";
+					return false;
 				}
 			}
 		}
