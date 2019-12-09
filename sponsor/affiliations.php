@@ -49,7 +49,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                     require_once "../config.php";
 
                     // Run SQL Query
-                    $sql = "SELECT volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value
+                    $sql = "SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value
                     FROM volunteers INNER JOIN affiliations ON volunteers.volunteer_id = affiliations.volunteer_id LEFT JOIN engagements ON affiliations.volunteer_id = engagements.volunteer_id
                     WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' AND engagements.status = '1'
                     GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
@@ -70,7 +70,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
                                         echo "<td>" . $row['email_address'] . "</td>";
                                         echo "<td>" . $row['total_contribution_value'] . "</td>";
-
+                                        echo "<td>";
+                                            echo "<a href='affiliation-read.php?volunteer_id=". $row['volunteer_id'] ."' title='View Volunteer's Contributions' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>";
+                                            //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                        echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";
