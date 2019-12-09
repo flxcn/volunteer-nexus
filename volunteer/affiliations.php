@@ -27,7 +27,7 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">My Affiliations</h2>
-                        <a href="affiliation-create.php" class="btn btn-primary pull-right">Add New Affiliation</a>
+                        <!-- <a href="affiliation-create.php" class="btn btn-primary pull-right">Add New Affiliation</a> -->
                     </div>
 
                     <?php
@@ -85,6 +85,6 @@
         return true;
     });
     </script>
-    
+
 </body>
 </html>

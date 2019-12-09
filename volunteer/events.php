@@ -44,12 +44,18 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                   <div class="page-header clearfix">
                       <h2 class="pull-left">All Events</h2>
                       <!-- <a href="affiliation-create.php" class="btn btn-success pull-right">Add New Affiliation</a> -->
+                      <a href="affiliation-create.php" class="btn btn-primary pull-right">Add New Affiliation</a>
                   </div>
 
                   <?php
                   require_once "../config.php";
 
-                  $sql = "SELECT * FROM events WHERE registration_start <= CURDATE() AND registration_end >= CURDATE() ORDER BY registration_end";
+                  $sql = "SELECT * FROM events
+                  INNER JOIN affiliations ON affiliations.sponsor_id = events.sponsor_id
+                  WHERE registration_start <= CURDATE()
+                  AND registration_end >= CURDATE()
+                  AND affiliations.volunteer_id = '{$_SESSION['volunteer_id']}'
+                  ORDER BY registration_end";
                   if($result = mysqli_query($link, $sql)){
                       if(mysqli_num_rows($result) > 0){
                           echo "<table class='table table-bordered table-responsive'>";
@@ -82,7 +88,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                           echo "</table>";
                           mysqli_free_result($result);
                       } else {
-                          echo "<p class='lead'><em>No events were found.</em></p>";
+                          echo "<p class='lead'><em>No events were found. If you have not yet, click <a href='affiliation-create.php'>here</a> to add an affiliation in order to view Events from a certain Sponsor.</em></p>";
                       }
                   } else {
                       echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
