@@ -23,8 +23,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $contribution_value = $_POST["contribution_value"];
 
     $obj = new AttendanceAnywhere($sponsor_id, $event_id, $opportunity_id, $contribution_value);
-    $volunteer_id_error = $obj->setVolunteerId($student_id);
-    if(!$volunteer_id_error) {
+    $status = $obj->setVolunteerId($student_id);
+    if(!$status) {
       echo "Invalid Student ID. Please try again.";
       exit;
     }
