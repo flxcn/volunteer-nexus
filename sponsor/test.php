@@ -10,24 +10,19 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 require_once '../classes/AttendanceAnywhere.php';
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-  if($_POST["event_id"]
-    && $_POST["opportunity_id"]
-    && $_POST["student_id"]
-    && $_POST["sponsor_id"]
-    && $_POST["contribution_value"]) {
-    $event_id = $_POST["event_id"];
-    $opportunity_id = $_POST["opportunity_id"];
-    $student_id = $_POST["student_id"];
-    $sponsor_id = $_POST["sponsor_id"];
-    $contribution_value = $_POST["contribution_value"];
+    $event_id = 9;
+    $opportunity_id = 17;
+    $student_id = 83436;
+    $sponsor_id = 1;
+    $contribution_value = 1000;
 
     $obj = new AttendanceAnywhere($sponsor_id, $event_id, $opportunity_id, $contribution_value);
     $status = $obj->setVolunteerId($student_id);
-    if(!$status) {
+    if($status) {
       echo "Invalid Student ID. Please try again.";
       exit;
     }
+    echo
 
     $status = $obj->confirmAttendance();
     if($status) {
@@ -36,7 +31,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
       echo "Error. Please try again.";
     }
-  }
-}
 
 ?>

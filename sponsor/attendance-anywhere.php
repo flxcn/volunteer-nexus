@@ -9,7 +9,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 }
 
 // Include config file
-require_once '../config.php';
+require_once "../classes/EngagementFormPopulator.php";
 
 // Define and intialize variables
 $sponsor_id = $_SESSION["sponsor_id"];
@@ -17,7 +17,6 @@ $volunteer_id = "";
 $event_id = "";
 $opportunity_id = "";
 $contribution_value = "";
-$status = "";
 
 // Define and initialize error message variables
 $sponsor_id_error = "";
@@ -25,108 +24,49 @@ $volunteer_name_error = "";
 $event_name_error = "";
 $opportunity_name_error = "";
 $contribution_value_error = '';
-$status_error = "";
 
-
-
-
-
-
-// Populate volunteer array for "volunteer name" dropdown boxes
-$query =
-"SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
-FROM volunteers
-INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
-WHERE affiliations.sponsor_id = '$sponsor_id'";
-$result = $link->query($query);
-
-$volunteers[] = array("volunteer_name" => 'Select Name', "volunteer_id" => '');
-while($row = $result->fetch_assoc()){
-  $full_name = $row['last_name'] . ", " . $row['first_name'];
-  $volunteers[] = array("volunteer_name" => $full_name, "volunteer_id" => $row['volunteer_id']);
-}
-
-// Populate event_name & event_id array for "event name" dropdown boxes
-$query = "SELECT event_id, event_name FROM events WHERE sponsor_id = '$sponsor_id'";
-$result = $link->query($query);
-
-$events[] = array("event_name" => 'Select Event', "event_id" => '');
-while($row = $result->fetch_assoc()){
-  $events[] = array("event_name" => $row['event_name'], "event_id" => $row['event_id']);
-}
-
-// Populate opportunity_name, opportunity_id, and event_id array for "opportunity name" dropdown boxes
-$query = "SELECT opportunity_id, contribution_value, event_id, opportunity_name FROM opportunities WHERE sponsor_id = '$sponsor_id' ORDER BY start_date DESC";
-$result = $link->query($query);
-
-while($row = $result->fetch_assoc()){
-  //$opportunities[$row['event_id']][] = array("opportunity_name" => 'Select Opportunity', "opportunity_id" => '',  "contribution_value" => '');
-  $opportunities[$row['event_id']][] = array("opportunity_name" => $row['opportunity_name'], "opportunity_id" => $row['opportunity_id'], "contribution_value" => $row['contribution_value']);
-}
+// Instantiate an EngagementFormPopulator object
+$populatorObj = new EngagementFormPopulator($sponsor_id);
 
 // Initialize JSON Objects
-$jsonVolunteers = json_encode($volunteers);
-$jsonEvents = json_encode($events);
-$jsonOpportunities = json_encode($opportunities);
+$jsonVolunteers = $populatorObj->getVolunteers();
+$jsonEvents = $populatorObj->getEvents();
+$jsonOpportunities = $populatorObj->getOpportunities();
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Attendance Anywhere</title>
-
+  <script type="text/javascript" src="AttendanceAnywhere.js"></script>
   <!--Load required libraries-->
   <?php $pageContent='Form'?>
   <?php include '../head.php'?>
-
-  <!-- <style type="text/css">
-  .wrapper{ width: 350px; padding: 20px; }
-  </style> -->
-
-  <script>
-    <?php
-    $sponsorId = $_SESSION['sponsor_id'];
-    echo "var sponsorId = $sponsorId; \n";
-    ?>
-    var eventId = '';
-    var opportunityId = '';
-    var contributionValue = '';
-  </script>
 
   <style type="text/css">
       #initialForm{ width: 350px; padding: 20px; margin: 0 auto;}
   </style>
 
   <script type='text/javascript'>
-    <?php
-    echo "var volunteers = $jsonVolunteers; \n";
-    echo "var events = $jsonEvents; \n";
-    echo "var opportunities = $jsonOpportunities; \n";
-    ?>
+    var sponsorId = <?php echo $sponsor_id;?>;
+    var eventId = '';
+    var opportunityId = '';
+    var contributionValue = '';
 
-    // function loadVolunteers(){
-    //   var select = document.getElementById("volunteersSelect");
-    //   for(var i = 0; i < volunteers.length; i++){
-    //     select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
-    //   }
-    // }
+    var volunteers = <?php echo $jsonVolunteers;?>;
+    var events = <?php echo $jsonEvents;?>;
+    var opportunities = <?php echo $jsonOpportunities;?>;
 
-    function loadEvents(){
+
+    function loadVolunteers() {
+      var select = document.getElementById("volunteersSelect");
+      for(var i = 0; i < volunteers.length; i++){
+        select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
+      }
+    }
+
+    function loadEvents() {
       var select = document.getElementById("eventsSelect");
       select.onchange = updateOpportunities;
       for(var i = 0; i < events.length; i++){
@@ -134,7 +74,7 @@ $jsonOpportunities = json_encode($opportunities);
       }
     }
 
-    function updateOpportunities(){
+    function updateOpportunities() {
       var eventSelect = this;
       var eventId = this.value;
       var opportunitySelect = document.getElementById("opportunitiesSelect");
@@ -194,7 +134,6 @@ $jsonOpportunities = json_encode($opportunities);
       document.getElementById('opportunitiesSelect').disabled = true;
 
       var initialForm = document.getElementById("initialForm");
-      console.log("Works?");
       console.log(initialForm)
       if (initialForm.style.display === "none") {
         initialForm.style.display = "block";
@@ -221,18 +160,22 @@ $jsonOpportunities = json_encode($opportunities);
   </script>
 
   <script>
-    function confirmAttendance(volunteerId) {
-      var http = new XMLHttpRequest();
+    function confirmAttendance(studentId) {
+      if (window.XMLHttpRequest)
+      {
+        var http = new XMLHttpRequest();
+      }
       var url = 'attendance-anywhere-process.php';
-      var params = 'sponsor_id=' + sponsorId + '&event_id=' + eventId + '&opportunity_id=' + opportunityId + '&volunteer_id=' + volunteerId + '&contribution_value=' + contributionValue + '&status=1';
+      var params = 'sponsor_id=' + sponsorId + '&event_id=' + eventId + '&opportunity_id=' + opportunityId + '&student_id=' + studentId + '&contribution_value=' + contributionValue;
       http.open('POST', url, true);
 
       //Send the proper header information along with the request
       http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-      http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          alert("Check-in complete!");
+      http.onreadystatechange = function() {
+        //Call a function when the state changes.
+        if(this.readyState == 4 && this.status == 200) {
+          alert(http.responseText);
         }
       }
       http.send(params);
@@ -286,17 +229,10 @@ $jsonOpportunities = json_encode($opportunities);
           <div class="page-header">
             <h2>Attendance Anywhere</h2>
           </div>
+
           <div id="initialForm">
             <p>Please fill this form and submit to add a new engagement for an affiliated volunteer.</p>
             <form name="engagementForm">
-
-              <!--form for volunteer_name-->
-              <!-- <div class="form-group <?php echo (!empty($volunteer_name_error)) ? 'has-error' : ''; ?>">
-              <label>Volunteer Name</label>
-              <select name='volunteer_name' id='volunteersSelect' class="form-control">
-              </select>
-              <span class="help-block"><?php echo $volunteer_name_error;?></span>
-              </div> -->
 
               <!--form for event_name-->
               <div class="form-group <?php echo (!empty($event_name_error)) ? 'has-error' : ''; ?>">
@@ -320,8 +256,6 @@ $jsonOpportunities = json_encode($opportunities);
                 <p class="form-control-static" id='contributionValue'></p>
               </div>
 
-
-              <input type="hidden" name="status" value="1">
               <input type="button" class="btn btn-success" value="Proceed!" onclick="return validateForm()">
               <a href="dashboard.php" class="btn btn-default">Cancel</a>
             </form>
@@ -331,7 +265,6 @@ $jsonOpportunities = json_encode($opportunities);
           <div id="scanner-container"></div>
 
           <input type="btn" id="scannerToggler" class="btn btn-primary" value="Finish Scanning" style="display:none; text-align:center">
-
 
           <!-- Include the image-diff library -->
           <script src="../quaggaJS/quagga.min.js"></script>
