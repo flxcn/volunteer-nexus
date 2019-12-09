@@ -26,15 +26,15 @@ class AttendanceAnywhere
 			$this->status = TRUE;
 		}
 
-		public function setVolunteerId(string $student_id): bool
+		public function setVolunteerId(string $student_id): string
 		{
-			if(empty($sponsor_name) || strlen($student_id) != 6) {
-				return false;
+			if(empty($student_id) || strlen($student_id) != 5) {
+        return false;
 			}
 			else {
 				$sql = "SELECT volunteer_id FROM volunteers WHERE student_id = :student_id";
-				$stmt = $pdo->prepare($sql);
-				$stmt->execute([':student_id' => $student_id]);
+				$stmt = $this->pdo->prepare($sql);
+				$stmt->execute(['student_id' => $student_id]);
 				$volunteer_id = $stmt->fetchColumn();
 
 				if($volunteer_id) {
@@ -47,14 +47,14 @@ class AttendanceAnywhere
 			}
 		}
 
-		private function confirmAttendance(): bool
+		public function confirmAttendance(): bool
 		{
 			$sql = "SELECT engagement_id FROM engagements
 			WHERE sponsor_id = :sponsor_id
 				AND event_id = :event_id
 				AND opportunity_id = :opportunity_id
 				AND volunteer_id = :volunteer_id";
-			$stmt = $pdo->prepare($sql);
+			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(
 				[
 					'sponsor_id' => $this->sponsor_id,
@@ -66,11 +66,11 @@ class AttendanceAnywhere
 
 			if($engagement_id) {
 				// update existing engagement
-				updateEngagement($engagement_id);
+				return $this->updateEngagement($engagement_id);
 			}
 			else {
 				// create new engagement
-				addEngagement();
+				return $this->addEngagement();
 			}
 		}
 
