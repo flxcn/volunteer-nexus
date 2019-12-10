@@ -35,7 +35,7 @@ class SponsorLogin
 			}
 			else
 			{
-				return "No account found with that email."
+				return "No account found with that email.";
 			}
 		}
 
