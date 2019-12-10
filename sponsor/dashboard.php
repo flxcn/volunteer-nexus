@@ -36,6 +36,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     <p>
         <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
     </p>
+    <p>
+        <a href="attendance-anywhere.php" class="btn btn-success">Attendance Anywhere</a>
+    </p>
 
     <?php include '../footer.php';?>
 </body>
