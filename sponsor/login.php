@@ -10,6 +10,7 @@ if(isset($_SESSION["sponsor_loggedin"]) && $_SESSION["sponsor_loggedin"] === tru
 
 // Include config file
 require_once "../config.php";
+require_once "../classes/SponsorLogin.php";
 
 // Define variables and initialize with empty values
 $username = "";
@@ -20,75 +21,35 @@ $password_error = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
-        $username_error = "Please enter your email address.";
-    } else{
-        $username = trim($_POST["username"]);
-    }
+    // Instatiate SponsorLogin object
+    $obj = new SponsorLogin();
+    // Set username
+    $username = trim($_POST["username"]);
+    $username_error = $obj->setUsername($username);
 
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))){
-        $password_error = "Please enter your password.";
-    } else{
-        $password = trim($_POST["password"]);
-    }
+    // Set password
+    $password = trim($_POST["password"]);
+    $password_error = $obj->setPassword($password);
 
-    // Validate credentials
     if(empty($username_error) && empty($password_error)){
-        // Prepare a select statement
-        $sql = "SELECT sponsor_id, sponsor_name, contribution_type, username, password FROM sponsors WHERE username = ?";
-
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-            // Set parameters
-            $param_username = $username;
-
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $sponsor_id, $sponsor_name, $contribution_type, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-
-                            // Store data in session variables
-                            $_SESSION["sponsor_loggedin"] = true;
-                            $_SESSION["sponsor_id"] = $sponsor_id;
-                            $_SESSOPM["username"] = $username;
-                            $_SESSION["sponsor_name"] = $sponsor_name;
-                            $_SESSION["contribution_type"] = $contribution_type;
-
-                            // Redirect user to dashboard
-                            header("location: dashboard.php");
-                        } else{
-                            // Display an error message if password is not valid
-                            $password_error = "The password you entered was not valid.";
-                        }
-                    }
-                } else{
-                    // Display an error message if username doesn't exist
-                    $username_error = "No account found with that email.";
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
+        $status = $obj->login();
+        if(!$status) {
+          $password_error = "The password you entered was not valid."
         }
+        else {
+          // Start a new session
+          if(session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-        // Close statement
-        mysqli_stmt_close($stmt);
-    }
+          // Set session variables
+          $_SESSION["sponsor_loggedin"] = true;
+          $_SESSION["username"] = $username;
+          $_SESSION["sponsor_id"] = $obj->getSponsorId();
+          $_SESSION["sponsor_name"] = $obj->getSponsorName();
+          $_SESSION["contribution_type"] = $obj->getContributionType();
 
-    // Close connection
-    mysqli_close($link);
+          // Redirect user to dashboard
+          header("location: dashboard.php");
+        }
 }
 ?>
 
