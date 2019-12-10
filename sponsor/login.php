@@ -34,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_error) && empty($password_error)){
         $status = $obj->login();
         if(!$status) {
-          $password_error = "The password you entered was not valid."
+          $password_error = "The password you entered was not valid.";
         }
         else {
           // Start a new session
@@ -50,6 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           // Redirect user to dashboard
           header("location: dashboard.php");
         }
+    }
 }
 ?>
 
