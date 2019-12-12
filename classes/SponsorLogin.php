@@ -41,7 +41,7 @@ class SponsorLogin
 
 		private function checkUsernameExists($username): bool
 		{
-			$sponsor = $pdo->prepare("SELECT 1 FROM users WHERE username = :username");
+			$stmt = $this->pdo->prepare("SELECT 1 FROM sponsors WHERE username = :username");
 			$stmt->execute(['username' => $username]);
 			return (bool)$stmt->fetch();
 		}
