@@ -68,7 +68,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Engagements</h2>
-                        <!-- <a href="engagement-create.php" class="btn btn-success pull-right">Add New Engagement</a> -->
+                        <a href="engagement-create.php" class="btn btn-success pull-right"><span class='glyphicon glyphicon-plus'></span> Add Engagement</a>
                     </div>
 
                     <?php
