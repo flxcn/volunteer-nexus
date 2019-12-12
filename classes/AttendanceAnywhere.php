@@ -49,8 +49,13 @@ class AttendanceAnywhere
 
 		public function confirmAttendance(): bool
 		{
-			$sql = "SELECT engagement_id FROM engagements
-			WHERE sponsor_id = :sponsor_id
+			$sql =
+      "SELECT
+        engagement_id
+      FROM
+        engagements
+			WHERE
+        sponsor_id = :sponsor_id
 				AND event_id = :event_id
 				AND opportunity_id = :opportunity_id
 				AND volunteer_id = :volunteer_id";
@@ -83,7 +88,8 @@ class AttendanceAnywhere
 
 		private function addEngagement(): bool
     {
-			$sql = "INSERT INTO engagements (volunteer_id, event_id, opportunity_id, sponsor_id, contribution_value, status)
+			$sql =
+      "INSERT INTO engagements (volunteer_id, event_id, opportunity_id, sponsor_id, contribution_value, status)
 				VALUES (:volunteer_id, :event_id, :opportunity_id, :sponsor_id, :contribution_value, :status)";
 			$stmt = $this->pdo->prepare($sql);
 			$status = $stmt->execute(
