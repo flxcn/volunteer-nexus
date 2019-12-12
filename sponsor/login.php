@@ -1,4 +1,5 @@
 <?php
+
 // Initialize the session
 session_start();
 
@@ -9,7 +10,6 @@ if(isset($_SESSION["sponsor_loggedin"]) && $_SESSION["sponsor_loggedin"] === tru
 }
 
 // Include config file
-require_once "../config.php";
 require_once "../classes/SponsorLogin.php";
 
 // Define variables and initialize with empty values
@@ -19,7 +19,7 @@ $username_error = "";
 $password_error = "";
 
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Instatiate SponsorLogin object
     $obj = new SponsorLogin();
