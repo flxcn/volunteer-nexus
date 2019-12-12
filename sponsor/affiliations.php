@@ -49,10 +49,28 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                     require_once "../config.php";
 
                     // Run SQL Query
-                    $sql = "SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name, volunteers.username AS email_address, SUM(engagements.contribution_value) AS total_contribution_value
-                    FROM volunteers INNER JOIN affiliations ON volunteers.volunteer_id = affiliations.volunteer_id LEFT JOIN engagements ON affiliations.volunteer_id = engagements.volunteer_id
-                    WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' AND engagements.status = '1'
-                    GROUP BY volunteers.last_name, volunteers.first_name, volunteers.username";
+                    $sql =
+                    "SELECT
+                      affiliations.volunteer_id AS volunteer_id,
+                      volunteers.last_name AS last_name,
+                      volunteers.first_name AS first_name,
+                      volunteers.username AS email_address,
+                      SUM(engagements.contribution_value) AS total_contribution_value
+                    FROM
+                      affiliations
+                      INNER JOIN
+                        volunteers
+                        ON affiliations.volunteer_id = volunteers.volunteer_id
+                      LEFT JOIN
+                        engagements
+                        ON affiliations.volunteer_id = engagements.volunteer_id
+                    WHERE
+                      affiliations.sponsor_id = '{$_SESSION['sponsor_id']}'
+                      AND engagements.status = '1'
+                    GROUP BY
+                      volunteers.last_name,
+                      volunteers.first_name,
+                      volunteers.username";
 
                     if($result = mysqli_query($link, $sql)) {
                         if(mysqli_num_rows($result) > 0) {
