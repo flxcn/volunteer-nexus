@@ -48,10 +48,28 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     <?php
                     require_once "../config.php";
 
-                    $sql = "SELECT *
-                    FROM engagements
-                    INNER JOIN events ON engagements.event_id = events.event_id
-                    WHERE engagements.volunteer_id = '{$_SESSION['volunteer_id']}' AND engagements.sponsor_id = '{$_GET['sponsor_id']}'";
+                    $sql =
+                    "SELECT
+                      engagements.contribution_value AS contribution_value,
+                      engagements.status AS status,
+                      events.event_name AS event_name,
+                      events.description AS event_description,
+                      events.contact_name AS contact_name,
+                      events.contact_email AS contact_email,
+                      events.event_start AS event_start,
+                      events.event_end AS event_end,
+                      opportunities.opportunity_name AS opportunity_name
+                    FROM
+                      engagements
+                      INNER JOIN
+                        events
+                        ON engagements.event_id = events.event_id
+                      INNER JOIN
+                        opportunities
+                        ON engagements.opportunity_id = opportunities.opportunity_id
+                    WHERE
+                      engagements.volunteer_id = '{$_SESSION['volunteer_id']}'
+                      AND engagements.sponsor_id = '{$_GET['sponsor_id']}'";
 
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -59,24 +77,33 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Event Name</th>";
-                                        echo "<th>Description</th>";
-                                        echo "<th>Location</th>";
-                                        echo "<th>Contact Name</th>";
-                                        echo "<th>Contact Email</th>";
+                                        echo "<th>Event Description</th>";
+                                        echo "<th>Opportunity Name</th>";
+                                        echo "<th>Contact Info</th>";
                                         echo "<th>Event Duration</th>";
                                         echo "<th>Value</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['description'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
-                                        echo "<td>" . $row['contact_name'] . "</td>";
-                                        echo "<td>" . $row['contact_email'] . "</td>";
+                                        echo "<td>" . $row['event_description'] . "</td>";
+                                        echo "<td>" . $row['opportunity_name'] . "</td>";
+                                        echo "<td>" . $row['contact_name'] . "<br>" . $row['contact_email'] . "</td>";
                                         echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>" . $row['contribution_value'] . "</td>";
+                                        echo "<td>";
+                                          if($row['status']==TRUE)
+                                            echo "Confirmed";
+                                          elseif ($row['status']==FALSE) {
+                                            echo "Denied";
+                                          }
+                                          else {
+                                            echo "Pending";
+                                          }
+                                        echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";
