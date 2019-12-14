@@ -61,7 +61,18 @@ class VolunteerLogin
 
 		public function login(): bool
 		{
-			$sql = "SELECT volunteer_id, first_name, last_name, graduation_year, username, password FROM volunteers WHERE username = :username";
+			$sql =
+				"SELECT
+					volunteer_id,
+					first_name,
+					last_name,
+					graduation_year,
+					username,
+					password
+				FROM
+					volunteers
+				WHERE
+					username = :username";
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(['username' => $this->username]);
 			$volunteer = $stmt->fetch();
