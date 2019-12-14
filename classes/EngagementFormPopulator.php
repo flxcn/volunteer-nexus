@@ -1,16 +1,13 @@
 <?php
+require 'DatabaseConnection.php';
+
 class EngagementFormPopulator {
 	protected $pdo = null;
 	private $sponsor_id;
 
 	public function __construct($sponsor_id)
 	{
-		$options = [
-				PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-				PDO::ATTR_EMULATE_PREPARES   => false,
-		];
-		$this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
+		$this->pdo = (new DatabaseConnection)->getPDO();
 		$this->sponsor_id = $sponsor_id;
 	}
 

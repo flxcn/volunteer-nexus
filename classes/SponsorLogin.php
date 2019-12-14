@@ -1,4 +1,6 @@
 <?php
+require 'DatabaseConnection.php';
+
 class SponsorLogin
 {
 		protected $pdo = null;
@@ -10,13 +12,8 @@ class SponsorLogin
 
 		public function __construct()
     {
-      $options = [
-			    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-			    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-			    PDO::ATTR_EMULATE_PREPARES   => false,
-			];
-      $this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
-			$this->username = "";
+			$this->pdo = (new DatabaseConnection)->getPDO();
+      $this->username = "";
 			$this->password = "";
 			$this->sponsor_id = "";
 			$this->sponsor_name = "";

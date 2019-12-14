@@ -1,4 +1,6 @@
 <?php
+require 'DatabaseConnection.php';
+
 class EngagementCreation
 {
     protected $pdo = null;
@@ -11,13 +13,8 @@ class EngagementCreation
 
 		public function __construct($sponsor_id)
     {
-      $options = [
-			    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-			    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-			    PDO::ATTR_EMULATE_PREPARES   => false,
-			];
-      $this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
-			$this->volunteer_id = 0;
+      $this->pdo = (new DatabaseConnection)->getPDO();
+      $this->volunteer_id = 0;
 			$this->sponsor_id = $sponsor_id;
 			$this->event_id = 0;
 			$this->opportunity_id = 0;
