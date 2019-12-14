@@ -1,5 +1,5 @@
 <?php
-require 'DBConnection.php';
+require 'DatabaseConnection.php';
 
 class AttendanceAnywhere
 {
@@ -14,7 +14,7 @@ class AttendanceAnywhere
 
 		public function __construct(int $sponsor_id, int $event_id, int $opportunity_id, float $contribution_value)
     {
-      $this->pdo = (new DBConnection)->getPDO();
+      $this->pdo = (new DatabaseConnection)->getPDO();
 			$this->sponsor_id = $sponsor_id;
 			$this->event_id = $event_id;
 			$this->opportunity_id = $opportunity_id;

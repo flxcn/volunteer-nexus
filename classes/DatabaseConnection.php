@@ -9,7 +9,7 @@ define('DB_CHARSET','utf8mb4');
 define('DB_USERNAME','root');
 define('DB_PASSWORD','root');
 
-class DBConnection
+class DatabaseConnection
 {
     protected static $instance;
     protected $pdo;
@@ -21,7 +21,7 @@ class DBConnection
 					PDO::ATTR_EMULATE_PREPARES   => false,
 			];
       $dsn = 'mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset='.DB_CHARSET;
-      $this->pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $opt);
+      $this->pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
     }
 
     public function getPDO(): object
