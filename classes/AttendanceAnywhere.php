@@ -26,7 +26,7 @@ class AttendanceAnywhere
 			$this->status = TRUE;
 		}
 
-		public function setVolunteerId(string $student_id): string
+		public function setVolunteerId(string $student_id): bool
 		{
 			if(empty($student_id) || strlen($student_id) != 5) {
         return false;
