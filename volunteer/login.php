@@ -10,6 +10,8 @@ if(isset($_SESSION["volunteer_loggedin"]) && $_SESSION["volunteer_loggedin"] ===
 
 // Include config file
 require_once "../config.php";
+require_once "../classes/VolunteerLogin.php";
+
 
 // Define variables and initialize with empty values
 $username = "";
@@ -20,76 +22,38 @@ $password_error = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
-        $username_error = "Please enter your email address.";
-    } else{
-        $username = trim($_POST["username"]);
-    }
+    // Instatiate SponsorLogin object
+    $obj = new VolunteerLogin();
 
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))){
-        $password_error = "Please enter your password.";
-    } else{
-        $password = trim($_POST["password"]);
-    }
+    // Set username
+    $username = trim($_POST["username"]);
+    $username_error = $obj->setUsername($username);
 
-    // Validate credentials
-    if(empty($username_error) && empty($password_error)){
-        // Prepare a select statement
-        $sql = "SELECT volunteer_id, first_name, last_name, graduation_year, username, password FROM volunteers WHERE username = ?";
+    // Set password
+    $password = trim($_POST["password"]);
+    $password_error = $obj->setPassword($password);
 
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-            // Set parameters
-            $param_username = $username;
-
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $volunteer_id, $first_name, $last_name, $graduation_year, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-
-                            // Store data in session variables
-                            $_SESSION["volunteer_loggedin"] = true;
-                            $_SESSION["volunteer_id"] = $volunteer_id;
-                            $_SESSOPM["username"] = $username;
-                            $_SESSION["first_name"] = $first_name;
-                            $_SESSION["last_name"] = $last_name;
-                            $_SESSION["graduation_year"] = $graduation_year;
-
-                            // Redirect user to dashboard
-                            header("location: dashboard.php");
-                        } else{
-                            // Display an error message if password is not valid
-                            $password_error = "The password you entered was not valid.";
-                        }
-                    }
-                } else{
-                    // Display an error message if username doesn't exist
-                    $username_error = "No account found with that email.";
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
+    if(empty($username_error) && empty($password_error)) {
+        $status = $obj->login();
+        if(!$status) {
+          $password_error = "The password you entered was not valid.";
         }
+        else {
+          // Start a new session
+          if(session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-        // Close statement
-        mysqli_stmt_close($stmt);
+          // Store data in session variables
+          $_SESSION["volunteer_loggedin"] = true;
+          $_SESSION["volunteer_id"] = $obj->getVolunteerId();
+          $_SESSOPM["username"] = $username;
+          $_SESSION["first_name"] = $obj->getFirstName();
+          $_SESSION["last_name"] = $obj->getLastName();
+          $_SESSION["graduation_year"] = $obj->getGraduationYear();
+
+          // Redirect user to dashboard
+          header("location: dashboard.php");
+        }
     }
-
-    // Close connection
-    mysqli_close($link);
 }
 ?>
 
