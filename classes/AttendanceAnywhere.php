@@ -1,4 +1,6 @@
 <?php
+require 'DBConnection.php';
+
 class AttendanceAnywhere
 {
     protected $pdo = null;
@@ -9,16 +11,10 @@ class AttendanceAnywhere
 		private $sponsor_id;
 		private $contribution_value;
 		private $status;
-		// private $engagementCreationObject;
 
 		public function __construct(int $sponsor_id, int $event_id, int $opportunity_id, float $contribution_value)
     {
-      $options = [
-			    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-			    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-			    PDO::ATTR_EMULATE_PREPARES   => false,
-			];
-      $this->pdo = new PDO("mysql:host=localhost;dbname=volunteer_nexus;charset=utf8mb4", "root", "root", $options);
+      $this->pdo = (new DBConnection)->getPDO();
 			$this->sponsor_id = $sponsor_id;
 			$this->event_id = $event_id;
 			$this->opportunity_id = $opportunity_id;
