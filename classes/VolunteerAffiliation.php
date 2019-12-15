@@ -36,7 +36,7 @@ class VolunteerAffiliation {
 			sponsor_name
 			ASC";
 		$stmt = $this->pdo->query($sql);
-		if(!$status) {
+		if(!$stmt) {
 			return null;
 		}
 		else {
@@ -63,7 +63,7 @@ class VolunteerAffiliation {
 		return $status;
 	}
 
-	private function checkAffiliationExists(): bool
+	public function checkAffiliationExists(): bool
 	{
 		$sql =
 			"SELECT
