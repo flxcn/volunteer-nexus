@@ -128,8 +128,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $needs_verification = $input_needs_verification;
 
     // Validate needs_reminder
-    $input_needs_verification = trim($_POST["needs_reminder"]);
-    $needs_verification = $input_needs_reminder;
+    $input_needs_reminder = trim($_POST["needs_reminder"]);
+    $needs_reminder = $input_needs_reminder;
 
 
     // Check input errors before inserting in database
