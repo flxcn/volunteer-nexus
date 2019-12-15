@@ -40,7 +40,7 @@ class VolunteerLogin
 
 		private function checkUsernameExists($username): bool
 		{
-			$sponsor = $pdo->prepare("SELECT 1 FROM volunteers WHERE username = :username");
+			$stmt = $this->pdo->prepare("SELECT 1 FROM volunteers WHERE username = :username");
 			$stmt->execute(['username' => $username]);
 			return (bool)$stmt->fetch();
 		}
