@@ -19,7 +19,7 @@ class AttendanceAnywhere
 			$this->event_id = $event_id;
 			$this->opportunity_id = $opportunity_id;
 			$this->contribution_value = $contribution_value;
-			$this->status = TRUE;
+			$this->status = true;
 		}
 
 		public function setVolunteerId(string $student_id): bool
