@@ -6,7 +6,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     exit;
 }
 
-require_once "../config.php";
+require_once '../classes/VolunteerAffiliation.php';
 
 // Define variables and initialize with empty values
 $volunteer_id = $_SESSION["volunteer_id"];
@@ -16,7 +16,7 @@ $volunteer_id_error = "";
 $sponsor_id_error = "";
 
 $obj = new VolunteerAffiliation($volunteer_id);
-$jsonSponsors = $obj->getEvents();
+$jsonSponsors = $obj->getSponsors();
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -28,14 +28,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   if(empty($volunteer_id_error) && empty($sponsor_id_error)) {
     if($obj->checkAffiliationExists()) {
       $sponsor_id_error = "Affiliation already exists.";
-      return;
-    }
-
-    if($obj->addAffiliation()) {
-      header("location: dashboard.php");
     }
     else {
-      echo "Error!";
+      if($obj->addAffiliation()) {
+        header("location: dashboard.php");
+      }
+      else {
+        echo "Error!";
+      }
     }
   }
 }
