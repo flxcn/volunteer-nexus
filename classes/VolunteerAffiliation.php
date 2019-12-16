@@ -74,9 +74,7 @@ class VolunteerAffiliation {
 				volunteer_id = :volunteer_id
 				AND sponsor_id = :sponsor_id";
 		$stmt = $this->pdo->prepare($sql);
-		$stmt->execute([
-			'volunteer_id' => $this->volunteer_id,
-			'sponsor_id' => $this->sponsor_id]);
+		$stmt->execute(['volunteer_id' => $this->volunteer_id, 'sponsor_id' => $this->sponsor_id]);
 		$affiliation_id = $stmt->fetchColumn();
 
 		if($affiliation_id) {

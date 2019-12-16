@@ -12,64 +12,17 @@ class AttendanceAnywhere
 		private $contribution_value;
 		private $status;
 
-		public function __construct(int $sponsor_id)
+		public function __construct(int $sponsor_id, int $event_id, int $opportunity_id, float $contribution_value)
     {
       $this->pdo = (new DatabaseConnection)->getPDO();
 			$this->sponsor_id = $sponsor_id;
-			$this->event_id = "";
-			$this->opportunity_id = "";
-			$this->contribution_value = "";
+			$this->event_id = $event_id;
+			$this->opportunity_id = $opportunity_id;
+			$this->contribution_value = $contribution_value;
 			$this->status = true;
 		}
 
-    public function setEventId($event_id): bool
-    {
-      if(empty($event_id)) {
-        return false;
-      }
-      else {
-        $this->event_id = $event_id;
-        return true;
-      }
-    }
-
-    public function setOpportunityId($opportunity_id): bool
-    {
-      if(empty($opportunity_id)) {
-        return false;
-      }
-      else {
-        $this->opportunity_id = $opportunity_id;
-        return true;
-      }
-    }
-
-    public function setContributionValue($contribution_value)
-    {
-      $this->contribution_value = $contribution_value;
-    }
-
-    public function setEventId($event_id): bool
-    {
-      $this->event_id = $event_id;
-    }
-
-    public function getEventId(): string
-    {
-      return $this->event_id;
-    }
-
-    public function getOpportunityId(): string
-    {
-      return $this->opportunity_id;
-    }
-
-    public function getContributionValue(): float
-    {
-      return $this->contribution_value;
-    }
-
-		public function convertVolunteerId(string $student_id): bool
+		public function setVolunteerId(string $student_id): bool
 		{
 			if(empty($student_id) || strlen($student_id) != 5) {
         return false;
@@ -124,14 +77,7 @@ class AttendanceAnywhere
 
     private function updateEngagement($engagement_id): bool
     {
-			$stmt = $this->pdo->prepare(
-        "UPDATE
-          engagements
-        SET
-          status = 1
-        WHERE
-          engagement_id = :engagement_id"
-        );
+			$stmt = $this->pdo->prepare("UPDATE engagements SET status = 1 WHERE engagement_id = :engagement_id");
 			$status = $stmt->execute(['engagement_id' => $engagement_id]);
 			return $status;
     }
