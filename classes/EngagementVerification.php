@@ -28,10 +28,7 @@ class EngagementVerification {
 
 	public function setEngagementStatus(int $engagement_status): bool
 	{
-		if(empty($engagement_status)) {
-			return false;
-		}
-		elseif($engagement_status == -1) {
+		if($engagement_status == -1) {
 			$this->engagement_status = null;
 			return true;
 		}
