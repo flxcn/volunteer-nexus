@@ -37,24 +37,40 @@ $advisor3_phone_error = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $obj = new SponsorRegistration();
+
+  // Set sponsor_name
   $sponsor_name = trim($_POST["sponsor_name"]);
   $sponsor_name_error = $obj->setSponsorName($sponsor_name);
+
+  // Set username
   $username = trim($_POST["username"]);
   $username_error = $obj->setUsername($username);
+
+  // Set password
   $password = trim($_POST["password"]);
   $password_error = $obj->setPassword($password);
+
+  // Set confirm_password
   $confirm_password = trim($_POST["confirm_password"]);
   $confirm_password_error = $obj->setConfirmPassword($confirm_password);
+
+  // Set contribution_type
   $contribution_type = trim($_POST["contribution_type"]);
   $contribution_type_error = $obj->setContributionType($contribution_type);
+
+  // Set advisor1 information
   $advisor1_name = trim($_POST["advisor1_name"]);
   $advisor1_email = trim($_POST["advisor1_email"]);
   $advisor1_phone = trim($_POST["advisor1_phone"]);
   $obj->addAdvisor($advisor1_name, $advisor1_email, $advisor1_phone);
+
+  // Set advisor2 information
   $advisor2_name = trim($_POST["advisor2_name"]);
   $advisor2_email = trim($_POST["advisor2_email"]);
   $advisor2_phone = trim($_POST["advisor2_phone"]);
   $obj->addAdvisor($advisor2_name, $advisor2_email, $advisor2_phone);
+
+  // Set advisor3 information
   $advisor3_name = trim($_POST["advisor3_name"]);
   $advisor3_email = trim($_POST["advisor3_email"]);
   $advisor3_phone = trim($_POST["advisor3_phone"]);
