@@ -16,14 +16,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     && $_POST["student_id"]
     && $_POST["sponsor_id"]
     && $_POST["contribution_value"]) {
+
     $event_id = $_POST["event_id"];
     $opportunity_id = $_POST["opportunity_id"];
     $student_id = $_POST["student_id"];
     $sponsor_id = $_POST["sponsor_id"];
     $contribution_value = $_POST["contribution_value"];
 
-    $obj = new AttendanceAnywhere($sponsor_id, $event_id, $opportunity_id, $contribution_value);
-    $status = $obj->setVolunteerId($student_id);
+    $obj = new AttendanceAnywhere($sponsor_id);
+    $obj->setSponsorId($event_id);
+    $obj->setEventId($opportunity_id);
+    $obj->setContributionValue($contribution_value);
+
+    $status = $obj->convertVolunteerId($student_id);
     if(!$status) {
       echo "Invalid Student ID. Please try again.";
       exit;
@@ -31,11 +36,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $status = $obj->confirmAttendance();
     if($status) {
-      echo "Success! Check-in complete!";
+      echo "Success! Check-in complete! "
+        . $obj->getContributionValue() . "Added";
     }
     else {
       echo "Error. Please try again.";
     }
+
   }
 }
 
