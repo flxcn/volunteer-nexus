@@ -166,7 +166,12 @@ $jsonOpportunities = $populatorObj->getOpportunities();
         var http = new XMLHttpRequest();
       }
       var url = 'attendance-anywhere-process.php';
-      var params = 'sponsor_id=' + sponsorId + '&event_id=' + eventId + '&opportunity_id=' + opportunityId + '&student_id=' + studentId + '&contribution_value=' + contributionValue;
+      var params =
+        'sponsor_id=' + sponsorId +
+        '&event_id=' + eventId +
+        '&opportunity_id=' + opportunityId +
+        '&student_id=' + studentId +
+        '&contribution_value=' + contributionValue;
       http.open('POST', url, true);
 
       //Send the proper header information along with the request
