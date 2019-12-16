@@ -23,6 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Instatiate SponsorLogin object
     $obj = new SponsorLogin();
+    
     // Set username
     $username = trim($_POST["username"]);
     $username_error = $obj->setUsername($username);
