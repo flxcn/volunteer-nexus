@@ -115,7 +115,8 @@ class SponsorRegistration
 					'advisor3_name' => $this->advisors[2]["name"],
 					'advisor3_email' => $this->advisors[2]["email"],
 					'advisor3_phone' => $this->advisors[2]["phone"],
-				]);
+				]
+      );
 
       return $status;
     }
