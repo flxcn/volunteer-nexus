@@ -1,4 +1,5 @@
 <?php
+require '../vendor/autoload.php';
 
 // Google API configuration
 define('GOOGLE_CLIENT_ID', 'Google_Client_ID_Value');
@@ -7,11 +8,6 @@ define('GOOGLE_REDIRECT_URL', 'http:/localhost/volunteer-nexus-master/volunteers
 
 // Start session
 if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-
-
-// Include Google API client library
-require_once '../google-api-php-client/Google_Client.php';
-require_once '../google-api-php-client/contrib/Google_Oauth2Service.php';
 
 // Call Google API
 $gClient = new Google_Client();
