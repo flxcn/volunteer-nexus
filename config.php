@@ -6,11 +6,12 @@ error_reporting(E_ALL);
 define('HOST', 'localhost');
 define('USERNAME', 'root');
 define('PASSWORD', 'root');
+define('DATABASE_NAME', 'volunteer_nexus');
 
 /*only for MAMP server (testing)*/
 define('PORT', 8889);
 
-$link = mysqli_connect(HOST, USERNAME, PASSWORD, DB_NAME, PORT);
+$link = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE_NAME, PORT);
 
 if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
