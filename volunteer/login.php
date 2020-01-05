@@ -12,6 +12,8 @@ if(isset($_SESSION["volunteer_loggedin"]) && $_SESSION["volunteer_loggedin"] ===
 require_once "../config.php";
 require_once "../classes/VolunteerLogin.php";
 
+// Google Sign-in API
+
 
 // Define variables and initialize with empty values
 $username = "";
@@ -75,6 +77,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <div class="wrapper">
         <h2>Volunteer Login</h2>
+
+        <?php require 'google-oauth.php';?>
+
         <p>Please fill in your credentials to login.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>">
@@ -94,5 +99,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </form>
     </div>
     <?php include '../footer.php';?>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 </body>
 </html>
