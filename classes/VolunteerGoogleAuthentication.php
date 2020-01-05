@@ -84,8 +84,8 @@ class VolunteerGoogleAuthentication
 
 		public function authenticate(): bool
 		{
-			if($this->checkUsernameExists()){
-				$this->login();
+			if($this->checkUsernameExists($this->username)){
+				return $this->login();
 			}
 			else {
 				$status = $this->addVolunteer();
@@ -107,8 +107,7 @@ class VolunteerGoogleAuthentication
 					username = :username";
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(
-				['oauth_uid' => $this->oauth_uid],
-				['oauth_provider' => $this->oauth_provider]
+				['username' => $this->username]
 			);
 			$volunteer = $stmt->fetch();
 
