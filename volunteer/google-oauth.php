@@ -1,50 +1,41 @@
 <?php
-require '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-// Google API configuration
-define('GOOGLE_CLIENT_ID', 'Google_Client_ID_Value');
-define('GOOGLE_CLIENT_SECRET', 'Google_Client_Secret_Value');
-define('GOOGLE_REDIRECT_URL', 'http:/localhost/volunteer-nexus-master/volunteers/google-oauth.php');
+// init configuration
+$clientID = '<YOUR_CLIENT_ID>';
+$clientSecret = '<YOUR_CLIENT_SECRET>';
+$redirectUri = 'http:/localhost/volunteer-nexus-master/volunteers/google-oauth.php';
 
-// Start session
-if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+// create Client Request to access Google API
+$client = new Google_Client();
+$client->setClientId($clientID);
+$client->setClientSecret($clientSecret);
+$client->setRedirectUri($redirectUri);
+$client->addScope("email");
+$client->addScope("profile");
 
-// Call Google API
-$gClient = new Google_Client();
-$gClient->setApplicationName('VolunteerNexus Login');
-$gClient->setClientId(GOOGLE_CLIENT_ID);
-$gClient->setClientSecret(GOOGLE_CLIENT_SECRET);
-$gClient->setRedirectUri(GOOGLE_REDIRECT_URL);
+// authenticate code from Google OAuth Flow
+if (isset($_GET['code'])) {
+  $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+  $client->setAccessToken($token['access_token']);
 
-$google_oauthV2 = new Google_Oauth2Service($gClient);
+  // get profile info
+  $google_oauth = new Google_Service_Oauth2($client);
+  $google_account_info = $google_oauth->userinfo->get();
+  $username =  $google_account_info->email;
+  $first_name =  $google_account_info->given_name;
+  $last_name =  $google_account_info->family_name;
 
-// Include User library file
-require_once '../classes/VolunteerGoogleAuthentication.php';
-
-if(isset($_GET['code'])){
-    $gClient->authenticate($_GET['code']);
-    $_SESSION['token'] = $gClient->getAccessToken();
-    header('Location: ' . filter_var(GOOGLE_REDIRECT_URL, FILTER_SANITIZE_URL));
-}
-
-if(isset($_SESSION['token'])){
-    $gClient->setAccessToken($_SESSION['token']);
-}
-
-if($gClient->getAccessToken()){
-  // Get user profile data from google
-  $gpUserProfile = $google_oauthV2->userinfo->get();
-
+  // now you can use this profile info to create account in your website and make user logged in.
   // Initialize User class
   $obj = new VolunteerGoogleAuthentication();
 
   // Getting user profile info
-	$obj->setOAuthUId($gpUserProfile['id']);
-	$obj->setUsername($gpUserProfile['email']);
-	$obj->setFirstName($gpUserProfile['given_name']);
-	$obj->setLastName($gpUserProfile['family_name']);
+	$obj->setUsername($username);
+	$obj->setFirstName($first_name);
+	$obj->setLastName($last_name);
 
-	if($obj->authenticate()) {
+  if($obj->authenticate()) {
 		// Start a new session
 		if(session_status() !== PHP_SESSION_ACTIVE) session_start();
 
@@ -59,13 +50,9 @@ if($gClient->getAccessToken()){
 		// Redirect user to dashboard
 		header("location: dashboard.php");
 	}
-}
-else {
-    // Get login url
-    $authUrl = $gClient->createAuthUrl();
 
-    // Render google login button
-    $output = '<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'">Sign in with Google<img src="images/google-sign-in-btn.png" alt=""/></a>';
+} else {
+  $output = "<a href='".$client->createAuthUrl()."'>Google Login</a>";
 }
 ?>
 
