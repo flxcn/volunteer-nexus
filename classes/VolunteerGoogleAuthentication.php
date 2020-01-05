@@ -4,8 +4,8 @@ require 'DatabaseConnection.php';
 class VolunteerGoogleAuthentication
 {
 		protected $pdo = null;
-		private $oauth_uid;
-		private $oauth_provider;
+		// private $oauth_uid;
+		// private $oauth_provider;
 		private $username;
 		//private $password;
 		private $first_name;
@@ -16,8 +16,8 @@ class VolunteerGoogleAuthentication
 		public function __construct()
     {
 			$this->pdo = (new DatabaseConnection)->getPDO();
-			$this->oauth_uid = "";
-			$this->oauth_provider = "google";
+			// $this->oauth_uid = "";
+			// $this->oauth_provider = "google";
 			$this->username = "";
 			//$this->password = "";
 			$this->first_name = "";
@@ -26,17 +26,17 @@ class VolunteerGoogleAuthentication
 			//$this->graduation_year = "";
 		}
 
-		public function setOAuthUId(string $oauth_uid): bool
-		{
-			if(empty($oauth_uid)) {
-				return false;
-			}
-			else
-			{
-				$this->oauth_uid = $oauth_uid;
-				return true;
-			}
-		}
+		// public function setOAuthUId(string $oauth_uid): bool
+		// {
+		// 	if(empty($oauth_uid)) {
+		// 		return false;
+		// 	}
+		// 	else
+		// 	{
+		// 		$this->oauth_uid = $oauth_uid;
+		// 		return true;
+		// 	}
+		// }
 
 		public function setUsername(string $username): bool
 		{
@@ -100,12 +100,11 @@ class VolunteerGoogleAuthentication
 		{
 			$sql =
 				"SELECT
-					volunteer_id, username, first_name, last_name
+					volunteer_id, first_name, last_name
 				FROM
 					volunteers
 				WHERE
-					oauth_uid = :oauth_uid
-					AND oauth_provider = :oauth_provider";
+					username = :username";
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(
 				['oauth_uid' => $this->oauth_uid],
@@ -116,7 +115,7 @@ class VolunteerGoogleAuthentication
 			if ($volunteer)
 			{
 				$this->volunteer_id = $volunteer["volunteer_id"];
-				$this->username = $volunteer["username"];
+				// $this->username = $volunteer["username"];
 				$this->first_name = $volunteer["first_name"];
 				$this->last_name = $volunteer["last_name"];
 				// $this->graduation_year = $volunteer["graduation_year"];
@@ -130,16 +129,14 @@ class VolunteerGoogleAuthentication
 		{
 			$sql =
 				"INSERT INTO
-					volunteers (oauth_uid, oauth_provider, username, first_name, last_name)
-				VALUES (:oauth_uid, :oauth_provider, :username, :first_name, :last_name)";
+					volunteers (username, first_name, last_name)
+				VALUES (:username, :first_name, :last_name)";
 			$stmt = $this->pdo->prepare($sql);
 			$status = $stmt->execute(
 				[
-					'oauth_uid' => $this->sponsor_name,
-					'oauth_provider' => $this->username,
-					'username' => $this->password,
-					'first_name' => $this->contribution_type,
-					'last_name' => $this->advisors[0]["name"],
+					'username' => $this->username,
+					'first_name' => $this->first_name,
+					'last_name' => $this->last_name,
 				]
 			);
 
