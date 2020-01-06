@@ -38,11 +38,11 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 <script type="text/javascript">
   // define QR Code content
 	var school = "whs";
-	var volunteerId = <?php echo $_SESSION["volunteer_id"];?>;
+	var volunteerId = "<?php echo $_SESSION["volunteer_id"];?>";
 	var qrCodeContent = school + "_" + volunteerId;
 
   // define full name
-	var name = "" + <?php echo $_SESSION["last_name"];?> + ", " + <?php echo $_SESSION['first_name']?>;
+	var name = "" + "<?php echo $_SESSION["last_name"];?>" + ", " + "<?php echo $_SESSION['first_name']?>";
 
 	var config = {
 		// QR Code Content (Volunteer ID)
