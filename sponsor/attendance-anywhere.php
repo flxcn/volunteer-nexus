@@ -39,7 +39,6 @@ $jsonOpportunities = $populatorObj->getOpportunities();
 <html lang="en">
 <head>
   <title>Attendance Anywhere</title>
-  <script type="text/javascript" src="AttendanceAnywhere.js"></script>
   <!--Load required libraries-->
   <?php $pageContent='Form'?>
   <?php include '../head.php'?>
@@ -233,22 +232,20 @@ $jsonOpportunities = $populatorObj->getOpportunities();
           </div>
 
 
-          <div id="scanner-container">
-            <!-- QR Code Scanner -->
-            <h1>Scan from WebCam:</h1>
-            <div>
-                <b>Device has camera: </b>
-                <span id="cam-has-camera"></span>
-                <br>
-                <video muted playsinline id="qr-video"></video>
-            </div>
-            <b>Detected QR code: </b>
-            <span id="cam-qr-result">None</span>
-            <br>
-            <b>Last detected at: </b>
-            <span id="cam-qr-result-timestamp"></span>
-            <hr>
+          <!-- QR Code Scanner -->
+          <h1>Scan from WebCam:</h1>
           <div>
+              <b>Device has camera: </b>
+              <span id="cam-has-camera"></span>
+              <br>
+              <video muted playsinline id="qr-video"></video>
+          </div>
+          <b>Detected QR code: </b>
+          <span id="cam-qr-result">None</span>
+          <br>
+          <b>Last detected at: </b>
+          <span id="cam-qr-result-timestamp"></span>
+          <hr>
 
           <script type="module">
               import QrScanner from "../qr-scanner/qr-scanner.min.js";
@@ -266,11 +263,11 @@ $jsonOpportunities = $populatorObj->getOpportunities();
               function processResult(result) {
                 var scannedCode = result.substring(5);
 
-                label.textContent = scannedCode;
+                camQrResult.textContent = scannedCode;
                 camQrResultTimestamp.textContent = new Date().toString();
-                label.style.color = 'teal';
-                clearTimeout(label.highlightTimeout);
-                label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+                camQrResult.style.color = 'teal';
+                clearTimeout(camQrResult.highlightTimeout);
+                camQrResult.highlightTimeout = setTimeout(() => camQrResult.style.color = 'inherit', 100);
 
                 if(!isNaN(scannedCode) && previousStudentId != scannedCode) {
                   confirmAttendance(scannedCode);
