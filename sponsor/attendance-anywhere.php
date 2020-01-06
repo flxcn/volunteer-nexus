@@ -127,9 +127,6 @@ $jsonOpportunities = $populatorObj->getOpportunities();
       contributionValue = submittedContributionValue;
       //console.log(submittedContributionValue);
 
-      // sponsorId
-
-
       document.getElementById('eventsSelect').disabled = true;
       document.getElementById('opportunitiesSelect').disabled = true;
 
@@ -141,6 +138,7 @@ $jsonOpportunities = $populatorObj->getOpportunities();
         initialForm.style.display = "none";
       }
 
+      // QuaggaJS
       var scannerToggler = document.getElementById("scannerToggler");
       if (scannerToggler.style.display === "none") {
         scannerToggler.style.display = "block";
@@ -148,19 +146,17 @@ $jsonOpportunities = $populatorObj->getOpportunities();
         scannerToggler.style.display = "none";
       }
 
-
-      startScanner();
-
       var scannerContainer = document.getElementById("scanner-container");
       scannerContainer.scrollIntoView(true); // Top
 
+      //scanner.start();
 
       return true;
     }
   </script>
 
   <script>
-    function confirmAttendance(studentId) {
+    function confirmAttendance(volunteerId) {
       if (window.XMLHttpRequest)
       {
         var http = new XMLHttpRequest();
@@ -193,36 +189,6 @@ $jsonOpportunities = $populatorObj->getOpportunities();
     snd.play();
   }
   </script>
-
-  <script src="../quaggaJS/quagga.min.js"></script>
-  <script>
-  Quagga.init({
-    inputStream : {
-      name : "Live",
-      type : "LiveStream",
-      // Or '#yourElement' (optional)
-      target: document.querySelector('#yourElement')
-    },
-    decoder : {
-      readers : ["code_39_reader"]
-    }
-  }, function(err) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log("Initialization finished. Ready to start");
-    Quagga.start();
-  });
-  </script>
-  <style>
-  /* In order to place the tracking correctly */
-  canvas.drawing, canvas.drawingBuffer {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  </style>
 
 </head>
 
@@ -266,117 +232,65 @@ $jsonOpportunities = $populatorObj->getOpportunities();
             </form>
           </div>
 
-          <!-- Div to show the scanner -->
-          <div id="scanner-container"></div>
+
+          <div id="scanner-container">
+            <!-- QR Code Scanner -->
+            <h1>Scan from WebCam:</h1>
+            <div>
+                <b>Device has camera: </b>
+                <span id="cam-has-camera"></span>
+                <br>
+                <video muted playsinline id="qr-video"></video>
+            </div>
+            <b>Detected QR code: </b>
+            <span id="cam-qr-result">None</span>
+            <br>
+            <b>Last detected at: </b>
+            <span id="cam-qr-result-timestamp"></span>
+            <hr>
+          <div>
+
+          <script type="module">
+              import QrScanner from "../qr-scanner/qr-scanner.min.js";
+              QrScanner.WORKER_PATH = '../qr-scanner/qr-scanner-worker.min.js';
+
+              const video = document.getElementById('qr-video');
+              const camHasCamera = document.getElementById('cam-has-camera');
+              const camQrResult = document.getElementById('cam-qr-result');
+              const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+              const fileSelector = document.getElementById('file-selector');
+              const fileQrResult = document.getElementById('file-qr-result');
+
+              var previousVolunteerId = '';
+
+              function processResult(result) {
+                var scannedCode = result.substring(5);
+
+                label.textContent = scannedCode;
+                camQrResultTimestamp.textContent = new Date().toString();
+                label.style.color = 'teal';
+                clearTimeout(label.highlightTimeout);
+                label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+
+                if(!isNaN(scannedCode) && previousStudentId != scannedCode) {
+                  confirmAttendance(scannedCode);
+                  previousStudentId = scannedCode;
+                  beep();
+                }
+              }
+
+              // ####### Web Cam Scanning #######
+
+              QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
+
+              const scanner = new QrScanner(video, result => processResult(result));
+              scanner.start();
+
+          </script>
 
           <input type="btn" id="scannerToggler" class="btn btn-primary" value="Finish Scanning" style="display:none; text-align:center">
 
-          <!-- Include the image-diff library -->
-          <script src="../quaggaJS/quagga.min.js"></script>
 
-          <script>
-          var _scannerIsRunning = false;
-
-          function startScanner() {
-            Quagga.init({
-              inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: document.querySelector('#scanner-container'),
-                constraints: {
-                  width: window.innerWidth,
-                  height: window.innerHeight,
-                  facingMode: "environment"
-                },
-              },
-              decoder: {
-                readers: [
-                  "code_128_reader",
-                  "ean_reader",
-                  "ean_8_reader",
-                  "code_39_reader",
-                  "code_39_vin_reader",
-                  "codabar_reader",
-                  "upc_reader",
-                  "upc_e_reader",
-                  "i2of5_reader"
-                ],
-                debug: {
-                  showCanvas: true,
-                  showPatches: true,
-                  showFoundPatches: true,
-                  showSkeleton: true,
-                  showLabels: true,
-                  showPatchLabels: true,
-                  showRemainingPatchLabels: true,
-                  boxFromPatches: {
-                    showTransformed: true,
-                    showTransformedBox: true,
-                    showBB: true
-                  }
-                }
-              },
-
-            }, function (err) {
-              if (err) {
-                console.log(err);
-                return
-              }
-
-              console.log("Initialization finished. Ready to start");
-              Quagga.start();
-
-              // Set flag to is running
-              _scannerIsRunning = true;
-            });
-
-            Quagga.onProcessed(function (result) {
-              var drawingCtx = Quagga.canvas.ctx.overlay,
-              drawingCanvas = Quagga.canvas.dom.overlay;
-
-              if (result) {
-                if (result.boxes) {
-                  drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
-                  result.boxes.filter(function (box) {
-                    return box !== result.box;
-                  }).forEach(function (box) {
-                    Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
-                  });
-                }
-
-                if (result.box) {
-                  Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
-                }
-
-                if (result.codeResult && result.codeResult.code) {
-                  Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
-                }
-              }
-            });
-
-            var previousStudentId = '';
-            Quagga.onDetected(function (result) {
-              var scannedCode = result.codeResult.code;
-              console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
-              if(previousStudentId != scannedCode && scannedCode.length == 5){
-                confirmAttendance(scannedCode);
-                previousStudentId = scannedCode;
-                beep();
-              }
-
-            });
-          }
-
-
-          // Start/stop scanner
-          document.getElementById("scannerToggler").addEventListener("click", function () {
-            if (_scannerIsRunning) {
-              Quagga.stop();
-            } else {
-              startScanner();
-            }
-          }, false);
-          </script>
         </div>
       </div>
     </div>
