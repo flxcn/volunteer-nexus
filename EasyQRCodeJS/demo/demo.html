@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>AttendanceAnywhere - Volunteer</title>
+		<script src="../src/easy.qrcode.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="generated_qr_code"></div>
+		</div>
+	</body>
+</html>
+
+
+<script type="text/javascript">
+	var school = "whs";
+	var volunteerId = 1;
+	//var volunteerId = <?php echo $_SESSION["volunteer_id"];?>;
+	var qrCodeContent = school + "_" + volunteerId;
+
+	//var name = "" + <?php echo $_SESSION["last_name"];> + ", " + <?php echo $_SESSION['first_name']?>;
+	var name = "last" + "," + " first";
+	var config = {
+		// QR Code Content (Volunteer ID)
+		text: qrCodeContent,
+
+		// Title (Volunteer Name)
+		title: name,
+		titleFont: "bold 30px Arial",
+		titleColor: "#fff",
+		titleBackgroundColor: "#000094",
+		titleHeight: 80,
+		titleTop: 60,
+
+		// Subtitle (VolunteerNexus)
+		subTitle: "VolunteerNexus",
+		subTitleFont: "24px Arial",
+		subTitleColor: "#ffffff",
+		subTitleTop: 40,
+
+		// QR Code Formatting
+		width: 480,
+		height: 480,
+		colorDark: "#000000",
+		colorLight: "#ffffff",
+
+		// QR Code Quiet Zone Formatting
+    quietZone: 80,
+    quietZoneColor: "#ffffff",
+
+		// Logo
+		logo: "../images/logo.png",
+		logoWidth: 150,
+		logoHeight: 150,
+		logoBackgroundColor: '#ffffff', // Invalid when `logBgTransparent` is true; default is '#ffffff'
+		logoBackgroundTransparent: false, // When transparent image is used, default is false
+
+		// Correction Level
+		correctLevel: QRCode.CorrectLevel.H // L, M, Q, H
+	};
+
+	// Generate QR Code
+	new QRCode(document.getElementById("generated_qr_code"), config);
+</script>
