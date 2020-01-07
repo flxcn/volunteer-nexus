@@ -49,6 +49,11 @@
         <h2>Contact</h2>
       </div>
       <p>If you have any questions, please reach out to Felix at <a href="mailto:felix@volunteernexus.com">felix@volunteernexus.com</a></p>
+
+      <div class="page-header">
+        <h2>Privacy Policy</h2>
+      </div>
+      <p>Because VolunteerNexus utilizes Google's sign-in API in order to provide a more seamless user experience, we've created a privacy policy to communicate what we do with your data. You can check it out <a href="privacy-policy.php">here</a></p>
     </div>
   </div>
 </body>
