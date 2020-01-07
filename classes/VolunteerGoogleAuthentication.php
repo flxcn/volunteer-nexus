@@ -127,9 +127,7 @@ class VolunteerGoogleAuthentication
 		private function addVolunteer(): bool
 		{
 			$sql =
-				"INSERT INTO
-					volunteers (username, first_name, last_name)
-				VALUES (:username, :first_name, :last_name)";
+				"INSERT INTO volunteers (username, first_name, last_name) VALUES (:username, :first_name, :last_name)";
 			$stmt = $this->pdo->prepare($sql);
 			$status = $stmt->execute(
 				[
@@ -144,7 +142,7 @@ class VolunteerGoogleAuthentication
 
 		private function getVolunteerIdFromLastInsert(): string
 		{
-			$stmt = $pdo->query("SELECT LAST_INSERT_ID()");
+			$stmt = $this->pdo->query("SELECT LAST_INSERT_ID()");
 			return $stmt->fetch();
 		}
 
