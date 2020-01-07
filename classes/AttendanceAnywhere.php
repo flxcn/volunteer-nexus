@@ -22,7 +22,18 @@ class AttendanceAnywhere
 			$this->status = true;
 		}
 
-		public function setVolunteerId(string $student_id): bool
+		public function setVolunteerId(string $volunteer_id): bool
+		{
+			if(empty($volunteer_id)) {
+        return false;
+			}
+			else {
+				$this->volunteer_id = $volunteer_id;
+        return true;
+			}
+		}
+
+    public function setStudentId(string $student_id): bool
 		{
 			if(empty($student_id) || strlen($student_id) != 5) {
         return false;

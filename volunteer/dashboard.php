@@ -25,6 +25,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     <p>
         <a href="events.php" class="btn btn-success">Find Events!</a>
     </p>
+    <p>
+        <a href="attendance-anywhere.php" class="btn btn-primary"><span class='glyphicon glyphicon-qrcode'></span> Attendance Anywhere</a>
+    </p>
 
     <?php include 'affiliations.php';?>
     <?php include 'engagements.php';?>

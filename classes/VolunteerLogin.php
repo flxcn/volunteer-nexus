@@ -78,7 +78,7 @@ class VolunteerLogin
 			{
 				$this->volunteer_id = $volunteer["volunteer_id"];
 				$this->first_name = $volunteer["first_name"];
-				$this->last_name = $volunteer["first_name"];
+				$this->last_name = $volunteer["last_name"];
 				$this->graduation_year = $volunteer["graduation_year"];
 				return true;
 			} else {
