@@ -53,7 +53,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 		titleFont: "bold 30px Arial",
 		titleColor: "#fff",
 		titleBackgroundColor: "#000094",
-		titleHeight: 80,
+		titleHeight: 70,
 		titleTop: 60,
 
 		// Subtitle (VolunteerNexus)
