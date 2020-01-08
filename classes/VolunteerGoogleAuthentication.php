@@ -140,10 +140,10 @@ class VolunteerGoogleAuthentication
 			return $status;
 		}
 
-		private function getVolunteerIdFromLastInsert(): string
+		private function getVolunteerIdFromLastInsert(): int
 		{
 			$stmt = $this->pdo->query("SELECT LAST_INSERT_ID()");
-			return $stmt->fetch();
+			return $stmt->fetchColumn();
 		}
 
 		public function getVolunteerId(): int
