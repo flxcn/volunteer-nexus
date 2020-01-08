@@ -64,7 +64,7 @@ if (isset($_GET['code'])) {
     <div class='col s12 m6 offset-m3 center-align'>
       <a class='oauth-container btn darken-4 white black-text' href='".$client->createAuthUrl() ."' style='text-transform:none; background-color: white; border-color: black;'>
         <div class='left'>
-          <img width='20px' style='margin-top:7px; margin-right:8px' alt='Google sign-in' src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png' />
+          <img width='20px' style='margin-top:7px; margin-right:8px' alt='Google sign-in' src='../images/google-g-logo.png' />
         </div>
         Login with Google
       </a>
