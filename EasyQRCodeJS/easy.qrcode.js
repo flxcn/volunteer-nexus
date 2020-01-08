@@ -1,21 +1,21 @@
 /**
  * EasyQRCodeJS
- * 
+ *
  * Cross-browser QRCode generator for pure javascript. Support Dot style, Logo, Background image, Colorful, Title, etc. Support Angular, Vue.js, React framework. (Running with DOM on client side)
- * 
+ *
  * Version 3.3.0
- * 
+ *
  * @author [ inthinkcolor@gmail.com ]
- * 
- * @see https://github.com/ushelp/EasyQRCodeJS 
+ *
+ * @see https://github.com/ushelp/EasyQRCodeJS
  * @see http://www.easyproject.cn/easyqrcodejs/tryit.html
  * @see https://github.com/ushelp/EasyQRCodeJS-NodeJS
- * 
+ *
  * Copyright 2017 Ray, EasyProject
  * Released under the MIT license
- * 
+ *
  * [Support AMD, CMD, CommonJS/Node.js]
- * 
+ *
  */
 ;(function() {
 
@@ -153,7 +153,7 @@
 			this.setupPositionProbePattern(0, 0, 'TL'); // TopLeft, TL
 			this.setupPositionProbePattern(this.moduleCount - 7, 0, 'BL'); // BotoomLeft, BL
 			this.setupPositionProbePattern(0, this.moduleCount - 7, 'TR'); // TopRight, TR
-			this.setupPositionAdjustPattern('A'); // Alignment, A 
+			this.setupPositionAdjustPattern('A'); // Alignment, A
 			this.setupTimingPattern();
 			this.setupTypeInfo(test, maskPattern);
 			if (this.typeNumber >= 7) {
@@ -1096,7 +1096,7 @@
 
 		/**
 		 * Draw the QRCode
-		 * 
+		 *
 		 * @param {QRCode} oQRCode
 		 */
 		Drawing.prototype.draw = function(oQRCode) {
@@ -1195,7 +1195,7 @@
 
 					} else {
 
-						// Timing Pattern 
+						// Timing Pattern
 						var nowDarkColor = _htOption.colorDark;
 						if (row == 6) {
 							nowDarkColor = _htOption.timing_H || _htOption.timing || nonRequiredColorDark;
@@ -1318,7 +1318,7 @@
 
 		/**
 		 * Check whether the user's browser supports Data URI or not
-		 * 
+		 *
 		 * @private
 		 * @param {Function} fSuccess Occurs if it supports Data URI
 		 * @param {Function} fFail Occurs if it doesn't support Data URI
@@ -1361,10 +1361,10 @@
 
 		/**
 		 * Drawing QRCode by using canvas
-		 * 
+		 *
 		 * @constructor
 		 * @param {HTMLElement} el
-		 * @param {Object} htOption QRCode Options 
+		 * @param {Object} htOption QRCode Options
 		 */
 		var Drawing = function(el, htOption) {
 			this._bIsPainted = false;
@@ -1388,8 +1388,8 @@
 
 		/**
 		 * Draw the QRCode
-		 * 
-		 * @param {QRCode} oQRCode 
+		 *
+		 * @param {QRCode} oQRCode
 		 */
 		Drawing.prototype.draw = function(oQRCode) {
 
@@ -1422,12 +1422,12 @@
 			this.clear();
 
 			var t = this;
-            
+
             function drawQuietZoneColor(){
                 // top
                 _oContext.lineWidth = 0;
                 _oContext.fillStyle =  _htOption.quietZoneColor;
-                _oContext.fillRect(0, 0, t._elCanvas.width, _htOption.quietZone);
+                _oContext.fillRect(0, 0, t._elCanvas.width, _htOption.quietZone + _htOption.titleHeight);
                 // left
                  _oContext.fillRect(0, _htOption.quietZone, _htOption.quietZone, t._elCanvas.height-_htOption.quietZone*2);
                 // right
@@ -1440,7 +1440,7 @@
 
 				// backgroundImage
 				var bgImg = new Image();
-				
+
 				bgImg.onload = function() {
 					_oContext.globalAlpha = 1;
 
@@ -1497,7 +1497,7 @@
 
 							var nowDotScale = _htOption.dotScale;
 							if (row == 6) {
-								// Timing Pattern 
+								// Timing Pattern
 								nowDotScale = 1;
 								var timingHColorDark = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
 								_oContext.fillStyle = bIsDark ? timingHColorDark : _htOption.colorLight;
@@ -1505,7 +1505,7 @@
 								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 -
 									nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 							} else if (col == 6) {
-								// Timing Pattern 
+								// Timing Pattern
 								nowDotScale = 1;
 								var timingVColorDark = _htOption.timing_V || _htOption.timing || _htOption.colorDark;
 								_oContext.fillStyle = bIsDark ? timingVColorDark : _htOption.colorLight;
@@ -1543,16 +1543,16 @@
 				}
 
 				if (_htOption.title) {
-				    
+
 					_oContext.fillStyle = _htOption.titleBackgroundColor;
 					_oContext.fillRect(0, 0, this._elCanvas.width, _htOption.titleHeight);
-				
+
 					_oContext.font = _htOption.titleFont;
 					_oContext.fillStyle = _htOption.titleColor;
 					_oContext.textAlign = 'center';
 					_oContext.fillText(_htOption.title, this._elCanvas.width / 2, 30);
 				}
-				
+
 				if (_htOption.subTitle) {
 					_oContext.font = _htOption.subTitleFont;
 					_oContext.fillStyle = _htOption.subTitleColor;
@@ -1592,10 +1592,10 @@
 
 						_this.makeImage();
 					}
-                    
+
 				if (_htOption.logo) {
 					var img = new Image();
-					
+
 					var _this = this;
 
 
@@ -1634,7 +1634,7 @@
 
 		/**
 		 * Return whether the QRCode is painted or not
-		 * 
+		 *
 		 * @return {Boolean}
 		 */
 		Drawing.prototype.isPainted = function() {
@@ -1674,7 +1674,7 @@
 
 	/**
 	 * Get the type by string length
-	 * 
+	 *
 	 * @private
 	 * @param {String} sText
 	 * @param {Number} nCorrectLevel
@@ -1724,7 +1724,7 @@
 	/**
 	 * @class QRCode
 	 * @constructor
-	 * @example 
+	 * @example
 	 * new QRCode(document.getElementById("test"), "QRCode");
 	 *
 	 * @example
@@ -1733,7 +1733,7 @@
 	 *    width : 128,
 	 *    height : 128
 	 * });
-	 * 
+	 *
 	 * oQRCode.clear(); // Clear the QRCode.
 	 * oQRCode.makeCode("QRCode"); // Re-create the QRCode.
 	 *
@@ -1744,7 +1744,7 @@
 	 * @param {Number} [vOption.height=256]
 	 * @param {String} [vOption.colorDark="#000000"]
 	 * @param {String} [vOption.colorLight="#ffffff"]
-	 * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H] 
+	 * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H]
 	 */
 	QRCode = function(el, vOption) {
 		this._htOption = {
@@ -1756,9 +1756,9 @@
 			correctLevel: QRErrorCorrectLevel.H,
 
 			dotScale: 1, // Must be greater than 0, less than or equal to 1. default is 1
-            
+
             quietZone: 0,
-            quietZoneColor: 'transparent', 
+            quietZoneColor: 'transparent',
 
 			title: "",
 			titleFont: "bold 16px Arial",
@@ -1781,12 +1781,12 @@
 			// === Posotion Pattern(Eye) Color
 			PO: undefined, // Global Posotion Outer color. if not set, the defaut is `colorDark`
 			PI: undefined, // Global Posotion Inner color. if not set, the defaut is `colorDark`
-			PO_TL: undefined, // Posotion Outer - Top Left 
-			PI_TL: undefined, // Posotion Inner - Top Left 
-			PO_TR: undefined, // Posotion Outer - Top Right 
-			PI_TR: undefined, // Posotion Inner - Top Right 
-			PO_BL: undefined, // Posotion Outer - Bottom Left 
-			PI_BL: undefined, // Posotion Inner - Bottom Left 
+			PO_TL: undefined, // Posotion Outer - Top Left
+			PI_TL: undefined, // Posotion Inner - Top Left
+			PO_TR: undefined, // Posotion Outer - Top Right
+			PI_TR: undefined, // Posotion Inner - Top Right
+			PO_BL: undefined, // Posotion Outer - Bottom Left
+			PI_BL: undefined, // Posotion Inner - Bottom Left
 
 			// === Alignment Color
 			AO: undefined, // Alignment Outer. if not set, the defaut is `colorDark`
@@ -1799,7 +1799,7 @@
 
 			// ==== Backgroud Image
 			backgroundImage: undefined, // Background Image
-			backgroundImageAlpha: 1, // Background image transparency, value between 0 and 1. default is 1. 
+			backgroundImageAlpha: 1, // Background image transparency, value between 0 and 1. default is 1.
 			autoColor: false,
 
 			// ==== Event Handler
@@ -1839,7 +1839,7 @@
 		if (this._htOption.useSVG) {
 			Drawing = svgDrawer;
 		}
-		
+
 		this._android = _getAndroid();
 		this._el = el;
 		this._oQRCode = null;
@@ -1852,7 +1852,7 @@
 
 	/**
 	 * Make the QRCode
-	 * 
+	 *
 	 * @param {String} sText link data
 	 */
 	QRCode.prototype.makeCode = function(sText) {
@@ -1869,7 +1869,7 @@
 	 * Make the Image from Canvas element
 	 * - It occurs automatically
 	 * - Android below 3 doesn't support Data-URI spec.
-	 * 
+	 *
 	 * @private
 	 */
 	QRCode.prototype.makeImage = function() {
