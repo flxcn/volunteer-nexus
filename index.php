@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="VolunteerNexus is an online platform for finding, joining, and tracking relevant volunteer opportunities in your community.">
 
   <!-- (START) For Local -->
   <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
@@ -53,7 +54,7 @@
       <div class="page-header">
         <h2>Privacy Policy</h2>
       </div>
-      <p>Because VolunteerNexus utilizes Google's sign-in API in order to provide a more seamless user experience, we've created a privacy policy to communicate what we do with your data. You can check it out <a href="privacy-policy.php">here</a></p>
+      <p>Because VolunteerNexus utilizes Google's sign-in API in order to provide a more seamless user experience, we've created a privacy policy to communicate what we do with your data. You can check it out <a href="privacy-policy.php">here</a>.</p>
     </div>
   </div>
 </body>
