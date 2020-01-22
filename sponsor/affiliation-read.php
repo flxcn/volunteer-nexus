@@ -35,7 +35,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 
 <body>
-  <?php $thisPage='Dashboard'; include 'navbar.php';?>
+  <?php $thisPage='Affiliations'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -95,9 +95,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>" . $row['contribution_value'] . "</td>";
                                         echo "<td>";
-                                          if($row['status']==TRUE)
+                                          if(strcmp($row['status'],'1') == 0)
                                             echo "Confirmed";
-                                          elseif ($row['status']==FALSE) {
+                                          elseif (strcmp($row['status'],'0') == 0) {
                                             echo "Denied";
                                           }
                                           else {
