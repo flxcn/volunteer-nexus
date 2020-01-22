@@ -25,7 +25,7 @@ class DatabaseConnection
       $this->pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
     }
 
-    public function getPDO(): object
+    public function getPDO()
 		{
 			return $this->pdo;
 		}
