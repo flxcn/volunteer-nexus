@@ -95,9 +95,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                         echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
                                         echo "<td>" . $row['contribution_value'] . "</td>";
                                         echo "<td>";
-                                          if($row['status']==TRUE)
+                                          if(strcmp($row['status'],'1') == 0)
                                             echo "Confirmed";
-                                          elseif ($row['status']==FALSE) {
+                                          elseif (strcmp($row['status'],'0') == 0) {
                                             echo "Denied";
                                           }
                                           else {
