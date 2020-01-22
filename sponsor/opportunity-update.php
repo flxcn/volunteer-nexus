@@ -9,9 +9,14 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 }
 
 // Include config file
-require_once "../config.php";
+require_once "../classes/SponsorOpportunityUpdate.php";
 
-// Define variables and initialize with empty values
+$sponsor_id = $_SESSION["sponsor_id"];
+$opportunity_id = $_GET["opportunity_id"];
+$event_id = $_GET["event_id"];
+
+$obj = new SponsorOpportunityUpdate($sponsor_id, $opportunity_id, $event_id);
+
 $opportunity_name = "";
 $description = "";
 $start_date = "";
@@ -22,7 +27,6 @@ $total_positions = "";
 $contribution_value = "";
 $needs_verification = "";
 $needs_reminder = "";
-
 
 $opportunity_name_error = "";
 $description_error = "";
@@ -37,179 +41,99 @@ $needs_reminder_error = "";
 
 
 // Processing form data when form is submitted
-if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"])){
-    // Get hidden input value
-    $event_id = $_POST["event_id"];
-    $opportunity_id = $_POST["opportunity_id"];
+if(
+  isset($_GET["opportunity_id"])
+  && !empty(trim($_GET["opportunity_id"]))
+)
+{
+  $obj->getOpportunity();
+  $opportunity_name = $obj->getOpportunityName();
+  $description = $obj->getDescription();
+  $start_date = $obj->getStartDate();
+  $start_time = $obj->getStartTime();
+  $end_date = $obj->getEndDate();
+  $end_time = $obj->getEndTime();
+  $total_positions = $obj->getTotalPositions();
+  $contribution_value = $obj->getContributionValue();
+  $needs_verification = $obj->getNeedsVerification();
+  $needs_reminder = $obj->getNeedsReminder();
+}
+elseif(
+  isset($_POST["event_id"])
+  && !empty($_POST["event_id"])
+  && isset($_POST["opportunity_id"])
+  && !empty($_POST["opportunity_id"])
+)
+{
 
-    // Validate opportunity name
-    $input_opportunity_name = trim($_POST["opportunity_name"]);
-    if(empty($input_opportunity_name)){
-        $opportunity_name_error = "Please enter an opportunity name.";
-    }else{
-        $opportunity_name = $input_opportunity_name;
+  // Validate opportunity name
+  $opportunity_name = trim($_POST["opportunity_name"]);
+  $opportunity_name_error = $obj->setOpportunityName($opportunity_name);
+
+  // Validate description
+  $description = trim($_POST["description"]);
+  $description_error = $obj->setDescription($description);
+
+  // Validate contribution_value
+  $contribution_value = trim($_POST["contribution_value"]);
+  $contribution_value_error = $obj->setContributionValue($contribution_value);
+
+  // Validate total_positions
+  $total_positions = trim($_POST["total_positions"]);
+  $total_positions_error = $obj->setTotalPositions($total_positions);
+
+  // Validate start_date
+  $start_date = trim($_POST["start_date"]);
+  $start_date_error = $obj->setStartDate($start_date);
+
+  // Validate start_time
+  $start_time = trim($_POST["start_time"]);
+  $start_time_error = $obj->setStartTime($start_time);
+
+
+  // Validate end_date
+  $end_date = trim($_POST["end_date"]);
+  $end_date_error = $obj->setEndDate($end_date);
+
+
+  // Validate end_time
+  $end_time = trim($_POST["end_time"]);
+  $end_time_error = $obj->setEndTime($end_time);
+
+
+  // Validate needs_verification
+  $needs_verification = trim($_POST["needs_verification"]);
+  $needs_verification_error = $obj->setNeedsVerification($needs_verification);
+
+  // Validate needs_reminder
+  $needs_reminder = trim($_POST["needs_reminder"]);
+  $needs_reminder_error = $obj->setNeedsReminder($needs_reminder);
+
+  // Check input errors before inserting in database
+  if(
+    empty($opportunity_name_error)
+    && empty($description_error)
+    && empty($start_date_error)
+    && empty($start_time_error)
+    && empty($end_date_error)
+    && empty($total_positions_error)
+    && empty($contribution_value_error)
+  )
+  {
+    $status = $obj->updateOpportunity();
+
+    if($status) {
+      header("Location: event-read.php?event_id=" . $event_id);
+      exit();
+    } else {
+      echo "Something went wrong. Please try again later.";
     }
-
-    // Validate description
-    $input_description = trim($_POST["description"]);
-    if(empty($input_description)){
-        $description_error = "Please enter a description.";
-    } else{
-        $description = $input_description;
-    }
-
-    // Validate contribution_value
-    $input_contribution_value = trim($_POST["contribution_value"]);
-    if(empty($input_contribution_value)){
-        $contribution_value_error = "Please enter a contribution value.";
-    } else{
-        $contribution_value = $input_contribution_value;
-    }
-
-    // Validate total_positions
-    $input_total_positions = trim($_POST["total_positions"]);
-    if(empty($input_total_positions)){
-        $total_positions_error = "Please enter the total number of positions.";
-    } else{
-        $total_positions = $input_total_positions;
-    }
-
-    // Validate start_date
-    $input_start_date = trim($_POST["start_date"]);
-    if(empty($input_start_date)){
-        $start_date_error = "Please enter an opportunity start date.";
-    } else{
-        $start_date = $input_start_date;
-    }
-
-    // Validate start_time
-    $input_start_time = trim($_POST["start_time"]);
-    if(empty($input_start_time)){
-        $start_time_error = "Please enter a opportunity start time.";
-    } else{
-        $start_time = $input_start_time;
-    }
-
-    // Validate end_date
-    $input_end_date = trim($_POST["end_date"]);
-    if(empty($input_end_date)){
-        $end_date_error = "Please enter an opportunity end date.";
-    } else{
-        $end_date = $input_end_date;
-    }
-
-    // Validate end_time
-    $input_end_time = trim($_POST["end_time"]);
-    if(empty($input_end_time)){
-        $end_time_error= "Please enter an opportunity end time.";
-    } else{
-        $end_time = $input_end_time;
-    }
-
-    // Validate needs_verification
-    $input_needs_verification = trim($_POST["needs_verification"]);
-    $needs_verification = $input_needs_verification;
-
-    // Validate needs_reminder
-    $input_needs_verification = trim($_POST["needs_reminder"]);
-    $needs_verification = $input_needs_reminder;
-
-
-    // Check input errors before inserting in database
-    if(empty($opportunity_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
-        // Prepare an update statement
-        $sql = "UPDATE opportunities SET opportunity_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=?, needs_verification=? WHERE opportunity_id=?";
-
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssiiiii", $param_opportunity_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder, $param_opportunity_id);
-
-            // Set parameters
-            $param_opportunity_name = $opportunity_name;
-            $param_description = $description;
-            $param_start_date = $start_date;
-            $param_start_time = $start_time;
-            $param_end_date = $end_date;
-            $param_end_time = $end_time;
-            $param_total_positions = $total_positions;
-            $param_contribution_value = $contribution_value;
-            $param_needs_verification = $needs_verification;
-            $param_needs_reminder = $needs_reminder;
-
-            $param_opportunity_id = $opportunity_id;
-
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
-                header("Location: event-read.php?event_id=" . $event_id);
-                exit();
-            } else{
-                echo "Something went wrong. Please try again later.";
-            }
-        }
-
-        // Close statement
-        mysqli_stmt_close($stmt);
-    }
-
-    // Close connection
-    mysqli_close($link);
-} else{
-    // Check existence of id parameter before processing further
-    if(isset($_GET["opportunity_id"]) && !empty(trim($_GET["opportunity_id"]))){
-        // Get URL parameter
-        $opportunity_id =  trim($_GET["opportunity_id"]);
-
-        // Prepare a select statement
-        $sql = "SELECT * FROM opportunities WHERE opportunity_id = ?";
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
-
-            // Set parameters
-            $param_opportunity_id = $opportunity_id;
-
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                $result = mysqli_stmt_get_result($stmt);
-
-                if(mysqli_num_rows($result) == 1){
-                    /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
-                    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-                    // Retrieve individual field value
-                    $opportunity_name = $row["opportunity_name"];
-                    $description = $row["description"];
-                    $start_date = $row["start_date"];
-                    $start_time = $row["start_time"];
-                    $end_date = $row["end_date"];
-                    $end_time = $row["end_time"];
-                    $total_positions = $row["total_positions"];
-                    $contribution_value = $row["contribution_value"];
-                    $needs_verification = $row["needs_verification"];
-                    $needs_verification = $row["needs_reminder"];
-
-                } else{
-                    // URL doesn't contain valid id. Redirect to error page
-                    header("location: error.php");
-                    exit();
-                }
-
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-        }
-
-        // Close statement
-        mysqli_stmt_close($stmt);
-
-        // Close connection
-        mysqli_close($link);
-    }  else{
-        // URL doesn't contain id parameter. Redirect to error page
-        header("location: error.php");
-        exit();
-    }
+  }
+}
+else
+{
+  header("location: error.php");
+  exit();
 }
 ?>
 
