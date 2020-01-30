@@ -111,18 +111,29 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     $needs_verification = $input_needs_verification;
 
     // Validate needs_reminder
-    $input_needs_verification = trim($_POST["needs_reminder"]);
-    $needs_verification = $input_needs_reminder;
+    $input_needs_reminder = trim($_POST["needs_reminder"]);
+    $needs_reminder = $input_needs_reminder;
 
 
     // Check input errors before inserting in database
     if(empty($opportunity_name_error) && empty($description_error) && empty($start_date_error) && empty($start_time_error) && empty($end_date_error) && empty($total_positions_error) && empty($contribution_value_error)){
         // Prepare an update statement
-        $sql = "UPDATE opportunities SET opportunity_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=?, needs_verification=? WHERE opportunity_id=?";
+        $sql = "UPDATE opportunities SET opportunity_name=?, description=?, start_date=?, start_time=?, end_date=?, end_time=?, total_positions=?, contribution_value=?, needs_verification=?, needs_reminder=? WHERE opportunity_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssiiiii", $param_opportunity_name, $param_description, $param_start_date, $param_start_time, $param_end_date, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder, $param_opportunity_id);
+            mysqli_stmt_bind_param($stmt, "ssssssiiiii", $param_opportunity_name,
+            $param_description,
+            $param_start_date,
+            $param_start_time,
+            $param_end_date,
+            $param_end_time,
+
+            $param_total_positions,
+            $param_contribution_value,
+            $param_needs_verification,
+            $param_needs_reminder,
+            $param_opportunity_id);
 
             // Set parameters
             $param_opportunity_name = $opportunity_name;
