@@ -53,7 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           $_SESSION["graduation_year"] = $obj->getGraduationYear();
 
           // Redirect user to dashboard
-          header("location: dashboard.php");
+          if(!headers_sent()) header("location: dashboard.php");
         }
     }
 }
