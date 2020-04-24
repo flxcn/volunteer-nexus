@@ -50,7 +50,8 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                   <?php
                   require_once "../config.php";
 
-                  $sql = "SELECT * FROM events
+                  $sql =
+                  "SELECT * FROM events
                   INNER JOIN affiliations ON affiliations.sponsor_id = events.sponsor_id
                   WHERE registration_start <= CURDATE()
                   AND registration_end >= CURDATE()
@@ -58,6 +59,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                   ORDER BY registration_end";
                   if($result = mysqli_query($link, $sql)){
                       if(mysqli_num_rows($result) > 0){
+                          echo "<div class='visible-xs'>";
                           echo "<table class='table table-bordered table-responsive'>";
                               echo "<thead>";
                                   echo "<tr>";
@@ -86,6 +88,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                               }
                               echo "</tbody>";
                           echo "</table>";
+                          echo "</div>";
                           mysqli_free_result($result);
                       } else {
                           echo "<p class='lead'><em>No events were found. If you have not yet, click <a href='affiliation-create.php'>here</a> to add an affiliation in order to view Events from a certain Sponsor.</em></p>";
