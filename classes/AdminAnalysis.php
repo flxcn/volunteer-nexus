@@ -47,30 +47,5 @@ class AdminAnalysis {
 			return $jsonEvents;
 		}
 	}
-
-	public function getContributionTotalsBySponsor(): ?array
-	{
-		$data = $pdo->query('SELECT affiliations.sponsor_id AS sponsor_id, engagements.volunteer_id AS volunteer_id, engagements.contribution_value AS contribution_value FROM engagements INNER JOIN affiliations ON affiliations.volunteer_id = engagements.volunteer_id')
-		->fetchAll(PDO::FETCH_GROUP);
-
-		$contributionTotalsBySponsor = new array();
-		for($sponsor=0; $sponsor<count($data); $sponsor++) {
-			$contributionTotalsBySponsor[] = new array();
-			foreach($data[$sponsor] as $engagement)
-			{
-				if(array_key_exists($engagement['volunteer_id'],$contributionTotalsBySponsor[$sponsor]))
-				{
-					$contributionTotalsBySponsor[$engagement['volunteer_id']] += $engagement['contribution_value'];
-				}
-				else
-				{
-					$contributionTotalsBySponsor[$sponsor][$engagement['volunteer_id']] = $engagement['contribution_value'];
-				}
-			}
-		}
-
-		return $contributionTotalsBySponsor;
-	}
-
 }
 ?>
