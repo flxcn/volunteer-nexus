@@ -77,7 +77,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                             echo "<table class='table' id='affiliations'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Member Name</th>";
+                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Member Name";
+                                          echo "<a href='#' onclick='sortTable(0)'><span class='glyphicon glyphicon-sort'></span></a>";
+                                          echo "<button type='button' onclick='sortTable(0)' class='btn'><span class='glyphicon glyphicon-sort'></span></button>";
+                                        echo "</th>";
                                         echo "<th onclick='sortTable(1)' style='cursor:pointer'>Email Address</th>";
                                         echo "<th onclick='sortTable(2)' style='cursor:pointer'>Total Contributions</th>";
                                     echo "</tr>";
