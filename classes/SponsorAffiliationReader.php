@@ -27,13 +27,15 @@ class SponsorAffiliationReader {
 					ON volunteers.volunteer_id = engagements.volunteer_id
 			WHERE
 				engagements.sponsor_id = :sponsor_id
+				AND engagements.status = '1'
 			GROUP BY
 				volunteers.last_name,
 				volunteers.first_name,
 				volunteers.username";
 
 			$stmt = $this->pdo->prepare($sql);
-			$volunteers = $stmt->execute(['sponsor_id' => $this->sponsor_id])->fetch(PDO::FETCH_ASSOC);
+			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+			$volunteers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		if(!$volunteers) {
 			return null;
