@@ -3,6 +3,9 @@ Volunteer Nexus aims to provide a unified platform to connect students with serv
 
 ## Features
 - Google Account Sign-in Option and Account Creation
-- Automatic Volunteer ID (QR Code) Generation and Scanning Capabilities
-- Sorting functionality when viewing tables
+- AttendanceAnywhere
+  - Automatic Volunteer ID (QR Code) Generation
+  - Scanning Capabilities within Browser
+- Sorting functionality when viewing tables, A-Z and Z-A
 - Password reset option
+- Day-before Email Reminders
