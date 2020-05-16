@@ -5,6 +5,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     header("location: login.php");
     exit;
 }
+
+require '../classes/SponsorAffiliationReader.php';
+$obj = new SponsorAffiliationReader($_SESSION['sponsor_id']);
+$volunteers = $obj->getAffiliatedVolunteers();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,9 +35,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 </head>
 
 
-
-
-
 <body>
   <?php $thisPage='Affiliations'; include 'navbar.php';?>
     <div class="wrapper">
@@ -44,72 +45,49 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                         <h2 class="pull-left">Affiliated Volunteers</h2>
                     </div>
 
-                    <?php
-                    // Include config file
-                    require_once "../config.php";
+                    <?php if ($volunteers): ?>
+                      <table class='table' id='affiliations'>
+                        <thead>
+                          <tr>
+                            <th onclick='sortTable(0)' style='cursor:pointer'>
+                              Member Name
+                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                              <!-- <button type='button' class='btn btn-link'><span class='glyphicon glyphicon-sort'></span></button> -->
+                            </th>
+                            <th onclick='sortTable(1)' style='cursor:pointer'>
+                              Email Address
+                            </th>
+                            <th onclick='sortTable(2)' style='cursor:pointer'>
+                              Total Contributions
+                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                            </th>
+                          </tr>
+                        </thead>
 
-                    // Run SQL Query
-                    $sql =
-                    "SELECT
-                      affiliations.volunteer_id AS volunteer_id,
-                      volunteers.last_name AS last_name,
-                      volunteers.first_name AS first_name,
-                      volunteers.username AS email_address,
-                      SUM(engagements.contribution_value) AS total_contribution_value
-                    FROM
-                      affiliations
-                      INNER JOIN
-                        volunteers
-                        ON affiliations.volunteer_id = volunteers.volunteer_id
-                      LEFT JOIN
-                        engagements
-                        ON affiliations.volunteer_id = engagements.volunteer_id
-                    WHERE
-                      affiliations.sponsor_id = '{$_SESSION['sponsor_id']}'
-                      AND engagements.status = '1'
-                    GROUP BY
-                      volunteers.last_name,
-                      volunteers.first_name,
-                      volunteers.username";
+                        <tbody>
+                        <?php foreach($volunteers as $volunteer): ?>
+                          <tr>
+                            <td>
+                              <?php echo $volunteer['last_name'] . ", " . $volunteer['first_name']; ?>
+                            </td>
+                            <td>
+                              <?php echo $volunteer['email_address']; ?>
+                            </td>
+                            <td>
+                              <?php echo $volunteer['total_contribution_value']; ?>
+                            </td>
+                            <td>
+                              <a href=<?php echo "affiliation-read.php?volunteer_id=".$volunteer['volunteer_id']; ?> title="View Volunteer's Contributions" data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
+                              <!-- <a href=<?php //echo "affiliation-delete.php?affiliation_id=".$volunteer['volunteer_id']; ?> title="Delete This Affiliation" data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span> Delete</a> -->
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
+                        </tbody>
 
-                    if($result = mysqli_query($link, $sql)) {
-                        if(mysqli_num_rows($result) > 0) {
-                            echo "<table class='table' id='affiliations'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Member Name";
-                                          echo "<a href='#' onclick='sortTable(0)'><span class='glyphicon glyphicon-sort'></span></a>";
-                                          echo "<button type='button' onclick='sortTable(0)' class='btn'><span class='glyphicon glyphicon-sort'></span></button>";
-                                        echo "</th>";
-                                        echo "<th onclick='sortTable(1)' style='cursor:pointer'>Email Address</th>";
-                                        echo "<th onclick='sortTable(2)' style='cursor:pointer'>Total Contributions</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
-                                        echo "<td>" . $row['email_address'] . "</td>";
-                                        echo "<td>" . $row['total_contribution_value'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='affiliation-read.php?volunteer_id=". $row['volunteer_id'] ."' title='View Volunteer's Contributions' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>";
-                                            //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else
-                        {
-                            echo "<p class='lead'><em>No affiliated volunteers were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-                    mysqli_close($link);
-                    ?>
+                      </table>
+                    <?php else: ?>
+                      <p class='lead'><em>No affiliated volunteers were found.</em></p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -171,6 +149,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
       }
     }
     </script>
+    
     <?php include '../footer.php';?>
 </body>
 </html>
