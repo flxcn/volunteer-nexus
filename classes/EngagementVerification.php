@@ -33,11 +33,11 @@ class EngagementVerification {
 			return true;
 		}
 		elseif($engagement_status == 0){
-			$this->engagement_status = false;
+			$this->engagement_status = 0;
 			return true;
 		}
 		elseif($engagement_status == 1){
-			$this->engagement_status = true;
+			$this->engagement_status = 1;
 			return true;
 		}
 		else {
