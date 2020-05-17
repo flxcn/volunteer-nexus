@@ -1,8 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-</head>
-<body>
 <?php
 // Initialize the session
 session_start();
@@ -49,5 +44,3 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
   }
 }
 ?>
-</body>
-</html>
