@@ -34,6 +34,7 @@ body
 	/* centered in page */
 	margin: 0 auto;
 	padding: 20px;
+	padding-bottom: 75px;
 }
 
 .page-header h2{
