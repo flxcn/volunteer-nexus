@@ -1,7 +1,7 @@
 <?php
 require 'DatabaseConnection.php';
 
-class SponsorOpportunityUpdate
+class SponsorOpportunityReader
 {
     protected $pdo = null;
 		private $opportunity_id;
