@@ -7,6 +7,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     header("location: login.php");
     exit;
 }
+
+require '../classes/SponsorEventReader.php';
+$obj = new SponsorEventReader($_SESSION['sponsor_id']);
+$events = $obj->getSponsoredEvents();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,65 +54,72 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                         <a href="event-create.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
-                    <?php
-                    // Include config file
-                    require_once "../config.php";
-                    // Attempt select query execution
+                    <?php if ($events): ?>
+                      <table class='table table-bordered table-condensed' id='events'>
+                        <thead>
+                          <tr>
+                            <th onclick='sortTable(0)' style='cursor:pointer'>
+                              Reg. Deadline
+                              <!-- <a href='#'><span class='glyphicon glyphicon-sort'></span></a> -->
+                            </th>
+                            <th onclick='sortTable(1)' style='cursor:pointer'>
+                              Event Name
+                              <!-- <a href='#'><span class='glyphicon glyphicon-sort'></span></a> -->
+                            </th>
+                            <th>
+                              Description
+                            </th>
+                            <th>
+                              Location
+                            </th>
+                            <th>
+                              Event Duration
+                            </th>
+                            <th>
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
 
-                    //NOTE: may need to sanitize the data in $_SESSION["sponsor_name"];
-                    $sql = "SELECT * FROM events
-                    WHERE sponsor_name = '{$_SESSION['sponsor_name']}'
-                    ORDER BY registration_end DESC";
+                        <tbody>
+                        <?php foreach($events as $event): ?>
+                          <tr>
+                            <td>
+                              <?php echo $obj->formatDate($event['registration_end']); ?>
+                            </td>
+                            <td>
+                              <?php echo $event['event_name']; ?>
+                            </td>
+                            <td>
+                              <?php echo $obj->formatDescription($event['description']); ?>
+                            </td>
+                            <td>
+                              <?php echo $event['location']; ?>
+                            </td>
+                            <td>
+                              <?php echo $obj->formatEventStartToEnd($event['event_start'],$event['event_end']); ?>
+                            </td>
+                            <td>
+                                <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='View Event' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
+                                <br>
+                                <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>
+                                <br>
+                                <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
+                        </tbody>
 
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-condensed' id='events'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Reg. Deadline</th>";
-                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Event Name</th>";
-                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Description</th>";
-                                        echo "<th onclick='sortTable(0)' style='cursor:pointer'>Location</th>";
-                                        echo "<th>Event Duration</th>";
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody table-hover>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['registration_end'] . "</td>";
-                                        echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['description'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
-                                        echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>";
-                                            echo "<br>";
-                                            echo "<a href='event-update.php?event_id=". $row['event_id'] ."' title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>";
-                                            echo "<br>";
-                                            echo "<a href='event-delete.php?event_id=". $row['event_id'] ."' title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>No events were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-
-                    // Close connection
-                    mysqli_close($link);
-                    ?>
+                      </table>
+                    <?php else: ?>
+                      <p class='lead'><em>No events were found.</em></p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Sort table functionality -->
     <script>
     function sortTable(n) {
       var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
