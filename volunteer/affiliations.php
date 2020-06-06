@@ -69,15 +69,5 @@
             </div>
         </div>
     </div>
-
-    <!-- jQuery, ensures one-time use of submit button -->
-    <script>
-    $("body").on("submit", "form", function() {
-        $(this).submit(function() {
-            return false;
-        });
-        return true;
-    });
-    </script>
 </body>
 </html>
