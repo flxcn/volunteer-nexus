@@ -85,6 +85,19 @@ class VolunteerAffiliation {
 		}
 	}
 
+	public function removeAffiliation($affiliation_id): bool 
+	{
+		$sql =
+			"DELETE FROM 
+				affiliations
+			WHERE
+				volunteer_id = :volunteer_id
+				AND affiliation_id = :affiliation_id";
+		$stmt = $this->pdo->prepare($sql);
+		$status = $stmt->execute(['volunteer_id' => $this->volunteer_id, 'affiliation_id' => $affiliation_id]);
+		return $status;
+	}
+
 
 }
 ?>
