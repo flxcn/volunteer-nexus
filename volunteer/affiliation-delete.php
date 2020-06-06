@@ -8,13 +8,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     exit;
 }
 
-// Check existence of id parameter
-if(empty(trim($_GET["affiliation_id"]))){
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
-}
-
 // Process delete operation after confirmation
 if(isset($_POST["affiliation_id"]) && !empty($_POST["affiliation_id"])){
     // Include config file
@@ -31,9 +24,17 @@ if(isset($_POST["affiliation_id"]) && !empty($_POST["affiliation_id"])){
         exit();
     }
     else {
-        echo "Error!";
+        header("location: error.php");
+        exit();
     }
-    
+}
+else {
+    // Check existence of id parameter
+    if(empty(trim($_GET["affiliation_id"]))){
+        // URL doesn't contain id parameter. Redirect to error page
+        header("location: error.php");
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>
