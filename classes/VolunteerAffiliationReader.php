@@ -30,8 +30,7 @@ class VolunteerAffiliationReader {
 				FROM
 					engagements 
 					WHERE 
-						status = '1' 
-						AND volunteer_id = :volunteer_id 
+						status = '1'
 					GROUP BY 
 						sponsor_id, 
 						volunteer_id
