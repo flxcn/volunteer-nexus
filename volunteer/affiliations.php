@@ -52,11 +52,9 @@
                                         <?php echo $sponsor['total_contribution_value']; ?>
                                     </td>
                                     <td>
-                                        <?php echo $sponsor['total_contribution_value']; ?>
-                                    </td>
-                                    <td>
                                         <a href=<?php echo "affiliation-read.php?sponsor_id=".$sponsor['sponsor_id']; ?> title='View My Contributions' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>
-                                        <a href=<?php echo "affiliation-delete.php?affiliation_id=". $row['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>
+                                        <br>
+                                        <a href=<?php echo "affiliation-delete.php?affiliation_id=". $sponsor['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash' style='color:red'></span> Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
