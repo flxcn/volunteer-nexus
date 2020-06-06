@@ -16,10 +16,6 @@
     </script>
 </head>
 
-
-
-
-
 <body>
     <div class="wrapper">
         <div class="container-fluid">
@@ -27,50 +23,48 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">My Affiliations</h2>
-                        <!-- <a href="affiliation-create.php" class="btn btn-primary pull-right">Add New Affiliation</a> -->
+                        <a href="affiliation-create.php" class="btn btn-primary pull-right">Add New Affiliation</a>
                     </div>
 
                     <?php
-                    require_once "../config.php";
-                    // Attempt select query execution
-
-                    $sql = "SELECT sponsors.sponsor_name AS sponsor_name, sponsors.sponsor_id AS sponsor_id, SUM(engagements.contribution_value) AS total_contribution_value
-                    FROM sponsors INNER JOIN engagements ON engagements.sponsor_id = sponsors.sponsor_id
-                    WHERE volunteer_id = '{$_SESSION['volunteer_id']}' AND status = 1
-                    GROUP BY sponsors.sponsor_name";
-
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th>Affiliated Sponsor</th>";
-                                        echo "<th>My Total Contributions</th>";
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['sponsor_name'] . "</td>";
-                                        echo "<td>" . $row['total_contribution_value'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='affiliation-read.php?sponsor_id=". $row['sponsor_id'] ."' title='View My Contributions' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>";
-                                            //echo "<a href='affiliation-delete.php?affiliation_id=". $row['affiliation_id'] ."' title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>As you participate in opportunities, your progress will automatically appear here.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
+                    require '../classes/VolunteerAffiliationReader.php';
+                    $obj = new VolunteerAffiliationReader($_SESSION['volunteer_id']);
+                    $sponsors = $obj->getAffiliatedSponsors();
                     ?>
+                    
+                    <?php if ($sponsors): ?>
+                        <table class='table table-bordered'>
+                            <thead>
+                                <tr>
+                                    <th>Affiliated Sponsor</th>
+                                    <th>My Total Contributions</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            <?php foreach($sponsors as $sponsor): ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $sponsor['sponsor_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $sponsor['total_contribution_value']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $sponsor['total_contribution_value']; ?>
+                                    </td>
+                                    <td>
+                                        <a href=<?php echo "affiliation-read.php?sponsor_id=".$sponsor['sponsor_id']; ?> title='View My Contributions' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>
+                                        <a href=<?php echo "affiliation-delete.php?affiliation_id=". $row['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                      <p class='lead'><em>As you participate in opportunities, your progress will automatically appear here.</em></p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -85,6 +79,5 @@
         return true;
     });
     </script>
-
 </body>
 </html>
