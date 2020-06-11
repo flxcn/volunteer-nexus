@@ -14,24 +14,39 @@ class SponsorAffiliationReader {
 	public function getAffiliatedVolunteers(): ?array
 	{
 		$sql =
-			"SELECT
-				volunteers.volunteer_id AS volunteer_id,
-				volunteers.last_name AS last_name,
-				volunteers.first_name AS first_name,
-				volunteers.username AS email_address,
-				SUM(engagements.contribution_value) AS total_contribution_value
+			"SELECT 
+				a.affiliation_id,
+				a.volunteer_id, 
+				v.username AS email_address,
+				v.first_name,
+				v.last_name,
+				v.graduation_year,
+				a.sponsor_id, 
+				COALESCE(e.total, 0) AS total_contribution_value
 			FROM
-				volunteers
-				LEFT JOIN
-					engagements
-					ON volunteers.volunteer_id = engagements.volunteer_id
-			WHERE
-				engagements.sponsor_id = :sponsor_id
-				AND engagements.status = '1'
-			GROUP BY
-				volunteers.last_name,
-				volunteers.first_name,
-				volunteers.username";
+				affiliations AS a 
+			LEFT JOIN 
+				(SELECT 
+					sponsor_id, 
+					volunteer_id, 
+					SUM(contribution_value) AS total 
+				FROM
+					engagements 
+					WHERE 
+						status = '1'
+					GROUP BY 
+						volunteer_id, 
+						sponsor_id
+				) AS e 
+				ON a.sponsor_id = e.sponsor_id 
+				AND a.volunteer_id = e.volunteer_id 
+			INNER JOIN 
+				volunteers AS v
+				ON a.volunteer_id = v.volunteer_id
+			WHERE 
+				a.sponsor_id = :sponsor_id";
+
+			//AND IF(MONTH(CURDATE())<=6,v.graduation_year>=YEAR(CURDATE()),v.graduation_year>YEAR(CURDATE())
 
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
