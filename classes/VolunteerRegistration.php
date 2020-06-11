@@ -104,7 +104,7 @@ class SponsorRegistration
 				[
 					'sponsor_name' => $this->sponsor_name,
 					'username' => $this->username,
-					'password' => $this->password,
+					'password' => password_hash($this->password, PASSWORD_DEFAULT),
 					'contribution_type' => $this->contribution_type,
 					'advisor1_name' => $this->advisors[0]["name"],
 					'advisor1_email' => $this->advisors[0]["email"],
