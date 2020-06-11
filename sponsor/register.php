@@ -1,7 +1,5 @@
 <?php
-// Include config file
-require_once "../config.php";
-include "SponsorRegistration.php";
+require_once "../classes/SponsorRegistration.php";
 
 $sponsor_name = "";
 $username = "";
@@ -167,7 +165,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!--form for advisor1_phone-->
           <div class="form-group <?php echo (!empty($advisor1_phone_error)) ? 'has-error' : ''; ?>">
               <label>Teacher Advisor #1 Phone Number</label>
-              <input required type="tel" name="advisor1_phone" class="form-control" placeholder="Phone Number (optional)" value="<?php echo $advisor1_phone; ?>">
+              <input type="tel" name="advisor1_phone" class="form-control" placeholder="Phone Number (optional)" value="<?php echo $advisor1_phone; ?>">
               <span class="help-block"><?php echo $advisor1_phone_error; ?></span>
           </div>
 
