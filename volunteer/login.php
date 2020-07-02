@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           // Store data in session variables
           $_SESSION["volunteer_loggedin"] = true;
           $_SESSION["volunteer_id"] = $obj->getVolunteerId();
-          $_SESSOPM["username"] = $username;
+          $_SESSION["username"] = $username;
           $_SESSION["first_name"] = $obj->getFirstName();
           $_SESSION["last_name"] = $obj->getLastName();
           $_SESSION["graduation_year"] = $obj->getGraduationYear();
