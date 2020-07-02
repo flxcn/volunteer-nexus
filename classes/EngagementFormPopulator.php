@@ -13,11 +13,22 @@ class EngagementFormPopulator {
 
 	public function getVolunteers(): ?string
 	{
-		$sql = "SELECT DISTINCT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
-		FROM volunteers
-		INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
-		WHERE affiliations.sponsor_id = :sponsor_id
-		ORDER BY volunteers.last_name ASC";
+		$sql = 
+			"SELECT DISTINCT 
+				volunteers.volunteer_id AS volunteer_id, 
+				volunteers.last_name AS last_name, 
+				volunteers.first_name AS first_name
+			FROM 
+				volunteers
+				INNER JOIN 
+				affiliations 
+				ON affiliations.volunteer_id = volunteers.volunteer_id
+			WHERE 
+				affiliations.sponsor_id = :sponsor_id
+			ORDER BY 
+				volunteers.last_name 
+				ASC";
+		
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
 		if(!$status) {
@@ -38,7 +49,15 @@ class EngagementFormPopulator {
 
 	public function getEvents(): ?string
 	{
-		$sql = "SELECT event_id, event_name FROM events WHERE sponsor_id = :sponsor_id";
+		$sql = 
+			"SELECT 
+				event_id, 
+				event_name 
+			FROM 
+				events 
+			WHERE 
+				sponsor_id = :sponsor_id";
+
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
 		if(!$status) {
@@ -58,10 +77,20 @@ class EngagementFormPopulator {
 
 	public function getOpportunities(): ?string
 	{
-		$sql = "SELECT opportunity_id, contribution_value, event_id, opportunity_name
-		FROM opportunities
-		WHERE sponsor_id = :sponsor_id
-		ORDER BY start_date DESC";
+		$sql = 
+			"SELECT 
+				opportunity_id, 
+				contribution_value, 
+				event_id, 
+				opportunity_name
+			FROM 
+				opportunities
+			WHERE 
+				sponsor_id = :sponsor_id
+			ORDER BY 
+				start_date 
+				DESC";
+		
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
 		if(!$status) {
