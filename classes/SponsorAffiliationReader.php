@@ -11,6 +11,18 @@ class SponsorAffiliationReader {
 		$this->sponsor_id = $sponsor_id;
 	}
 
+	public function getCutoffDate(): int 
+	{ 
+		$cutoff_date = date('Y');
+		//AND IF(MONTH(CURDATE())<=6,v.graduation_year>=YEAR(CURDATE()),v.graduation_year>YEAR(CURDATE())
+		if(date('m') > 6)
+		{
+			$cutoff_date += 1;
+		}
+
+		return $cutoff_date;
+	}
+
 	public function getAffiliatedVolunteers(): ?array
 	{
 		$sql =
@@ -45,8 +57,8 @@ class SponsorAffiliationReader {
 				ON a.volunteer_id = v.volunteer_id
 			WHERE 
 				a.sponsor_id = :sponsor_id";
-
-			//AND IF(MONTH(CURDATE())<=6,v.graduation_year>=YEAR(CURDATE()),v.graduation_year>YEAR(CURDATE())
+		
+			//AND v.graduation_year>= :cutoff_date
 
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
