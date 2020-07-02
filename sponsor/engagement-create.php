@@ -8,8 +8,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     exit;
 }
 
-// Include config file
-require_once '../config.php';
 
 // Define and intialize variables
 $sponsor_id = $_SESSION["sponsor_id"];
@@ -27,133 +25,63 @@ $opportunity_name_error = "";
 $contribution_value_error = '';
 $status_error = "";
 
+// Initialize EngagementFormPopulator object
+require_once '../classes/EngagementFormPopulator.php';
+$engagementFormPopulatorObj = new EngagementFormPopulator($sponsor_id);
 
+// Populate volunteer array for "volunteer name" dropdown boxes, and initialize JSON object
+$jsonVolunteers = $engagementFormPopulatorObj->getVolunteers();
 
+// Populate event_name & event_id array for "event name" dropdown boxes, and initialize JSON object
+$jsonEvents = $engagementFormPopulatorObj->getEvents();
 
-
-
-// Populate volunteer array for "volunteer name" dropdown boxes
-$query =
-"SELECT volunteers.volunteer_id AS volunteer_id, volunteers.last_name AS last_name, volunteers.first_name AS first_name
-FROM volunteers
-INNER JOIN affiliations ON affiliations.volunteer_id = volunteers.volunteer_id
-WHERE affiliations.sponsor_id = '$sponsor_id'
-ORDER BY volunteers.last_name ASC";
-$result = $link->query($query);
-
-$volunteers[] = array("volunteer_name" => 'Select Name', "volunteer_id" => '');
-while($row = $result->fetch_assoc()){
-  $full_name = $row['last_name'] . ", " . $row['first_name'];
-  $volunteers[] = array("volunteer_name" => $full_name, "volunteer_id" => $row['volunteer_id']);
-}
-
-// Populate event_name & event_id array for "event name" dropdown boxes
-$query = "SELECT event_id, event_name FROM events WHERE sponsor_id = '$sponsor_id'";
-$result = $link->query($query);
-
-$events[] = array("event_name" => 'Select Event', "event_id" => '');
-while($row = $result->fetch_assoc()){
-  $events[] = array("event_name" => $row['event_name'], "event_id" => $row['event_id']);
-}
-
-// Populate opportunity_name, opportunity_id, and event_id array for "opportunity name" dropdown boxes
-$query = "SELECT opportunity_id, contribution_value, event_id, opportunity_name FROM opportunities WHERE sponsor_id = '$sponsor_id' ORDER BY start_date DESC";
-$result = $link->query($query);
-
-while($row = $result->fetch_assoc()){
-  //$opportunities[$row['event_id']][] = array("opportunity_name" => 'Select Opportunity', "opportunity_id" => '',  "contribution_value" => '');
-  $opportunities[$row['event_id']][] = array("opportunity_name" => $row['opportunity_name'], "opportunity_id" => $row['opportunity_id'], "contribution_value" => $row['contribution_value']);
-}
-
-// Initialize JSON Objects
-$jsonVolunteers = json_encode($volunteers);
-$jsonEvents = json_encode($events);
-$jsonOpportunities = json_encode($opportunities);
-
-
-
-
+// Populate opportunity_name, opportunity_id, and event_id array for "opportunity name" dropdown boxes, and initialize JSON object
+$jsonOpportunities = $engagementFormPopulatorObj->getOpportunities();
 
 
 // Process Form Submission
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
 
-    // Validate volunteer_id from "volunteer_name" selector
-    $input_volunteer_id = trim($_POST["volunteer_name"]);
-    if(empty($input_volunteer_id)){
-        $volunteer_name_error = "Please select a volunteer.";
-    } else{
-        $volunteer_id = $input_volunteer_id;
+  // Instatiate EngagementCreation object
+  require_once '../classes/EngagementCreation.php';
+  $engagementCreationObj = new EngagementCreation($sponsor_id);
+
+  // Validate volunteer_id from "volunteer_name" selector 
+  $volunteer_id = trim($_POST["volunteer_name"]);
+  $volunteer_name_error = $engagementCreationObj->setVolunteerId($volunteer_id);
+
+  // Validate event_id from "event_id" selector
+  $event_id = trim($_POST["event_name"]);
+  $event_name_error = $engagementCreationObj->setEventId($event_id);
+ 
+  // Validate opportunity_id and contribution value from "opportunity_name" selector
+  $opportunity_values = json_decode($_POST["opportunity_name"]);
+  $opportunity_id = $opportunity_values[0];
+  $opportunity_name_error = $engagementCreationObj->setOpportunityId($opportunity_id);
+  $contribution_value = $opportunity_values[1];
+  $opportunity_name_error = $engagementCreationObj->setContributionValue($contribution_value);
+  
+  // Set status of whether the engagement needs verification
+  $status = trim($_POST["status"]);
+  $engagementCreationObj->setStatus($status);
+
+  // Set sponsor_id
+  // $sponsor_id = $_SESSION["sponsor_id"];
+
+  // Check input errors before inserting in database
+  if(empty($sponsor_id_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error)) 
+  {
+    if($engagementCreationObj->addEngagement()) {
+      header("Location: dashboard.php");
+      exit();
     }
-
-    // Validate event_id from "event_id" selector
-    $input_event_id = trim($_POST["event_name"]);
-    if(empty($input_event_id)){
-        $event_name_error = "Please select an event.";
-    } else{
-        $event_id = $input_event_id;
+    else {
+      echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
     }
-
-    // Validate opportunity_id and contribution value from "opportunity_name" selector
-    $input_opportunity_values = json_decode($_POST["opportunity_name"]);
-    $input_opportunity_id = $input_opportunity_values[0];
-    $input_contribution_value = $input_opportunity_values[1];
-    if(empty($input_opportunity_id) || empty($input_contribution_value)){
-        $volunteer_name_error = "Please select an opportunity.";
-    } else{
-        $opportunity_id = $input_opportunity_id;
-        $contribution_value = $input_contribution_value;
-    }
-
-    // Validate needs_verification
-    $input_status = trim($_POST["status"]);
-    $status = $input_status;
-
-    // sponsor_id
-    $sponsor_id = $_SESSION["sponsor_id"];
-
-
-
-
-    // Check input errors before inserting in database
-    if(empty($sponsor_id_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error)){
-        // Prepare an insert statement
-        $sql = "INSERT INTO engagements (volunteer_id, event_id, opportunity_id, sponsor_id, contribution_value, status) VALUES (?, ?, ?, ?, ?, ?)";
-
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iiiiii", $param_volunteer_id, $param_event_id, $param_opportunity_id, $param_sponsor_id, $param_contribution_value, $param_status);
-
-            // Set parameters
-            $param_volunteer_id = $volunteer_id;
-            $param_event_id = $event_id;
-            $param_opportunity_id = $opportunity_id;
-            $param_sponsor_id = $sponsor_id;
-            $param_contribution_value = $contribution_value;
-            $param_status = $status;
-
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Records created successfully. Redirect to landing page
-                header("Location: dashboard.php");
-                exit();
-            } else{
-                echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
-            }
-        }
-        // Close statement
-        mysqli_stmt_close($stmt);
-    }
-    // Close connection
-    mysqli_close($link);
+  }
 }
 ?>
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -215,6 +143,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       }
     </script>
 </head>
+
 <!-- onload could be revised to be less obtrusive -->
 <body onload='loadVolunteers(); loadEvents();'>
     <div class="wrapper">
@@ -252,6 +181,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <!-- display for contribution value -->
+                        <!-- NOTE: May want to allow this value to be edited for more flexibility on behalf of the sponsors -->
                         <div class="form-group">
                             <label>Contribution Value</label>
                             <p class="form-control-static" id='contributionValue'></p>
