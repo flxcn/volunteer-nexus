@@ -1,5 +1,5 @@
 <?php
-require 'DatabaseConnection.php';
+require_once 'DatabaseConnection.php';
 
 class EngagementCreation
 {
@@ -12,9 +12,9 @@ class EngagementCreation
 	private $status;
 
 	public function __construct($sponsor_id)
-    {
-    	$this->pdo = (new DatabaseConnection)->getPDO();
-    	$this->volunteer_id = 0;
+  {
+    $this->pdo = DatabaseConnection::instance();
+    $this->volunteer_id = 0;
 		$this->sponsor_id = $sponsor_id;
 		$this->event_id = 0;
 		$this->opportunity_id = 0;
