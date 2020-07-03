@@ -1,5 +1,5 @@
 <?php
-require 'DatabaseConnection.php';
+require_once 'DatabaseConnection.php';
 
 class EngagementFormPopulator {
 	protected $pdo = null;
@@ -7,7 +7,7 @@ class EngagementFormPopulator {
 
 	public function __construct($sponsor_id)
 	{
-		$this->pdo = (new DatabaseConnection)->getPDO();
+		$this->pdo = DatabaseConnection::instance();
 		$this->sponsor_id = $sponsor_id;
 	}
 
