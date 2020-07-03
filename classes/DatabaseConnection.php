@@ -25,9 +25,23 @@ class DatabaseConnection
       $this->pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
     }
 
+    public static function instance()
+    {
+        if (self::$instance === null)
+        {
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
+
+    public function __call($method, $args)
+    {
+        return call_user_func_array(array($this->pdo, $method), $args);
+    }
+
     public function getPDO()
-		{
-			return $this->pdo;
-		}
+	{
+		return $this->pdo;
+	}
 }
 ?>
