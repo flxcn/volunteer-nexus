@@ -3,7 +3,7 @@ require_once 'DatabaseConnection.php';
 
 class EngagementCreation
 {
-    protected $pdo = null;
+  protected $pdo = null;
 	private $volunteer_id;
 	private $sponsor_id;
 	private $event_id;
@@ -28,7 +28,7 @@ class EngagementCreation
 			return "Please select a volunteer.";
 		}
 		else {
-			$this->$volunteer_id = $volunteer_id;
+			$this->volunteer_id = $volunteer_id;
 			return "";
 		}
 	}
@@ -39,7 +39,7 @@ class EngagementCreation
 			return "Please select an event.";
 		}
 		else {
-			$this->$event_id = $event_id;
+			$this->event_id = $event_id;
 			return "";
 		}
 	}
@@ -50,7 +50,7 @@ class EngagementCreation
 			return "Please select an opportunity.";
 		}
 		else {
-			$this->$opportunity_id = $opportunity_id;
+			$this->opportunity_id = $opportunity_id;
 			return "";
 		}
 	}
@@ -58,18 +58,18 @@ class EngagementCreation
 	public function setContributionValue(float $contribution_value): string
 	{
 		if(empty($contribution_value)) {
-			$this->$contribution_value = 0.0;
+			$this->contribution_value = 0.0;
 			return "";
 		}
 		else {
-			$this->$contribution_value = $contribution_value;
+			$this->contribution_value = $contribution_value;
 			return "";
 		}
 	}
 
 	public function setStatus(int $status): string
 	{
-		$this->$status = $status;
+		$this->status = $status;
 		return "";
 	}
 
@@ -87,7 +87,7 @@ class EngagementCreation
 				'contribution_value' => $this->contribution_value,
 				'status' => $this->status
 			]);
-		
+
 		return $status;
 	}
 
@@ -111,10 +111,10 @@ class EngagementCreation
 	public function addEngagementsByStudentId(array $student_ids): string
 	{
 		$output = "";
-		
+
 		// find corresponding volunteer_ids to all student_ids
 		// loop through INSERT sql statement to add all of the engagements with the volunteer_ids
-		// for any 
+		// for any
 		return $output;
 	}
 
