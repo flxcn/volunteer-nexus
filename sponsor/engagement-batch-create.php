@@ -43,6 +43,10 @@ $jsonOpportunities = $engagementFormPopulatorObj->getOpportunities();
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
+  $output = "Processing of Student IDs\n";
+  $output .= "****************************************\n";
+
+  $failed_student_ids = array();
   // Instantiate EngagementCreation object
   require_once '../classes/EngagementCreation.php';
   $engagementCreationObj = new EngagementCreation($sponsor_id);
@@ -72,13 +76,48 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   // Check input errors before inserting in database
   if(empty($sponsor_id_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error)) 
   {
-    if($engagementCreationObj->addEngagement()) {
-      header("Location: dashboard.php");
-      exit();
+
+    // Convert string input of student_ids, delimited by newline character, to string array of student_ids
+    //$student_ids = explode("\n", trim($_POST["student_ids"]));
+    $student_ids = preg_split('/\s+/', trim($_POST["student_ids"]));
+
+    // Loop through input of student_ids to find corresponding volunteer_id to each student_id
+    foreach($student_ids as $student_id)
+    {
+      $output .= "Student ID = " . $student_id . "\n";
+
+      if($engagementCreationObj->setVolunteerIdByStudentId($student_id))
+      {
+        $output .= "\tSUCCESS: Volunteer ID Retrieval\n";
+
+        if($engagementCreationObj->addEngagement())
+        {
+            $output .= "\tSUCCESS: Engagement Addition\n";
+
+        }
+        else
+        {
+            $output .= "\tFAILURE: Engagement Addition\n";
+            array_push($failed_student_ids, $student_id);
+        }
+      }
+      else
+      {
+        $output .= "\tFAILURE: Volunteer ID Retrieval\n";
+        array_push($failed_student_ids, $student_id);
+      }
     }
-    else {
-      echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
+
+    $output .= "****************************************\n";
+    $output .= "List of Failed Student IDs:\n";
+    foreach($failed_student_ids as $failed_student_id) {
+        $output .= $failed_student_id . "\n";
     }
+
+    echo "<textarea readonly name='output' rows='10' cols='40'>";
+    echo $output;
+    echo "</textarea>";
+
   }
 }
 ?>
