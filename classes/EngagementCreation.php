@@ -91,16 +91,23 @@ class EngagementCreation
 		return $status;
 	}
 
-	public function getVolunteerIdByStudentId(int $student_id): string
-	{		
-		// find corresponding volunteer_ids to all student_ids
+	public function setVolunteerIdByStudentId(int $student_id): bool
+	{
+		// find corresponding volunteer_id to input student_id
 		$sql = "SELECT volunteer_id FROM volunteers WHERE student_id = :student_id";
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['student_id' => $student_id]);
-		
-		return $status;
+		$volunteer_id = $stmt->fetchColumn();
+
+		if($volunteer_id) {
+			$this->volunteer_id = $volunteer_id;
+  			return true;
+		}
+		else {
+			return false;
+		}
 	}
-	
+
 	public function addEngagementsByStudentId(array $student_ids): string
 	{
 		$output = "";
