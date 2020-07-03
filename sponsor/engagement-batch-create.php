@@ -195,12 +195,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <p>Please fill this form and submit to add a new engagement for an affiliated volunteer.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-                        <!--form for volunteer_name-->
-                        <div class="form-group <?php echo (!empty($volunteer_name_error)) ? 'has-error' : ''; ?>">
-                            <label>Volunteer Name</label>
-                            <select name='volunteer_name' id='volunteersSelect' class="form-control">
-                            </select>
-                            <span class="help-block"><?php echo $volunteer_name_error;?></span>
+                        <!--form for student_ids-->
+                        <div class="form-group <?php echo (!empty($student_ids_error)) ? 'has-error' : ''; ?>">
+                            <label>Student IDs</label>
+                            <textarea type="text" name="student_ids" class="form-control"><?php
+                                if(!($student_ids == "")) {
+                                  foreach($failed_student_ids as $failed_student_id) {
+                                    echo $failed_student_id . "\n";
+                                  }
+                                }
+                              ?></textarea>
+                            <span class="help-block"><?php echo $student_ids_error;?></span>
                         </div>
 
                         <!--form for event_name-->
