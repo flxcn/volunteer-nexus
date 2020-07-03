@@ -139,7 +139,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         var contributionValue = document.getElementById('contributionValue');
         var opportunityValues = JSON.parse(opportunitySelect.value);
         contributionValue.innerHTML = opportunityValues[1];
-        console.log(opportunityValues[1]);
+        // console.log(opportunityValues[1]);
       }
     </script>
 </head>
