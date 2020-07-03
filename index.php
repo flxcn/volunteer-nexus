@@ -43,7 +43,7 @@
         <h2>About</h2>
       </div>
       <p><i>VolunteerNexus</i> provides a unified platform to connect students with service opportunities.</p>
-      <p>Currently, <i>VolunteerNexus</i> is only open to <b>Student Council, Latin Club</b>.</p>
+      <p>Currently, <i>VolunteerNexus</i> is available to use for <b>Student Council, Latin Club, Model UN, NHS</b>.</p>
       <p>If you are interested in joining the platform in the future, fill out <a href="https://forms.gle/tEZxh4wjhZ4vvhBH9"><strong>this form</strong></a>, and we will send you an invite link when it is open. Thanks!</p>
 
       <div class="page-header">
