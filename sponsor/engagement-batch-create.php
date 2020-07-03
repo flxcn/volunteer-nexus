@@ -11,7 +11,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 // Define and intialize variables
 $sponsor_id = $_SESSION["sponsor_id"];
-$volunteer_id = "";
+$student_ids = "";
 $event_id = "";
 $opportunity_id = "";
 $contribution_value = "";
@@ -19,7 +19,7 @@ $status = "";
 
 // Define and initialize error message variables
 $sponsor_id_error = "";
-$volunteer_name_error = "";
+$student_ids_error = "";
 $event_name_error = "";
 $opportunity_name_error = "";
 $contribution_value_error = '';
@@ -30,14 +30,13 @@ require_once '../classes/EngagementFormPopulator.php';
 $engagementFormPopulatorObj = new EngagementFormPopulator($sponsor_id);
 
 // Populate volunteer array for "volunteer name" dropdown boxes, and initialize JSON object
-$jsonVolunteers = $engagementFormPopulatorObj->getVolunteers();
+//$jsonVolunteers = $engagementFormPopulatorObj->getVolunteers();
 
 // Populate event_name & event_id array for "event name" dropdown boxes, and initialize JSON object
 $jsonEvents = $engagementFormPopulatorObj->getEvents();
 
 // Populate opportunity_name, opportunity_id, and event_id array for "opportunity name" dropdown boxes, and initialize JSON object
 $jsonOpportunities = $engagementFormPopulatorObj->getOpportunities();
-
 
 // Process Form Submission
 if($_SERVER["REQUEST_METHOD"] == "POST")
@@ -51,21 +50,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   require_once '../classes/EngagementCreation.php';
   $engagementCreationObj = new EngagementCreation($sponsor_id);
 
-  // Validate volunteer_id from "volunteer_name" selector 
-  $volunteer_id = trim($_POST["volunteer_name"]);
-  $volunteer_name_error = $engagementCreationObj->setVolunteerId($volunteer_id);
-
   // Validate event_id from "event_id" selector
   $event_id = trim($_POST["event_name"]);
   $event_name_error = $engagementCreationObj->setEventId($event_id);
- 
+
   // Validate opportunity_id and contribution value from "opportunity_name" selector
   $opportunity_values = json_decode($_POST["opportunity_name"]);
   $opportunity_id = $opportunity_values[0];
   $opportunity_name_error = $engagementCreationObj->setOpportunityId($opportunity_id);
   $contribution_value = $opportunity_values[1];
   $opportunity_name_error = $engagementCreationObj->setContributionValue($contribution_value);
-  
+
   // Set status of whether the engagement needs verification
   $status = trim($_POST["status"]);
   $engagementCreationObj->setStatus($status);
@@ -74,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   // $sponsor_id = $_SESSION["sponsor_id"];
 
   // Check input errors before inserting in database
-  if(empty($sponsor_id_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error)) 
+  if(empty($sponsor_id_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error))
   {
 
     // Convert string input of student_ids, delimited by newline character, to string array of student_ids
@@ -137,17 +132,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     <script type='text/javascript'>
       <?php
-        echo "var volunteers = $jsonVolunteers; \n";
         echo "var events = $jsonEvents; \n";
         echo "var opportunities = $jsonOpportunities; \n";
       ?>
-
-      function loadVolunteers(){
-        var select = document.getElementById("volunteersSelect");
-        for(var i = 0; i < volunteers.length; i++){
-          select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
-        }
-      }
 
       function loadEvents(){
         var select = document.getElementById("eventsSelect");
@@ -178,13 +165,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         var contributionValue = document.getElementById('contributionValue');
         var opportunityValues = JSON.parse(opportunitySelect.value);
         contributionValue.innerHTML = opportunityValues[1];
-        console.log(opportunityValues[1]);
+        // console.log(opportunityValues[1]);
       }
     </script>
 </head>
 
 <!-- onload could be revised to be less obtrusive -->
-<body onload='loadVolunteers(); loadEvents();'>
+<body onload='loadEvents();'>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
