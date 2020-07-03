@@ -231,6 +231,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             <p class="form-control-static" id='contributionValue'></p>
                         </div>
 
+                        <!-- form for contribution_value
+                        <div class="form-group <?php //echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
+                            <label>Contribution Value</label>
+                            <input type="number" name="contribution_value" class="form-control" value="<?php //echo $contribution_value; ?>" id='contributionValue'>
+                            <span class="help-block"><?php // echo $contribution_value_error;?></span>
+                        </div> -->
+
                         <!--form for status-->
                         <div class="form-group <?php echo (!empty($status_error)) ? 'has-error' : ''; ?>">
                             <label for="status">Verified?</label>
