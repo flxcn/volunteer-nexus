@@ -121,6 +121,11 @@ class EngagementCreation
 	public function addEngagementsByVolunteerIds(): string
 	{
 		return "";
+    }
+
+    public function getVolunteerId(): string
+	{
+		return $this->volunteer_id;
 	}
 }
 ?>
