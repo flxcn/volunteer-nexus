@@ -37,6 +37,44 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
         <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
     </p>
     <p>
+        <a href="engagement-create.php" class="btn btn-primary">Add Multiple Engagements</a>
+    </p>
+
+    <!-- <p>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Engagements
+            <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="engagements.php">Pending/Active</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="engagement-create.php">Create</a></li>
+                <li><a href="engagement-batch-create.php">Create Multiple</a></li>
+
+            </ul>
+        </div>
+    </p> -->
+        
+    <!-- <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown link
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">Pending Engagements</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Add Engagement</a>
+            <a class="dropdown-item" href="#">Add Multiple Engagements</a>
+        </div>
+    </div> -->
+
+    <!-- <p>
+        <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
+    </p>
+    <p>
+        <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
+    </p> -->
+    <p>
         <a href="attendance-anywhere.php" class="btn btn-success"><span class='glyphicon glyphicon-qrcode'></span> Attendance Anywhere</a>
     </p>
 
