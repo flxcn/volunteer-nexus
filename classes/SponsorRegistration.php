@@ -13,7 +13,7 @@ class SponsorRegistration
 
 		public function __construct()
     {
-      $this->pdo = (new DatabaseConnection)->getPDO();
+      $this->pdo = DatabaseConnection::instance();
       $this->sponsor_name = "";
 			$this->username = "";
 			$this->password = "";

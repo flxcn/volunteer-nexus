@@ -20,7 +20,7 @@ class SponsorOpportunityUpdate
 
 		public function __construct($sponsor_id, $opportunity_id, $event_id)
     {
-      $this->pdo = (new DatabaseConnection)->getPDO();
+      $this->pdo = DatabaseConnection::instance();
 			$this->sponsor_id = $sponsor_id;
 			$this->opportunity_id = $opportunity_id;
 			$this->event_id = $event_id;

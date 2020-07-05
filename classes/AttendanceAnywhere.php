@@ -14,7 +14,7 @@ class AttendanceAnywhere
 
 		public function __construct(int $sponsor_id, int $event_id, int $opportunity_id, float $contribution_value)
     {
-      $this->pdo = (new DatabaseConnection)->getPDO();
+      $this->pdo = DatabaseConnection::instance();
 			$this->sponsor_id = $sponsor_id;
 			$this->event_id = $event_id;
 			$this->opportunity_id = $opportunity_id;

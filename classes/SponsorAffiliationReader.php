@@ -7,7 +7,7 @@ class SponsorAffiliationReader {
 
 	public function __construct($sponsor_id)
 	{
-		$this->pdo = (new DatabaseConnection)->getPDO();
+		$this->pdo = DatabaseConnection::instance();
 		$this->sponsor_id = $sponsor_id;
 	}
 

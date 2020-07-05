@@ -9,7 +9,7 @@ class EngagementDeletion
 
 		public function __construct(int $engagement_id, int $sponsor_id)
     {
-      $this->pdo = (new DatabaseConnection)->getPDO();
+      $this->pdo = DatabaseConnection::instance();
       $this->engagement_id = $engagement_id;
 			$this->sponsor_id = $sponsor_id;
 		}

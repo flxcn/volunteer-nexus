@@ -9,7 +9,7 @@ class EngagementVerification {
 
 	public function __construct(int $sponsor_id)
 	{
-		$this->pdo = (new DatabaseConnection)->getPDO();
+		$this->pdo = DatabaseConnection::instance();
 		$this->sponsor_id = $sponsor_id;
 		$this->engagement_id = "";
 		$this->engagement_status = null;

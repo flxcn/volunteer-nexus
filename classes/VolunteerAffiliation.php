@@ -8,7 +8,7 @@ class VolunteerAffiliation {
 
 	public function __construct($volunteer_id)
 	{
-		$this->pdo = (new DatabaseConnection)->getPDO();
+		$this->pdo = DatabaseConnection::instance();
 		$this->volunteer_id = $volunteer_id;
 		$this->sponsor_id = "";
 	}

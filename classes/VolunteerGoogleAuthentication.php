@@ -15,7 +15,7 @@ class VolunteerGoogleAuthentication
 
 		public function __construct()
     {
-			$this->pdo = (new DatabaseConnection)->getPDO();
+			$this->pdo = DatabaseConnection::instance();
 			// $this->oauth_uid = "";
 			// $this->oauth_provider = "google";
 			$this->username = "";
