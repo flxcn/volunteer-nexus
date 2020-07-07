@@ -25,7 +25,7 @@ body
 	text-align: center;
 	align-items: center;
 	justify-content: center;
-	background-color: #f5f5f5;
+	/* background-color: #f5f5f5; */
 	margin-bottom: 60px;
 }
 
