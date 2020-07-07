@@ -34,7 +34,86 @@ class SponsorEventReader {
 		else {
 			return $events;
 		}
+    }
+
+    public function getUpcomingSponsoredEvents(): ?array
+	{
+		$sql =
+			"SELECT
+				*
+			FROM
+				events
+			WHERE
+				sponsor_id = :sponsor_id
+        AND event_start > CURDATE()
+			ORDER BY
+				registration_end
+				DESC";
+
+			$stmt = $this->pdo->prepare($sql);
+			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+			$upcoming_events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if(!$upcoming_events) {
+			return null;
+		}
+		else {
+			return $upcoming_events;
+		}
+    }
+
+    public function getOngoingSponsoredEvents(): ?array
+	{
+		$sql =
+			"SELECT
+				*
+			FROM
+				events
+			WHERE
+				sponsor_id = :sponsor_id
+          AND event_start <= CURDATE()
+          AND event_end >= CURDATE()
+			ORDER BY
+				registration_end
+				DESC";
+
+			$stmt = $this->pdo->prepare($sql);
+			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+			$ongoing_events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if(!$ongoing_events) {
+			return null;
+		}
+		else {
+			return $ongoing_events;
+		}
 	}
+
+    public function getCompletedSponsoredEvents(): ?array
+	{
+		$sql =
+			"SELECT
+				*
+			FROM
+				events
+			WHERE
+				sponsor_id = :sponsor_id
+          AND event_end < CURDATE()
+			ORDER BY
+				registration_end
+				DESC";
+
+			$stmt = $this->pdo->prepare($sql);
+			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+			$completed_events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if(!$completed_events) {
+			return null;
+		}
+		else {
+			return $completed_events;
+		}
+    }
 
 	public function formatDescription($description): ?string
 	{
