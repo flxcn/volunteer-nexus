@@ -71,6 +71,12 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                         <a href="engagement-create.php" class="btn btn-success pull-right"><span class='glyphicon glyphicon-plus'></span> Add Engagement</a>
                     </div>
 
+                    <!-- Search Bar -->
+                    <br>
+                    <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
+                    <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+                    <br>
+
                     <?php
                     // Include config file
                     require_once "../config.php";
@@ -91,7 +97,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<th>Event</th>";
                                     echo "</tr>";
                                 echo "</thead>";
-                                echo "<tbody>";
+                                echo "<tbody id='engagementTableBody'>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>"; //NOTE: this needs work!
@@ -123,6 +129,19 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
             </div>
         </div>
     </div>
+
+    <script>
+    // search feature
+    $(document).ready(function(){
+    $("#searchInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#engagementTableBody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
+    </script>
+
     <?php include '../footer.php';?>
 </body>
 </html>
