@@ -10,7 +10,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 require '../classes/SponsorEventReader.php';
 $obj = new SponsorEventReader($_SESSION['sponsor_id']);
-$events = $obj->getSponsoredEvents();
+$events = $obj->getUpcomingSponsoredEvents();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,11 +54,20 @@ $events = $obj->getSponsoredEvents();
                         <a href="event-create.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#top" onclick="showTable('upcoming')">Upcoming</a></li>
+                        <li><a data-toggle="tab" href="#top" onclick="showTable('ongoing')">Ongoing</a></li>
+                        <li><a data-toggle="tab" href="#top" onclick="showTable('completed')">Completed</a></li>
+                        <li><a data-toggle="tab" href="#top" onclick="showTable('all')">All</a></li>
+                    </ul>
+
                     <!-- Search Bar -->
                     <br>
                     <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
                     <input class="form-control" id="searchInput" type="text" placeholder="Search..">
                     <br>
+
+                    <div id="eventsContent">
                     <?php if ($events): ?>
                       <table class='table table-bordered table-condensed' id='events'>
                         <thead>
@@ -119,7 +128,7 @@ $events = $obj->getSponsoredEvents();
                     <?php else: ?>
                       <p class='lead'><em>No events were found.</em></p>
                     <?php endif; ?>
-                </div>
+
             </div>
         </div>
     </div>
@@ -180,6 +189,34 @@ $events = $obj->getSponsoredEvents();
         }
       }
     }
+
+    </script>
+
+    <!-- AJAX script to fetch table -->
+    <script>
+      function showTable(interval) {
+        if (interval == "")
+        {
+          return;
+        }
+        else
+        {
+          if (window.XMLHttpRequest)
+          {
+            xmlhttp = new XMLHttpRequest();
+          }
+
+          xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              document.getElementById("eventsContent").innerHTML = this.responseText;
+            }
+          };
+          xmlhttp.open("GET","events-get-table.php?interval="+interval,true);
+          xmlhttp.send();
+        }
+      }
+    </script>
+
     <!-- Search Feature -->
     <script>
     // search feature
