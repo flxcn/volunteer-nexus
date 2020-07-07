@@ -107,9 +107,9 @@ $events = $obj->getSponsoredEvents();
                             <td>
                                 <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='View Event' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
                                 <br>
-                                <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>
+                                <a href=<?php echo "event-update.php?event_id=".$event['event_id']; ?> title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>
                                 <br>
-                                <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>
+                                <a href=<?php echo "event-delete.php?event_id=".$event['event_id']; ?> title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>
                             </td>
                           </tr>
                         <?php endforeach; ?>
