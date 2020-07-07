@@ -12,7 +12,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 <html lang="en">
 
 <head>
-    <title>Engagements</title>
+    <title>Pending Engagements</title>
 
     <!--Load required libraries-->
     <?php include '../head.php'?>
@@ -95,6 +95,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<th>Name</th>";
                                         echo "<th>Opportunity</th>";
                                         echo "<th>Event</th>";
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody id='engagementTableBody'>";
