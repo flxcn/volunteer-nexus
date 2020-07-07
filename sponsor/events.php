@@ -72,7 +72,7 @@ $events = $obj->getUpcomingSponsoredEvents();
                       <table class='table table-condensed' id='events'>
                         <thead>
                           <tr>
-                            <th onclick='sortTable(0)' style='cursor:pointer'>
+                            <th style='cursor:pointer'>
                               Reg. Deadline
                               <!-- <a href='#'><span class='glyphicon glyphicon-sort'></span></a> -->
                             </th>
