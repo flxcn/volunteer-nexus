@@ -37,7 +37,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
         <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
     </p>
     <p>
-        <a href="engagement-create.php" class="btn btn-primary">Add Multiple Engagements</a>
+        <a href="engagement-batch-create.php" class="btn btn-primary">Add Multiple Engagements</a>
     </p>
 
     <!-- <p>
