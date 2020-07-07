@@ -45,6 +45,12 @@ $volunteers = $obj->getAffiliatedVolunteers();
                         <h2 class="pull-left">Affiliated Volunteers</h2>
                     </div>
 
+                    <!-- Search Bar -->
+                    <br>
+                    <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
+                    <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+                    <br>
+
                     <?php if ($volunteers): ?>
                       <table class='table' id='affiliations'>
                         <thead>
@@ -64,7 +70,7 @@ $volunteers = $obj->getAffiliatedVolunteers();
                           </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="affiliationTableBody">
                         <?php foreach($volunteers as $volunteer): ?>
                           <tr>
                             <td>
@@ -148,6 +154,16 @@ $volunteers = $obj->getAffiliatedVolunteers();
         }
       }
     }
+    <script>
+    // search feature
+    $(document).ready(function(){
+    $("#searchInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#affiliationTableBody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
     </script>
     
     <?php include '../footer.php';?>
