@@ -69,7 +69,7 @@ $events = $obj->getUpcomingSponsoredEvents();
 
                     <div id="eventsContent">
                     <?php if ($events): ?>
-                      <table class='table table-bordered table-condensed' id='events'>
+                      <table class='table table-condensed' id='events'>
                         <thead>
                           <tr>
                             <th onclick='sortTable(0)' style='cursor:pointer'>
@@ -87,7 +87,7 @@ $events = $obj->getUpcomingSponsoredEvents();
                               Location
                             </th>
                             <th>
-                              Event Duration
+                              Duration
                             </th>
                             <th>
                               Action
@@ -98,7 +98,7 @@ $events = $obj->getUpcomingSponsoredEvents();
                         <tbody id="eventTableBody">
                         <?php foreach($events as $event): ?>
                           <tr>
-                            <td>
+                            <td class="text-nowrap">
                               <?php echo $obj->formatDate($event['registration_end']); ?>
                             </td>
                             <td>
@@ -110,7 +110,7 @@ $events = $obj->getUpcomingSponsoredEvents();
                             <td>
                               <?php echo $event['location']; ?>
                             </td>
-                            <td>
+                            <td class="text-nowrap">
                               <?php echo $obj->formatEventStartToEnd($event['event_start'],$event['event_end']); ?>
                             </td>
                             <td>
