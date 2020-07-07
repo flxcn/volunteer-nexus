@@ -182,7 +182,7 @@ class SponsorEventReader {
 		}
 		else {
 			$date2 = $this->formatDate($event_end);
-			return $date1 . " to " . $date2;
+			return $date1 . "<br>to<br>" . $date2;
 		}
 	}
 }
