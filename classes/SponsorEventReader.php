@@ -115,6 +115,48 @@ class SponsorEventReader {
 		}
     }
 
+    public function formatEventTable($events): ?string
+	{
+		if(!$events) {
+			return "<p class='lead'><em>No events were found.</em></p>";
+		}
+    else {
+			$formatted_table = "<table class='table table-condensed' id='events'>";
+			$formatted_table .= "<thead>";
+				$formatted_table .= "<tr>";
+					$formatted_table .= "<th style='cursor:pointer'>Reg. Deadline</th>";
+					$formatted_table .= "<th onclick='sortTable(1)' style='cursor:pointer'>Event Name</th>";
+					$formatted_table .= "<th>Description</th>";
+					$formatted_table .= "<th>Location</th>";
+					$formatted_table .= "<th>Duration</th>";
+					$formatted_table .= "<th>Action</th>";
+				$formatted_table .= "</tr>";
+			$formatted_table .= "</thead>";
+
+			$formatted_table .= "<tbody id='eventTableBody'>";
+			foreach($events as $event) {
+          $formatted_table .= "<tr>";
+              $formatted_table .= "<td class='text-nowrap'>" . $this->formatDate($event['registration_end']) . "</td>";
+              $formatted_table .= "<td>" . $event['event_name'] . "</td>";
+              $formatted_table .= "<td>" . $this->formatDescription($event['description']) . "</td>";
+              $formatted_table .= "<td>" . $event['location'] . "</td>";
+              $formatted_table .= "<td class='text-nowrap'>" . $this->formatEventStartToEnd($event['event_start'],$event['event_end']) . "</td>";
+              $formatted_table .= "<td>";
+                  $formatted_table .= "<a href='event-read.php?event_id=". $event['event_id'] ."' title='View Event' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>";
+                  $formatted_table .= "<br>";
+                  $formatted_table .= "<a href='event-update.php?event_id=". $event['event_id'] ."' title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>";
+                  $formatted_table .= "<br>";
+                  $formatted_table .= "<a href='event-delete.php?event_id=". $event['event_id'] ."' title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>";
+              $formatted_table .= "</td>";
+          $formatted_table .= "</tr>";
+      }
+			$formatted_table .= "</tbody>";
+			$formatted_table .= "</table>";
+
+			return $formatted_table;
+		}
+  }
+
 	public function formatDescription($description): ?string
 	{
 		if(strlen($description)>100){
