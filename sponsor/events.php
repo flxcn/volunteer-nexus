@@ -54,6 +54,11 @@ $events = $obj->getSponsoredEvents();
                         <a href="event-create.php" class="btn btn-success pull-right">Add New Event</a>
                     </div>
 
+                    <!-- Search Bar -->
+                    <br>
+                    <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
+                    <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+                    <br>
                     <?php if ($events): ?>
                       <table class='table table-bordered table-condensed' id='events'>
                         <thead>
@@ -81,7 +86,7 @@ $events = $obj->getSponsoredEvents();
                           </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="eventTableBody">
                         <?php foreach($events as $event): ?>
                           <tr>
                             <td>
@@ -175,6 +180,17 @@ $events = $obj->getSponsoredEvents();
         }
       }
     }
+    <!-- Search Feature -->
+    <script>
+    // search feature
+    $(document).ready(function(){
+    $("#searchInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#eventTableBody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
     </script>
 
     <?php include '../footer.php';?>
