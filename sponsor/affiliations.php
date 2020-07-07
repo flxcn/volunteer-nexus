@@ -52,7 +52,7 @@ $volunteers = $obj->getAffiliatedVolunteers();
                     <br>
 
                     <?php if ($volunteers): ?>
-                      <table class='table' id='affiliations'>
+                      <table class='table table-bordered table-striped' id='affiliations'>
                         <thead>
                           <tr>
                             <th onclick='sortTable(0)' style='cursor:pointer'>
@@ -66,6 +66,9 @@ $volunteers = $obj->getAffiliatedVolunteers();
                             <th onclick='sortTableNumerically(2)' style='cursor:pointer'>
                               Total Contributions
                               <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                            </th>
+                            <th>
+                              Action
                             </th>
                           </tr>
                         </thead>
