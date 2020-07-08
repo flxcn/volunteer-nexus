@@ -14,7 +14,7 @@ class VolunteerLogin
 		public function __construct()
     {
 			$this->pdo = DatabaseConnection::instance();
-      $this->username = "";
+            $this->username = "";
 			$this->password = "";
 			$this->volunteer_id = "";
 			$this->first_name = "";
