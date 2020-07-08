@@ -25,7 +25,7 @@
 		</ul>
 
 		<ul class="nav navbar-nav navbar-right">
-			<li <?php if ($thisPage === 'Account') {echo 'class="active"';} ?>><a href="reset.php"><span class="glyphicon glyphicon-user"></span> Account</a></li>
+			<li <?php if ($thisPage === 'Account') {echo 'class="active"';} ?>><a href="account.php"><span class="glyphicon glyphicon-user"></span> Account</a></li>
 			<li><a href="../logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		</ul>
 
