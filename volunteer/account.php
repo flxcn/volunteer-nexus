@@ -85,10 +85,10 @@ if(isset($_SESSION["volunteer_id"])) {
                     </div>
                     <div class="form-group">
                         <p class="form-control-static">
-                        <i><?php echo $time_created; ?></i>
+                        <i><?php //echo $time_created; ?></i>
                         </p>
                     </div>
-                    <p><a href='#' class="btn btn-primary">Edit</a></p>
+                    <!-- <p><a href='#' class="btn btn-primary">Edit</a></p> -->
                 </div>
             </div>
         </div>
