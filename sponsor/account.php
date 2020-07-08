@@ -33,6 +33,7 @@ if(isset($_SESSION["sponsor_id"])){
 
                 // Retrieve individual field value
                 $sponsor_name = $row["sponsor_name"];
+                $username = $row["username"];
 
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
@@ -88,35 +89,40 @@ if(isset($_SESSION["sponsor_id"])){
                         <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
+                        <label>Email Address</label>
+                        <p class="form-control-static"><?php echo $row["username"]; ?></p>
                     </div>
                     <div class="form-group">
-                        <label>Start Date</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
+                        <label>Password</label>
+                        <p class="form-control-static"><a class="btn btn-link" href="reset.php"></a>Reset password</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Contribution Type</label>
+                        <p class="form-control-static"><?php echo $row["contribution_type"]; ?></p>
                     </div>
 
                     <div class="form-group">
-                        <label>Start Time</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
+                        <label>Advisor #1</label>
+                        <p class="form-control-static"><?php echo $row["advisor1_name"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["advisor1_email"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["advisor1_phone"]; ?></p>
                     </div>
 
                     <div class="form-group">
-                        <label>End Date</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
+                        <label>Advisor #2</label>
+                        <p class="form-control-static"><?php echo $row["advisor2_name"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["advisor2_email"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["advisor2_phone"]; ?></p>
                     </div>
 
                     <div class="form-group">
-                        <label>End Time</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
+                        <label>Advisor #3</label>
+                        <p class="form-control-static"><?php echo $row["advisor3_name"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["advisor3_email"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["advisor3_phone"]; ?></p>
                     </div>
 
-                    <div class="form-group">
-                        <label>Total Positions</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
-                    </div>
-
-                    <p><a href='#' class="btn btn-primary">Edit</a></p>
+                    <!-- <p><a href='#' class="btn btn-primary">Edit</a></p> -->
                 </div>
             </div>
         </div>
