@@ -122,6 +122,10 @@ if(isset($_SESSION["sponsor_id"])){
                         <p class="form-control-static"><?php echo $row["advisor3_phone"]; ?></p>
                     </div>
 
+                    <!-- <div class="form-group">
+                        <p class="form-control-static"><i><b>VolunteerNexus</b> member since <?php //echo $row["time_created"]; ?></i></p>
+                    </div> -->
+
                     <!-- <p><a href='#' class="btn btn-primary">Edit</a></p> -->
                 </div>
             </div>
