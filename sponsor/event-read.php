@@ -122,9 +122,9 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                           <th>Contribution Type</th>
                           <td><?php echo $row["contribution_type"]; ?></td>
                         </tr>
-                      </table>
+                    </table>
 
-                      <table class="table table-details">
+                    <table class="table table-details">
                         <tr>
                           <th>Contact Name(s)</th>
                           <td><?php echo $row["contact_name"]; ?></td>
@@ -137,9 +137,9 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                           <th>Contact Email(s)</th>
                           <td><?php echo $row["contact_email"]; ?></td>
                         </tr>
-                      </table>
+                    </table>
 
-                      <table class="table table-details">
+                    <table class="table table-details">
                         <tr>
                           <th style="color:red">Registration Deadline</th>
                           <td><?php echo $row["registration_end"]; ?></td>
