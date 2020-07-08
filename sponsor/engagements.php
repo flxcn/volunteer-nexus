@@ -7,6 +7,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     header("location: login.php");
     exit;
 }
+
+require '../classes/SponsorEngagementReader.php';
+$obj = new SponsorEngagementReader($_SESSION['sponsor_id']);
+$engagements = $obj->getPendingEngagements();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,10 +60,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     </script>
 </head>
 
-
-
-
-
 <body>
     <?php $thisPage='Engagements'; include 'navbar.php';?>
     <div class="wrapper">
@@ -73,59 +73,47 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
                     <!-- Search Bar -->
                     <br>
-                    <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
                     <input class="form-control" id="searchInput" type="text" placeholder="Search..">
                     <br>
 
-                    <?php
-                    // Include config file
-                    require_once "../config.php";
-                    // Attempt select query execution
+                    <div id="engagementsContent">
+                    <?php if ($engagements): ?>
+                        <table class='table table-hover'>
+                            <thead class='thead-dark'>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Opportunity</th>
+                                    <th>Event</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                    $sql = "SELECT opportunities.start_date AS start_date, engagements.engagement_id AS engagement_id, engagements.time_submitted, volunteers.first_name AS first_name, volunteers.last_name AS last_name, events.event_name AS event_name, opportunities.opportunity_name AS opportunity_name
-                    FROM engagements LEFT JOIN volunteers ON volunteers.volunteer_id = engagements.volunteer_id LEFT JOIN events ON events.event_id = engagements.event_id LEFT JOIN opportunities ON opportunities.opportunity_id = engagements.opportunity_id
-                    WHERE engagements.sponsor_id = '{$_SESSION['sponsor_id']}' AND engagements.status IS NULL AND opportunities.start_date <= CURDATE()
-                    GROUP BY engagements.time_submitted, engagements.engagement_id, events.event_name, opportunities.opportunity_name, volunteers.first_name, volunteers.last_name";
-
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-hover'>";
-                                echo "<thead class='thead-dark'>";
-                                    echo "<tr>";
-                                        echo "<th>Name</th>";
-                                        echo "<th>Opportunity</th>";
-                                        echo "<th>Event</th>";
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody id='engagementTableBody'>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>"; //NOTE: this needs work!
-                                        echo "<td>" . $row['opportunity_name'] . "</td>";
-                                        echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>";
-                                            echo "<div id='statusOf". $row['engagement_id'] ."'>";
-                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",1)' title='Confirm This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:green'><span class='glyphicon glyphicon-ok'></span></a>";
-                                            echo "<a onclick='showStatus(" . $row['engagement_id'] .",0)' title='Deny This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-remove'></span></a>";
-                                            echo "</div>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>No pending engagements were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-
-                    // Close connection
-                    mysqli_close($link);
-                    ?>
+                            <tbody id="engagementTableBody">
+                            <?php foreach($engagements as $engagement): ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $engagement['first_name'] . " " . $engagement['last_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['opportunity_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['event_name']; ?>
+                                    </td>
+                                    <td>
+                                        <div id=<?php echo "statusOf" . $engagement['engagement_id']; ?> >
+                                            <a onclick=<?php echo "showStatus(" . $engagement['engagement_id'] .",1)"; ?> title='Confirm This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:green'><span class='glyphicon glyphicon-ok'></span></a>
+                                            <a onclick=<?php echo "showStatus(" . $engagement['engagement_id'] .",0)"; ?> title='Deny This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-remove'></span></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                      <p class='lead'><em>No pending engagements were found.</em></p>
+                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
