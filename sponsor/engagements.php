@@ -73,7 +73,7 @@ $engagements = $obj->getPendingEngagements();
 
                     <!-- Search Bar -->
                     <br>
-                    <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+                    <input class="form-control" id="searchInput" type="text" placeholder="Search">
                     <br>
 
                     <div id="engagementsContent">

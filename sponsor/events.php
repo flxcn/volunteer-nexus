@@ -64,7 +64,7 @@ $events = $obj->getUpcomingSponsoredEvents();
                     <!-- Search Bar -->
                     <br>
                     <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
-                    <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+                    <input class="form-control" id="searchInput" type="text" placeholder="Search">
                     <br>
 
                     <div id="eventsContent">
