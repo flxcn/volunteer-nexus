@@ -8,12 +8,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     exit;
 }
 
-$username = "";
-$full_name = "";
-$student_id = "";
-$graduation_year = "";
-$time_created = "";
-
 // Check existence of id parameter before processing further
 if(isset($_SESSION["volunteer_id"])) {
     
@@ -21,15 +15,7 @@ if(isset($_SESSION["volunteer_id"])) {
     require_once "../classes/VolunteerAccountReader.php";
     $obj = new VolunteerAccountReader($volunteer_id);
 
-    if($obj->getVolunteerDetails()) {
-        $username = $obj->getUsername();
-        $full_name = $obj->getFullName();
-        $student_id = $obj->getStudentId();
-        $graduation_year = "Class of " . $obj->getGraduationYear();
-        $time_created = "<b>VolunteerNexus</b> member since " . $obj->getTimeCreated();
-    } else {
-        echo "Error!";
-    }
+    $obj->getVolunteerDetails();
 
 } else {
     header("location: error.php");
@@ -65,28 +51,26 @@ if(isset($_SESSION["volunteer_id"])) {
                     </div>
                     <div class="form-group">
                         <label>Volunteer Name</label>
-                        <p class="form-control-static"><?php echo $full_name; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getFullName(); ?></p>
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <p class="form-control-static"><?php echo $username; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getUsername(); ?></p>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <p class="form-control-static"><a class="btn btn-link" href="reset.php"></a>Reset password</p>
+                        <p class="form-control-static"><a class="btn btn-link" href="reset.php">Reset password</a></p>
                     </div>
                     <div class="form-group">
                         <label>Student ID</label>
-                        <p class="form-control-static"><?php echo $student_id; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getStudentId(); ?></p>
                     </div>
                     <div class="form-group">
                         <label>Graduation Year</label>
-                        <p class="form-control-static"><?php echo $graduation_year; ?></p>
+                        <p class="form-control-static"><?php echo "Class of " . $obj->getGraduationYear(); ?></p>
                     </div>
                     <div class="form-group">
-                        <p class="form-control-static">
-                        <i><?php echo $time_created; ?></i>
-                        </p>
+                        <p class="form-control-static"><i><b>VolunteerNexus</b> member since <?php echo $obj->getTimeCreated(); ?></i></p>
                     </div>
                     <!-- <p><a href='#' class="btn btn-primary">Edit</a></p> -->
                 </div>
