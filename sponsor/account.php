@@ -10,49 +10,14 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 // Check existence of id parameter before processing further
 if(isset($_SESSION["sponsor_id"])){
-    // Include config file
-    require_once "../config.php";
 
-    // Prepare a select statement
-    $sql = "SELECT * FROM sponsors WHERE sponsor_id = ?";
+    $sponsor_id = $_SESSION["sponsor_id"];
+    require_once "../classes/SponsorAccountReader.php";
+    $obj = new SponsorAccountReader($sponsor_id);
 
-    if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "i", $param_sponsor_id);
+    $obj->getSponsorDetails();
 
-        // Set parameters
-        $param_sponsor_id = trim($_SESSION["sponsor_id"]);
-
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            $result = mysqli_stmt_get_result($stmt);
-
-            if(mysqli_num_rows($result) == 1){
-                /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
-                $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-                // Retrieve individual field value
-                $sponsor_name = $row["sponsor_name"];
-                $username = $row["username"];
-
-            } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
-                exit();
-            }
-
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-    }
-
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-    // Close connection
-    //mysqli_close($link);
-} else{
-    // URL doesn't contain id parameter. Redirect to error page
+} else {
     header("location: error.php");
     exit();
 }
@@ -86,45 +51,45 @@ if(isset($_SESSION["sponsor_id"])){
                     </div>
                     <div class="form-group">
                         <label>Sponsor Name</label>
-                        <p class="form-control-static"><?php echo $row["sponsor_name"]; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getSponsorName(); ?></p>
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <p class="form-control-static"><?php echo $row["username"]; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getUsername(); ?></p>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <p class="form-control-static"><a class="btn btn-link" href="reset.php"></a>Reset password</p>
+                        <p class="form-control-static"><a class="btn btn-link" href="reset.php">Reset password</a></p>
                     </div>
                     <div class="form-group">
                         <label>Contribution Type</label>
-                        <p class="form-control-static"><?php echo $row["contribution_type"]; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getContributionType(); ?></p>
                     </div>
 
                     <div class="form-group">
                         <label>Advisor #1</label>
-                        <p class="form-control-static"><?php echo $row["advisor1_name"]; ?></p>
-                        <p class="form-control-static"><?php echo $row["advisor1_email"]; ?></p>
-                        <p class="form-control-static"><?php echo $row["advisor1_phone"]; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor1Name(); ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor1Email(); ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor1Phone(); ?></p>
                     </div>
 
                     <div class="form-group">
                         <label>Advisor #2</label>
-                        <p class="form-control-static"><?php echo $row["advisor2_name"]; ?></p>
-                        <p class="form-control-static"><?php echo $row["advisor2_email"]; ?></p>
-                        <p class="form-control-static"><?php echo $row["advisor2_phone"]; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor2Name(); ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor2Email(); ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor2Phone(); ?></p>
                     </div>
 
                     <div class="form-group">
                         <label>Advisor #3</label>
-                        <p class="form-control-static"><?php echo $row["advisor3_name"]; ?></p>
-                        <p class="form-control-static"><?php echo $row["advisor3_email"]; ?></p>
-                        <p class="form-control-static"><?php echo $row["advisor3_phone"]; ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor3Name(); ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor3Email(); ?></p>
+                        <p class="form-control-static"><?php echo $obj->getAdvisor3Phone(); ?></p>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <p class="form-control-static"><i><b>VolunteerNexus</b> member since <?php //echo $row["time_created"]; ?></i></p>
-                    </div> -->
+                    <div class="form-group">
+                        <p class="form-control-static"><i><b>VolunteerNexus</b> member since <?php echo $obj->getTimeCreated(); ?></i></p>
+                    </div>
 
                     <!-- <p><a href='#' class="btn btn-primary">Edit</a></p> -->
                 </div>
