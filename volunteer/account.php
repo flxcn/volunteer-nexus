@@ -9,9 +9,9 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 }
 
 $username = "";
-$name = "";
-$student_id = "N/A";
-$graduation_year = "N/A";
+$full_name = "";
+$student_id = "";
+$graduation_year = "";
 $time_created = "";
 
 // Check existence of id parameter before processing further
@@ -23,7 +23,7 @@ if(isset($_SESSION["volunteer_id"])) {
 
     if($obj->getVolunteerDetails()) {
         $username = $obj->getUsername();
-        $name = $obj->getFullName();
+        $full_name = $obj->getFullName();
         $student_id = $obj->getStudentId();
         $graduation_year = "Class of " . $obj->getGraduationYear();
         $time_created = "<b>VolunteerNexus</b> member since " . $obj->getTimeCreated();
@@ -31,7 +31,7 @@ if(isset($_SESSION["volunteer_id"])) {
         echo "Error!";
     }
 
-} else{
+} else {
     header("location: error.php");
     exit();
 }
@@ -65,7 +65,7 @@ if(isset($_SESSION["volunteer_id"])) {
                     </div>
                     <div class="form-group">
                         <label>Volunteer Name</label>
-                        <p class="form-control-static"><?php echo $name; ?></p>
+                        <p class="form-control-static"><?php echo $full_name; ?></p>
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
@@ -85,7 +85,7 @@ if(isset($_SESSION["volunteer_id"])) {
                     </div>
                     <div class="form-group">
                         <p class="form-control-static">
-                        <i><?php //echo $time_created; ?></i>
+                        <i><?php echo $time_created; ?></i>
                         </p>
                     </div>
                     <!-- <p><a href='#' class="btn btn-primary">Edit</a></p> -->
