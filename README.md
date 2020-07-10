@@ -103,11 +103,17 @@ php composer.phar install
 ```
 4. Enter your database credentials in `config.php` and `DatabaseConnection.php`
 ```PHP
-const API_KEY = 'ENTER YOUR API';
+define('DB_HOST','localhost');
+define('DB_NAME','ENTER DATABASE NAME');
+define('DB_CHARSET','utf8mb4');
+define('DB_USERNAME','ENTER DATABASE USERNAME');
+define('DB_PASSWORD','ENTER DATABASE PASSWORD');
 ```
-5. Enter your Google OAuth2.0 credentials in `filename.php`
+5. Enter your Google OAuth2.0 credentials in `google-oauth.php`
 ```PHP
-const API_KEY = 'ENTER YOUR API';
+$clientID = '<YOUR_CLIENT_ID>';
+$clientSecret = '<YOUR_CLIENT_SECRET>';
+$redirectUri = '<YOUR_REDIRECT_URI>';
 ```
 
 
