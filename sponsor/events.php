@@ -55,10 +55,10 @@ $events = $obj->getUpcomingSponsoredEvents();
                     </div>
 
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#top" onclick="showTable('upcoming')">Upcoming</a></li>
-                        <li><a data-toggle="tab" href="#top" onclick="showTable('ongoing')">Ongoing</a></li>
-                        <li><a data-toggle="tab" href="#top" onclick="showTable('completed')">Completed</a></li>
-                        <li><a data-toggle="tab" href="#top" onclick="showTable('all')">All</a></li>
+                        <li class="active"><a data-toggle="tab" href="#top" onclick="showTable('upcoming')">Upcoming <span class="badge"><?php echo $obj->countUpcomingSponsoredEvents(); ?></span></a></li>
+                        <li><a data-toggle="tab" href="#top" onclick="showTable('ongoing')">Ongoing <span class="badge"><?php echo $obj->countOngoingSponsoredEvents(); ?></span></a></li>
+                        <li><a data-toggle="tab" href="#top" onclick="showTable('completed')">Completed <span class="badge"><?php echo $obj->countCompletedSponsoredEvents(); ?></span></a></li>
+                        <li><a data-toggle="tab" href="#top" onclick="showTable('all')">All <span class="badge"><?php echo $obj->countSponsoredEvents(); ?></span></a></li>
                     </ul>
 
                     <!-- Search Bar -->
