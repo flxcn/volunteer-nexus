@@ -36,6 +36,23 @@ class SponsorEventReader {
 		}
     }
 
+    public function countSponsoredEvents(): int
+	{
+		$sql =
+			"SELECT
+				COUNT(*)
+			FROM
+				events
+			WHERE
+				sponsor_id = :sponsor_id";
+
+			$stmt = $this->pdo->prepare($sql);
+			$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+			$count = $stmt->fetchColumn();
+
+		return $count;
+    }
+
     public function getUpcomingSponsoredEvents(): ?array
 	{
 		$sql =
@@ -45,7 +62,7 @@ class SponsorEventReader {
 				events
 			WHERE
 				sponsor_id = :sponsor_id
-        AND event_start > CURDATE()
+                AND event_start > CURDATE()
 			ORDER BY
 				registration_end
 				DESC";
@@ -62,6 +79,24 @@ class SponsorEventReader {
 		}
     }
 
+    public function countUpcomingSponsoredEvents(): int
+	{
+		$sql =
+			"SELECT
+				COUNT(*)
+			FROM
+				events
+			WHERE
+                sponsor_id = :sponsor_id
+                AND event_start > CURDATE()";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+		$count = $stmt->fetchColumn();
+
+		return $count;
+    }
+
     public function getOngoingSponsoredEvents(): ?array
 	{
 		$sql =
@@ -71,8 +106,8 @@ class SponsorEventReader {
 				events
 			WHERE
 				sponsor_id = :sponsor_id
-          AND event_start <= CURDATE()
-          AND event_end >= CURDATE()
+                AND event_start <= CURDATE()
+                AND event_end >= CURDATE()
 			ORDER BY
 				registration_end
 				DESC";
@@ -87,7 +122,26 @@ class SponsorEventReader {
 		else {
 			return $ongoing_events;
 		}
-	}
+    }
+    
+    public function countOngoingSponsoredEvents(): int
+	{
+		$sql =
+			"SELECT
+				COUNT(*)
+			FROM
+				events
+			WHERE
+                sponsor_id = :sponsor_id
+                AND event_start <= CURDATE()
+                AND event_end >= CURDATE()";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+		$count = $stmt->fetchColumn();
+
+		return $count;
+    }
 
     public function getCompletedSponsoredEvents(): ?array
 	{
@@ -98,7 +152,7 @@ class SponsorEventReader {
 				events
 			WHERE
 				sponsor_id = :sponsor_id
-          AND event_end < CURDATE()
+                AND event_end < CURDATE()
 			ORDER BY
 				registration_end
 				DESC";
@@ -113,6 +167,24 @@ class SponsorEventReader {
 		else {
 			return $completed_events;
 		}
+    }
+
+    public function countCompletedSponsoredEvents(): int
+	{
+		$sql =
+			"SELECT
+				COUNT(*)
+			FROM
+				events
+			WHERE
+                sponsor_id = :sponsor_id
+                AND event_end < CURDATE()";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+		$count = $stmt->fetchColumn();
+
+		return $count;
     }
 
     public function formatEventTable($events): ?string
