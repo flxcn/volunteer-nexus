@@ -23,7 +23,7 @@ class SponsorAccountReader
 	public function __construct($sponsor_id)
     {
         $this->pdo = DatabaseConnection::instance();
-        $this->sponsor_id = "";
+        $this->sponsor_id = $sponsor_id;
         $this->username = "";
         //$this->password = "";
         $this->sponsor_name = "";
@@ -101,7 +101,7 @@ class SponsorAccountReader
     {
         return $this->contribution_type;
     }
-    
+
     public function getAdvisor1Name(): string
     {
         return $this->advisor1_name;
@@ -112,44 +112,44 @@ class SponsorAccountReader
         return $this->advisor1_email;
     }
 
-    public function getAdvisor1Phone(): string
+    public function getAdvisor1Phone(): ?string
     {
         return $this->advisor1_phone;
     }
 
-    public function getAdvisor2Name(): string
+    public function getAdvisor2Name(): ?string
     {
         return $this->advisor2_name;
     }
 
-    public function getAdvisor2Email(): string
+    public function getAdvisor2Email(): ?string
     {
         return $this->advisor2_email;
     }
 
-    public function getAdvisor2Phone(): string
+    public function getAdvisor2Phone(): ?string
     {
         return $this->advisor2_phone;
     }
 
-    public function getAdvisor3Name(): string
+    public function getAdvisor3Name(): ?string
     {
         return $this->advisor3_name;
     }
 
-    public function getAdvisor3Email(): string
+    public function getAdvisor3Email(): ?string
     {
         return $this->advisor3_email;
     }
 
-    public function getAdvisor3Phone(): string
+    public function getAdvisor3Phone(): ?string
     {
         return $this->advisor3_phone;
     }
-    
+
     public function getTimeCreated(): string
     {
-        $timestamp = strtotime($time_created);
+        $timestamp = strtotime($this->time_created);
         return date("F Y", $timestamp);
     }
 }
