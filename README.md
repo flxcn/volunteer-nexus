@@ -110,7 +110,7 @@ define('PASSWORD', 'ENTER YOUR PASSWORD');
 define('DATABASE_NAME', 'volunteer_nexus');
 ```
 
-and in `DatabaseConnection.php`
+   and in `DatabaseConnection.php`
 
 ```PHP
 define('DB_HOST','localhost');
@@ -125,6 +125,8 @@ $clientID = '<YOUR_CLIENT_ID>';
 $clientSecret = '<YOUR_CLIENT_SECRET>';
 $redirectUri = '<YOUR_REDIRECT_URI>';
 ```
+
+6. Deploy to web server
 
 
 
