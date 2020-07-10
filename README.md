@@ -199,5 +199,5 @@ Project Link: [https://github.com/flxcn/volunteer-nexus](https://github.com/flxc
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/felixchen1a/
-[product-screenshot]: images/screenshot.png -->
+[product-screenshot]: images/screenshot.png
 
