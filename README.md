@@ -75,7 +75,7 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 
 ### Built With
 * [PHP](https://php.net)
-$ [MySQL](https://www.mysql.com/)
+* [MySQL](https://www.mysql.com/)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
 * JavaScript
@@ -89,7 +89,6 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * [composer](https://getcomposer.org/download/)
 
 ### Installation
