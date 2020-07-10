@@ -95,14 +95,18 @@ To get a local copy up and running follow these simple example steps.
 
 1. Clone the repo
 ```sh
-git clone https://github.com/your_username_/Project-Name.git
+git clone https://github.com/flxcn/volunteer-nexus.git
 ```
 2. Install composer packages
 ```sh
 php composer.phar install
 ```
-4. Enter your API in `config.js`
-```JS
+4. Enter your database credentials in `config.php` and `DatabaseConnection.php`
+```PHP
+const API_KEY = 'ENTER YOUR API';
+```
+5. Enter your Google OAuth2.0 credentials in `filename.php`
+```PHP
 const API_KEY = 'ENTER YOUR API';
 ```
 
