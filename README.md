@@ -105,9 +105,9 @@ git clone https://github.com/your_username_/Project-Name.git
 ```sh
 php composer.phar install
 ```
-<!--4. Enter your API in `config.js`
+4. Enter your API in `config.js`
 ```JS
-const API_KEY = 'ENTER YOUR API';-->
+const API_KEY = 'ENTER YOUR API';
 ```
 
 
