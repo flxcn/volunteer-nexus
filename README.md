@@ -1,16 +1,3 @@
-# volunteer-nexus
-Volunteer Nexus aims to provide a unified platform to connect students with service opportunities in an organized and efficient manner.
-
-## Features
-- Google Account Sign-in Option and Account Creation
-- AttendanceAnywhere
-  - Automatic Volunteer ID (QR Code) Generation
-  - Scanning Capabilities within Browser
-- Sorting functionality when viewing tables, A-Z and Z-A
-- Password reset option
-- Day-before Email Reminders
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -31,23 +18,23 @@ Volunteer Nexus aims to provide a unified platform to connect students with serv
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/flxcn/volunteer-nexus">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">volunteer-nexus</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    A unified platform to connect students with service opportunities in an organized and efficient manner.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <!-- <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a> -->
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://app.volunteernexus.com">View Live Version</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/flxcn/volunteer-nexus/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/flxcn/volunteer-nexus/issues">Request Feature</a>
   </p>
 </p>
 
@@ -110,18 +97,17 @@ php composer.phar install
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
 ```sh
 git clone https://github.com/your_username_/Project-Name.git
 ```
-3. Install NPM packages
+2. Install composer packages
 ```sh
-npm install
+php composer.phar install
 ```
-4. Enter your API in `config.js`
+<!--4. Enter your API in `config.js`
 ```JS
-const API_KEY = 'ENTER YOUR API';
+const API_KEY = 'ENTER YOUR API';-->
 ```
 
 
@@ -133,25 +119,35 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
+<!-- FEATURES -->
+## Features
+- Google Account Sign-in Option and Account Creation
+- AttendanceAnywhere
+  - Automatic Volunteer ID (QR Code) Generation
+  - Scanning Capabilities within Browser
+- Sorting functionality when viewing tables, A-Z and Z-A
+- Password reset option
+- Day-before Email Reminders
+
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/flxcn/volunteer-nexus/issues) for a list of proposed features (and known issues).
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+<!-- ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+<!-- Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. -->
 
-1. Fork the Project
+<!-- 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+5. Open a Pull Request -->
 
 
 
