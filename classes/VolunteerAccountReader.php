@@ -34,7 +34,8 @@ class VolunteerAccountReader
                 first_name,
                 last_name,
                 graduation_year,
-                student_id
+                student_id,
+								time_created
             FROM
                 volunteers
             WHERE
@@ -50,6 +51,7 @@ class VolunteerAccountReader
             $this->last_name = $volunteer["last_name"];
             $this->graduation_year = $volunteer["graduation_year"];
             $this->student_id = $volunteer["student_id"];
+						$this->time_created = $volunteer["time_created"];
 
             return true;
         } else {
@@ -71,12 +73,12 @@ class VolunteerAccountReader
     {
         return $this->last_name;
     }
-    
+
     public function getFullName(): string
     {
         return $this->first_name . " " . $this->last_name;
     }
-    
+
     public function getStudentId(): string
     {
         if($this->student_id) {
@@ -95,10 +97,10 @@ class VolunteerAccountReader
             return "N/A";
         }
     }
-    
+
     public function getTimeCreated(): string
     {
-        $timestamp = strtotime($time_created);
+        $timestamp = strtotime($this->time_created);
         return date("F Y", $timestamp);
     }
 }
