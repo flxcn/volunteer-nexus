@@ -49,9 +49,10 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Usage](#usage)
+  * [Features](#features)
 * [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
+<!-- * [Contributing](#contributing) -->
+<!-- * [License](#license) -->
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 
@@ -60,17 +61,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[VolunteerNexus](https://volunteernexus.com)
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
-
+VolunteerNexus is an online platform designed for volunteers to connect with meaningful service opportunities.
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
@@ -78,8 +71,8 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 * [MySQL](https://www.mysql.com/)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
-* JavaScript
-* CSS
+* [JavaScript](https://javascript.com/)
+* [CSS](https://www.w3.org/Style/CSS/Overview.en.html)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -188,6 +181,7 @@ Project Link: [https://github.com/flxcn/volunteer-nexus](https://github.com/flxc
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
+* [PHPMailer](https://github.com/PHPMailer/PHPMailer)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Choose an Open Source License](https://choosealicense.com)
