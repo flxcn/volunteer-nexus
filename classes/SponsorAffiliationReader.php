@@ -26,7 +26,7 @@ class SponsorAffiliationReader {
 	public function getAffiliatedVolunteers(): ?array
 	{
 		$sql =
-			"SELECT 
+			"SELECT DISTINCT
 				a.affiliation_id,
 				a.volunteer_id, 
 				v.username AS email_address,
@@ -56,9 +56,9 @@ class SponsorAffiliationReader {
 				volunteers AS v
 				ON a.volunteer_id = v.volunteer_id
 			WHERE 
-                a.sponsor_id = :sponsor_id
-                AND v.graduation_year >= :cutoff_date
-                OR v.graduation_year IS NULL";
+                (a.sponsor_id = :sponsor_id)
+                AND (v.graduation_year >= :cutoff_date
+                OR v.graduation_year IS NULL)";
 
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(['sponsor_id' => $this->sponsor_id, 'cutoff_date' => $this->getCutoffDate()]);
