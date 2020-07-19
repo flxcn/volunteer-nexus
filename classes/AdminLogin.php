@@ -11,34 +11,34 @@ class AdminLogin
 		private $contribution_type;
 
 		public function __construct()
-    {
+		{
 			$this->pdo = DatabaseConnection::instance();
-      $this->username = "";
+      			$this->username = "";
 			$this->password = "";
-			$this->sponsor_id = "";
-			$this->sponsor_name = "";
+			$this->admin_id = "";
+			$this->admin_name = "";
 			$this->contribution_type = "";
 		}
 
 		public function setUsername(string $username): string
 		{
 			if(empty($username)) {
-				return "Please enter your email address.";
+				return "Please enter your username.";
 			}
 			if($this->checkUsernameExists(strtolower($username)))
-      {
+      			{
 				$this->username = strtolower($username);
 				return "";
 			}
 			else
 			{
-				return "No account found with that email.";
+				return "No account found with that username.";
 			}
 		}
 
 		private function checkUsernameExists($username): bool
 		{
-			$stmt = $this->pdo->prepare("SELECT 1 FROM sponsors WHERE username = :username");
+			$stmt = $this->pdo->prepare("SELECT 1 FROM admins WHERE username = :username");
 			$stmt->execute(['username' => $username]);
 			return (bool)$stmt->fetch();
 		}
@@ -56,36 +56,33 @@ class AdminLogin
 
 		public function login(): bool
 		{
-			$sql = "SELECT sponsor_id, sponsor_name, contribution_type, username, password FROM sponsors WHERE username = :username";
+			$sql = "SELECT admin_id, admin_name, username, password FROM admins WHERE username = :username";
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(['username' => $this->username]);
-			$sponsor = $stmt->fetch();
+			$admin = $stmt->fetch();
 
-			if ($sponsor && password_verify($this->password, $sponsor['password']))
+			if ($admin && password_verify($this->password, $admin['password']))
 			{
-				$this->sponsor_id = $sponsor["sponsor_id"];
-				$this->sponsor_name = $sponsor["sponsor_name"];
-				$this->contribution_type = $sponsor["contribution_type"];
+				$this->admin_id = $admin["admin_id"];
+				$this->admin_name = $admin["admin_name"];
+
 				return true;
-			} else {
-    		return false;
+			} else 
+			{
+    				return false;
 			}
 		}
 
-		public function getSponsorId(): int
+		public function getAdminId(): int
 		{
-			return $this->sponsor_id;
+			return $this->admin_id;
 		}
 
-		public function getSponsorName(): string
+		public function getAdminName(): string
 		{
-			return $this->sponsor_name;
+			return $this->admin_name;
 		}
 
-		public function getContributionType(): string
-		{
-			return $this->contribution_type;
-		}
 
 }
 ?>
