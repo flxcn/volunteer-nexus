@@ -18,7 +18,7 @@ class EngagementCreation
 		$this->sponsor_id = $sponsor_id;
 		$this->event_id = 0;
 		$this->opportunity_id = 0;
-		$this->contribution_value = 0;
+		$this->contribution_value = 0.0;
 		$this->status = NULL;
 	}
 

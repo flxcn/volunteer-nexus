@@ -139,7 +139,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssiiii", $param_event_id, $param_sponsor_id, $param_opportunity_name, $param_description, $param_start_date, $param_end_date, $param_start_time, $param_end_time, $param_total_positions, $param_contribution_value, $param_needs_verification, $param_needs_reminder);
+            mysqli_stmt_bind_param($stmt, "iissssssidii", 
+                $param_event_id, 
+                $param_sponsor_id, 
+                $param_opportunity_name, 
+                $param_description, 
+                $param_start_date, 
+                $param_end_date, 
+                $param_start_time, 
+                $param_end_time, 
+                $param_total_positions, 
+                $param_contribution_value, 
+                $param_needs_verification, 
+                $param_needs_reminder);
 
             // Set parameters
             $param_event_id = $event_id;
@@ -281,7 +293,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <!--form for contribution_value-->
                         <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
                             <label>Contribution Value</label>
-                            <input type="number" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
+                            <input type="number" min="0" step="any" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
                             <span class="help-block"><?php echo $contribution_value_error;?></span>
                         </div>
 

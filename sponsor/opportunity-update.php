@@ -122,7 +122,8 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssiiiii", $param_opportunity_name,
+            mysqli_stmt_bind_param($stmt, "ssssssidiii", 
+            $param_opportunity_name,
             $param_description,
             $param_start_date,
             $param_start_time,
@@ -324,7 +325,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                       <!--form for contribution_value-->
                       <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
                           <label>Contribution Value</label>
-                          <input type="number" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
+                          <input type="number" min="0" step="any" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
                           <span class="help-block"><?php echo $contribution_value_error;?></span>
                       </div>
 
