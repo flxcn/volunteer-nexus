@@ -8,6 +8,10 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     exit;
 }
 
+function formatLinks($text) {
+    return preg_replace('@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@', '<a target="ref" href="http$2://$4">$1$2$3$4</a>', $text);
+}
+
 if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
     require_once "../config.php";
 
@@ -97,7 +101,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                       </tr>
                       <tr>
                         <th>Description</th>
-                        <td><?php echo $row["description"]; ?></td>
+                        <td><?php echo formatLinks($row["description"]); ?></td>
                       </tr>
                       <tr>
                         <th>Location</th>

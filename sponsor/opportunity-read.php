@@ -8,6 +8,10 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
   exit;
 }
 
+function formatLinks($text) {
+    return preg_replace('@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@', '<a target="ref" href="http$2://$4">$1$2$3$4</a>', $text);
+}
+
 // Check existence of id parameter before processing further
 if(isset($_GET["opportunity_id"])){
   // Include config file
@@ -107,7 +111,7 @@ if(isset($_GET["opportunity_id"])){
             </tr>
             <tr>
               <th>Description</th>
-              <td><?php echo $row["description"]; ?></td>
+              <td><?php echo formatLinks($row["description"]); ?></td>
             </tr>
           </table>
 
