@@ -31,7 +31,7 @@ require_once '../classes/TutorEngagementFormPopulator.php';
 $tutorEngagementFormPopulatorObj = new TutorEngagementFormPopulator($volunteer_id);
 
 // Populate volunteer array for "volunteer name" dropdown boxes, and initialize JSON object
-$jsonSponsors = $tutorEengagementFormPopulatorObj->getSponsors();
+$jsonSponsors = $tutorEngagementFormPopulatorObj->getSponsors();
 
 
 // Process Form Submission
@@ -107,7 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     </script>
 
     <style type="text/css">
-        .wrapper{ width: 350px; padding: 20px; }
+        .wrapper{ width: 350px; padding: 20px; padding-bottom: 100px; }
     </style>
 
     <script type='text/javascript'>
@@ -131,7 +131,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Create Engagement</h2>
+                        <h2>Create Tutor Engagement</h2>
                     </div>
                     <p>Please fill this form and submit to create a pending engagement for tutoring.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -142,11 +142,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             <p><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"];?></p>
                         </div>
 
+                        <!--form for sponsor_name-->
+                        <div class="form-group <?php echo (!empty($sponsor_name_error)) ? 'has-error' : ''; ?>">
+                            <label>Sponsor Name</label>
+                            <select name='sponsor_name' id='sponsorsSelect' class="form-control">
+                            </select>
+                        <span class="help-block"><?php echo $sponsor_name_error;?></span>
+
                         <!--form for date-->
-                        <div class="form-group <?php echo (!empty($start_date_error)) ? 'has-error' : ''; ?>"> 
+                        <div class="form-group <?php echo (!empty($date_error)) ? 'has-error' : ''; ?>"> 
                             <label>Date</label>
-                            <input type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
-                            <span class="help-block"><?php echo $start_date_error;?></span>
+                            <input type="date" name="date" class="form-control" value="<?php echo $date; ?>">
+                            <span class="help-block"><?php echo $date_error;?></span>
                         </div>
 
                         <!--form for start_time-->
