@@ -16,12 +16,12 @@ class TutorEngagementFormPopulator {
 		$sql = 
 			"SELECT DISTINCT 
 				sponsors.sponsor_id AS sponsor_id, 
-				sponsors.sponsor_name AS sponsor_name, 
+				sponsors.sponsor_name AS sponsor_name
 			FROM 
 				sponsors
 				INNER JOIN 
 				affiliations
-				ON affiliations.volunteer_id = volunteers.volunteer_id
+				ON affiliations.sponsor_id = sponsors.sponsor_id
 			WHERE 
 				affiliations.volunteer_id = :volunteer_id
 			ORDER BY 
