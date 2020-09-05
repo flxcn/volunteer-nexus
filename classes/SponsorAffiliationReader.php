@@ -32,7 +32,7 @@ class SponsorAffiliationReader {
 				v.username AS email_address,
 				v.first_name,
 				v.last_name,
-				v.graduation_year,
+				v.graduation_year AS graduation_year,
 				a.sponsor_id, 
 				COALESCE(e.total, 0) AS total_contribution_value
 			FROM
