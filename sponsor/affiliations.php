@@ -94,7 +94,7 @@ $volunteers = $obj->getAffiliatedVolunteers();
                             </td>
                             <td>
                               <a href=<?php echo "affiliation-read.php?volunteer_id=".$volunteer['volunteer_id']; ?> title="View Volunteer's Contributions" data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
-                              <!-- <a href=<?php //echo "affiliation-delete.php?affiliation_id=".$volunteer['volunteer_id']; ?> title="Delete This Affiliation" data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span> Delete</a> -->
+                              <a href=<?php echo "affiliation-delete.php?affiliation_id=".$volunteer['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash' style='color:red'></span> Delete</a>
                             </td>
                           </tr>
                         <?php endforeach; ?>

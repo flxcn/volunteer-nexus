@@ -27,7 +27,7 @@ class SponsorAffiliationReader {
 	{
 		$sql =
 			"SELECT DISTINCT
-				a.affiliation_id,
+				a.affiliation_id AS affiliation_id,
 				a.volunteer_id, 
 				v.username AS email_address,
 				v.first_name,
