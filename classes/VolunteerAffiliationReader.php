@@ -9,14 +9,135 @@ class VolunteerAffiliationReader {
 	{
 		$this->pdo = DatabaseConnection::instance();
 		$this->volunteer_id = $volunteer_id;
-	}
+    }
+
+    public function getCurrentSemesterDateRange(): array {
+
+        $start_date = date("Y-m-d");
+        $end_date = date("Y-m-d");
+
+        // check if today's date is past June 15th
+        if(date('m-d') >= "06-15")
+		{
+            // first semester
+            $start_date = date("Y") . "-06-15";
+            $end_date = date("Y") . "-12-31";	
+        }
+        else
+		{
+            // second semester
+			$start_date = date("Y") . "-01-01";
+            $end_date = date("Y") . "-06-14";
+        }
+
+        return array(
+            "start_date" => $start_date,
+            "end_date" => $end_date
+        );
+    }
+    
+    public function getSemesterContributionTotal($sponsor_id): int 
+	{ 
+        $semester_date_ranges = getCurrentSemesterDateRange();
+
+        $sql =
+			"SELECT  
+				COALESCE(e.total, 0) AS total_semester_contribution_value
+			FROM
+                engagements AS e1
+                INNER JOIN
+                    events AS e2
+                    ON e2.event_id = e1.event_id
+            WHERE 
+                e1.status = '1'
+                AND e1.sponsor_id = :sponsor_id
+                AND e1.volunteer_id = :volunteer_id
+                AND e2.event_end >= :start_date_range
+                AND e2.event_end <= :end_date_range";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute([
+            'volunteer_id' => $this->volunteer_id, 
+            'sponsor_id' => $this->volunteer_id, 
+            'start_date_range' => $semester_date_ranges["start_date"],
+            'end_date_range' => $semester_date_ranges["end_date"],
+        ]);
+		$semester_total = $stmt->fetch();
+
+		if(!$semester_total) {
+			return null;
+		}
+		else {
+			return $semester_total;
+        }
+    }
+    
+    public function getCurrentSchoolYearDateRange(): array {
+
+        $start_date = date("Y-m-d");
+        $end_date = date("Y-m-d");
+
+        // check if today's date is past June 15th
+        if(date('m-d') >= "06-15")
+		{
+            // first semester
+            $start_date = date("Y") . "-06-15";
+            $end_date = date("Y") . "-12-31";	
+        }
+        else
+		{
+            // second semester
+			$start_date = date("Y") . "-01-01";
+            $end_date = date("Y") . "-06-14";
+        }
+
+        return array(
+            "start_date" => $start_date,
+            "end_date" => $end_date
+        );
+    }
+    public function getSchoolYearContributionTotal($sponsor_id): int 
+	{ 
+        $semester_date_ranges = getCurrentSemesterDateRange();
+
+        $sql =
+			"SELECT  
+				COALESCE(e.total, 0) AS total_semester_contribution_value
+			FROM
+                engagements AS e1
+                INNER JOIN
+                    events AS e2
+                    ON e2.event_id = e1.event_id
+            WHERE 
+                e1.status = '1'
+                AND e1.sponsor_id = :sponsor_id
+                AND e1.volunteer_id = :volunteer_id
+                AND e2.event_end >= :start_date_range
+                AND e2.event_end <= :end_date_range";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute([
+            'volunteer_id' => $this->volunteer_id, 
+            'sponsor_id' => $this->volunteer_id, 
+            'start_date_range' => $semester_date_ranges["start_date"],
+            'end_date_range' => $semester_date_ranges["end_date"],
+        ]);
+		$semester_total = $stmt->fetch();
+
+		if(!$semester_total) {
+			return null;
+		}
+		else {
+			return $semester_total;
+        }
+    }
 
 	public function getAffiliatedSponsors(): ?array
 	{
 		$sql =
 			"SELECT 
 				a.affiliation_id,
-				a.sponsor_id, 
+				a.sponsor_id AS sponsor_id, 
 				s.sponsor_name,
 				a.volunteer_id, 
 				COALESCE(e.total, 0) AS total_contribution_value
