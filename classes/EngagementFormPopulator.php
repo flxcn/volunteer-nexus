@@ -56,7 +56,8 @@ class EngagementFormPopulator {
 			FROM 
 				events 
 			WHERE 
-				sponsor_id = :sponsor_id";
+                sponsor_id = :sponsor_id
+            ORDER BY event_id DESC";
 
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
