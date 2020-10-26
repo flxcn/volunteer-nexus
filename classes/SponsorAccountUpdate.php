@@ -1,5 +1,6 @@
 <?php
 require_once 'DatabaseConnection.php';
+require_once 'SponsorAccountReader';
 
 class SponsorAccountUpdate
 {
@@ -10,9 +11,18 @@ class SponsorAccountUpdate
     private $password;
     private $confirm_password;
     private $contribution_type;
-	private $advisors;
+    private $advisors;
+    private $advisor1_name;
+    private $advisor1_email;
+    private $advisor1_phone;
+    private $advisor2_name;
+    private $advisor2_email;
+    private $advisor2_phone;
+    private $advisor3_name;
+    private $advisor3_email;
+    private $advisor3_phone;
 
-    public function __construct($volunteer_id)
+    public function __construct($sponsor_id)
     {
         $this->pdo = DatabaseConnection::instance();
         $this->sponsor_id = $sponsor_id;
@@ -22,6 +32,62 @@ class SponsorAccountUpdate
         $this->sponsor_name = "";
         $this->contribution_type = "";
         $this->advisors = "";
+        $this->advisor1_name = "";
+        $this->advisor1_email = "";
+        $this->advisor1_phone = "";
+        $this->advisor2_name = "";
+        $this->advisor2_email = "";
+        $this->advisor2_phone = "";
+        $this->advisor3_name = "";
+        $this->advisor3_email = "";
+        $this->advisor3_phone = "";
+    }
+
+    public function getSponsorDetails(): bool
+    {
+        $sql =
+            "SELECT
+                username,
+                sponsor_name,
+                contribution_type,
+                advisor1_name,
+                advisor1_email,
+                advisor1_phone,
+                advisor2_name,
+                advisor2_email,
+                advisor2_phone,
+                advisor3_name,
+                advisor3_email,
+                advisor3_phone,
+                time_created
+            FROM
+                sponsors
+            WHERE
+                sponsor_id = :sponsor_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['sponsor_id' => $this->sponsor_id]);
+        $sponsor = $stmt->fetch();
+
+        if ($sponsor)
+        {
+            $this->username = $sponsor["username"];
+            $this->sponsor_name = $sponsor["sponsor_name"];
+            $this->contribution_type = $sponsor["contribution_type"];
+            $this->advisor1_name = $sponsor["advisor1_name"];
+            $this->advisor1_email = $sponsor["advisor1_email"];
+            $this->advisor1_phone = $sponsor["advisor1_phone"];
+            $this->advisor2_name = $sponsor["advisor2_name"];
+            $this->advisor2_email = $sponsor["advisor2_email"];
+            $this->advisor2_phone = $sponsor["advisor2_phone"];
+            $this->advisor3_name = $sponsor["advisor3_name"];
+            $this->advisor3_email = $sponsor["advisor3_email"];
+            $this->advisor3_phone = $sponsor["advisor3_phone"];
+            //$this->time_created = $sponsor["time_created"];
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function setSponsorName(string $sponsor_name): string
@@ -80,6 +146,61 @@ class SponsorAccountUpdate
         return "";
     }
 
+    public function setAdvisor1Name($advisor1_name)
+    {
+        $this->advisor1_name = $advisor1_name;
+        return $advisor1_name;
+    }
+
+    public function setAdvisor1Email($advisor1_email)
+    {
+        $this->advisor1_email = $advisor1_email;
+        return $advisor1_email;
+    }
+
+    public function setAdvisor1Phone($advisor1_phone)
+    {
+        $this->advisor1_phone = $advisor1_phone;
+        return $advisor1_phone;
+    }
+
+    public function setAdvisor2Name($advisor2_name)
+    {
+        $this->advisor2_name = $advisor2_name;
+        return $advisor2_name;
+    }
+
+    public function setAdvisor2Email($advisor2_email)
+    {
+        $this->advisor2_email = $advisor2_email;
+        return $advisor2_email;
+    }
+
+    public function setAdvisor2Phone($advisor2_phone)
+    {
+        $this->advisor2_phone = $advisor2_phone;
+        return $advisor2_phone;
+    }
+
+    public function setAdvisor3Name($advisor3_name)
+    {
+        $this->advisor3_name = $advisor3_name;
+        return $advisor3_name;
+    }
+
+    public function setAdvisor3Email($advisor3_email)
+    {
+        $this->advisor3_email = $advisor3_email;
+        return $advisor3_email;
+    }
+
+    public function setAdvisor3Phone($advisor3_phone)
+    {
+        $this->advisor3_phone = $advisor3_phone;
+        return $advisor3_phone;
+    }
+
+
     public function setContributionType(string $contribution_type): string
     {
         if(empty($contribution_type)) {
@@ -132,6 +253,47 @@ class SponsorAccountUpdate
             ]
         );
     
+        return $status;
+    }
+
+    public function updateSponsor(): bool
+    {
+        $sql = 
+            "UPDATE sponsors 
+            SET 
+                sponsor_name = :sponsor_name, 
+                username = :username, 
+                contribution_type = :contribution_type, 
+                advisor1_name = :advisor1_name, 
+                advisor1_email = :advisor1_email, 
+                advisor1_phone = :advisor1_phone, 
+                advisor2_name = :advisor2_name, 
+                advisor2_email = :advisor2_email, 
+                advisor2_phone = :advisor2_phone, 
+                advisor3_name = :advisor3_name, 
+                advisor3_email = :advisor3_email, 
+                advisor3_phone = :advisor3_phone
+            WHERE
+                sponsor_id = :sponsor_id";
+        $stmt = $this->pdo->prepare($sql);
+        $status = $stmt->execute(
+            [
+                'sponsor_name' => $this->sponsor_name,
+                'username' => $this->username,
+                //'password' => password_hash($this->password, PASSWORD_DEFAULT),
+                'contribution_type' => $this->contribution_type,
+                'advisor1_name' => $this->advisor1_name,
+                'advisor1_email' => $this->advisor1_email,
+                'advisor1_phone' => $this->advisor1_phone,
+                'advisor2_name' => $this->advisor2_name,
+                'advisor2_email' => $this->advisor2_email,
+                'advisor2_phone' => $this->advisor2_phone,
+                'advisor3_name' => $this->aadvisor3_name,
+                'advisor3_email' => $this->advisor3_email,
+                'advisor3_phone' => $this->advisor3_phone,
+            ]
+        );
+
         return $status;
     }
 
