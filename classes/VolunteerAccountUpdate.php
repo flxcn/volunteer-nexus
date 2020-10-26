@@ -121,5 +121,15 @@ class VolunteerAccountUpdate
         return $this->graduation_year;
     }
 
+    public function getFirstName(): int
+    {
+        return $this->first_name;
+    }
+
+    public function getLastName(): int
+    {
+        return $this->last_name;
+    }
+
 }
 ?>
