@@ -22,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         if($stmt = mysqli_prepare($link, $sql))
         {
               // Bind variables to the prepared statement as parameters
-              mysqli_stmt_bind_param($stmt, "iiiiii", $param_event_id, $param_opportunity_id, $param_volunteer_id, $param_sponsor_id, $param_contribution_value, $param_status);
+              mysqli_stmt_bind_param($stmt, "iiiiid", $param_event_id, $param_opportunity_id, $param_volunteer_id, $param_sponsor_id, $param_contribution_value, $param_status);
 
               // Set parameters
               $param_event_id = $_POST["event_id"];
