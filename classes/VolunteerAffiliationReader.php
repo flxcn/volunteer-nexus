@@ -21,7 +21,7 @@ class VolunteerAffiliationReader {
 		{
             // first semester
             $start_date = date("Y") . "-06-15";
-            $end_date = date("Y") . "-12-31";	
+            $end_date = date("Y") . "-12-31";
         }
         else
 		{
@@ -35,20 +35,20 @@ class VolunteerAffiliationReader {
             "end_date" => $end_date
         );
     }
-    
-    public function getSemesterContributionTotal($sponsor_id): int 
-	{ 
-        $semester_date_ranges = getCurrentSemesterDateRange();
+
+    public function getSemesterContributionTotal($sponsor_id): int
+	{
+        $semester_date_ranges = $this->getCurrentSemesterDateRange();
 
         $sql =
-			"SELECT  
-				COALESCE(e.total, 0) AS total_semester_contribution_value
+			"SELECT
+				COALESCE(SUM(e1.contribution_value),0) AS total_semester_contribution_value
 			FROM
                 engagements AS e1
                 INNER JOIN
                     events AS e2
                     ON e2.event_id = e1.event_id
-            WHERE 
+            WHERE
                 e1.status = '1'
                 AND e1.sponsor_id = :sponsor_id
                 AND e1.volunteer_id = :volunteer_id
@@ -57,22 +57,22 @@ class VolunteerAffiliationReader {
 
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute([
-            'volunteer_id' => $this->volunteer_id, 
-            'sponsor_id' => $this->volunteer_id, 
+            'volunteer_id' => $this->volunteer_id,
+            'sponsor_id' => $sponsor_id,
             'start_date_range' => $semester_date_ranges["start_date"],
             'end_date_range' => $semester_date_ranges["end_date"],
         ]);
-		$semester_total = $stmt->fetch();
+		$semester_total = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if(!$semester_total) {
 			return null;
 		}
 		else {
-			return $semester_total;
+			return $semester_total["total_semester_contribution_value"];
         }
     }
-    
-    public function getCurrentSchoolYearDateRange(): array {
+
+		public function getCurrentSchoolYearDateRange(): array {
 
         $start_date = date("Y-m-d");
         $end_date = date("Y-m-d");
@@ -80,14 +80,14 @@ class VolunteerAffiliationReader {
         // check if today's date is past June 15th
         if(date('m-d') >= "06-15")
 		{
-            // first semester
+            // in first semester, so includes next year
             $start_date = date("Y") . "-06-15";
-            $end_date = date("Y") . "-12-31";	
+            $end_date = (date("Y")+1) . "-06-14";
         }
         else
 		{
-            // second semester
-			$start_date = date("Y") . "-01-01";
+            // in second semester, so includes last year
+			$start_date = (date("Y")-1) . "-06-15";
             $end_date = date("Y") . "-06-14";
         }
 
@@ -96,19 +96,20 @@ class VolunteerAffiliationReader {
             "end_date" => $end_date
         );
     }
-    public function getSchoolYearContributionTotal($sponsor_id): int 
-	{ 
-        $semester_date_ranges = getCurrentSemesterDateRange();
+
+    public function getSchoolYearContributionTotal($sponsor_id): int
+	{
+        $school_year_date_ranges = $this->getCurrentSchoolYearDateRange();
 
         $sql =
-			"SELECT  
-				COALESCE(e.total, 0) AS total_semester_contribution_value
+			"SELECT
+				COALESCE(SUM(e1.contribution_value),0) AS total_school_year_contribution_value
 			FROM
                 engagements AS e1
                 INNER JOIN
                     events AS e2
                     ON e2.event_id = e1.event_id
-            WHERE 
+            WHERE
                 e1.status = '1'
                 AND e1.sponsor_id = :sponsor_id
                 AND e1.volunteer_id = :volunteer_id
@@ -117,51 +118,51 @@ class VolunteerAffiliationReader {
 
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute([
-            'volunteer_id' => $this->volunteer_id, 
-            'sponsor_id' => $this->volunteer_id, 
-            'start_date_range' => $semester_date_ranges["start_date"],
-            'end_date_range' => $semester_date_ranges["end_date"],
+            'volunteer_id' => $this->volunteer_id,
+            'sponsor_id' => $sponsor_id,
+            'start_date_range' => $school_year_date_ranges["start_date"],
+            'end_date_range' => $school_year_date_ranges["end_date"],
         ]);
-		$semester_total = $stmt->fetch();
+		$school_year_total = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		if(!$semester_total) {
+		if(!$school_year_total) {
 			return null;
 		}
 		else {
-			return $semester_total;
+			return $school_year_total["total_school_year_contribution_value"];
         }
     }
 
 	public function getAffiliatedSponsors(): ?array
 	{
 		$sql =
-			"SELECT 
+			"SELECT
 				a.affiliation_id,
-				a.sponsor_id AS sponsor_id, 
+				a.sponsor_id AS sponsor_id,
 				s.sponsor_name,
-				a.volunteer_id, 
+				a.volunteer_id,
 				COALESCE(e.total, 0) AS total_contribution_value
 			FROM
-				affiliations AS a 
-			LEFT JOIN 
-				(SELECT 
-					sponsor_id, 
-					volunteer_id, 
-					SUM(contribution_value) AS total 
+				affiliations AS a
+			LEFT JOIN
+				(SELECT
+					sponsor_id,
+					volunteer_id,
+					SUM(contribution_value) AS total
 				FROM
-					engagements 
-					WHERE 
+					engagements
+					WHERE
 						status = '1'
-					GROUP BY 
-						sponsor_id, 
+					GROUP BY
+						sponsor_id,
 						volunteer_id
-				) AS e 
-				ON a.sponsor_id = e.sponsor_id 
-				AND a.volunteer_id = e.volunteer_id 
-			INNER JOIN 
+				) AS e
+				ON a.sponsor_id = e.sponsor_id
+				AND a.volunteer_id = e.volunteer_id
+			INNER JOIN
 				sponsors AS s
 				ON a.sponsor_id = s.sponsor_id
-			WHERE 
+			WHERE
 				a.volunteer_id = :volunteer_id";
 
 		$stmt = $this->pdo->prepare($sql);

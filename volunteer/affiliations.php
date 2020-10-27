@@ -31,14 +31,19 @@
                     $obj = new VolunteerAffiliationReader($_SESSION['volunteer_id']);
                     $sponsors = $obj->getAffiliatedSponsors();
                     ?>
-                    
+
                     <?php if ($sponsors): ?>
                         <table class='table table-bordered'>
                             <thead>
                                 <tr>
-                                    <th>Affiliated Sponsor</th>
-                                    <th>My Total Contributions</th>
-                                    <th>Action</th>
+                                    <th rowspan="2">Affiliated Sponsor</th>
+                                    <th colspan="3">My Total Contributions</th>
+                                    <th rowspan="2">Action</th>
+                                </tr>
+                                <tr>
+                                    <th>This Semester</th>
+                                    <th>This School Year</th>
+                                    <th>All Time</th>
                                 </tr>
                             </thead>
 
@@ -47,6 +52,12 @@
                                 <tr>
                                     <td>
                                         <?php echo $sponsor['sponsor_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $obj->getSemesterContributionTotal($sponsor['sponsor_id']); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $obj->getSchoolYearContributionTotal($sponsor['sponsor_id']); ?>
                                     </td>
                                     <td>
                                         <?php echo $sponsor['total_contribution_value']; ?>
