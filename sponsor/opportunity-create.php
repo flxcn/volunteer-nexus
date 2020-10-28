@@ -12,12 +12,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 require_once '../config.php';
 
 // Define variable
-if(isset($_GET["event_id"]))
-{
+if(isset($_GET["event_id"])) {
   $event_id = trim($_GET["event_id"]);
-}
-else
-{
+} else {
   $event_id = "";
 }
 
@@ -151,7 +148,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $param_total_positions, 
                 $param_contribution_value, 
                 $param_needs_verification, 
-                $param_needs_reminder);
+                $param_needs_reminder
+            );
 
             // Set parameters
             $param_event_id = $event_id;
@@ -198,15 +196,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create Opportunity</title>
 
-        <!--Load required libraries-->
-        <?php $pageContent='Form'?>
-        <?php include '../head.php'?>
+    <!--Load required libraries-->
+    <?php $pageContent='Form'?>
+    <?php include '../head.php'?>
 
-
-
-<!-- Bootstrap Date-Picker Plugin -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <!-- Bootstrap Date-Picker Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
     <!--datepicker-->
     <script>
@@ -240,7 +236,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                     <p>Please fill this form and submit to add a new opportunity to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-
                         <!--form for opportunity name-->
                         <div class="form-group <?php echo (!empty($opportunity_name_error)) ? 'has-error' : ''; ?>">
                             <label>Opportunity Name</label>
