@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   $opportunity_values = json_decode($_POST["opportunity_name"]);
   $opportunity_id = $opportunity_values[0];
   $opportunity_name_error = $engagementCreationObj->setOpportunityId($opportunity_id);
-  $contribution_value = $opportunity_values[1];
+  $contribution_value = $_POST["contribution_value"];
   $opportunity_name_error = $engagementCreationObj->setContributionValue($contribution_value);
   
   // Set status of whether the engagement needs verification
@@ -138,7 +138,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         var opportunitySelect = document.getElementById('opportunitiesSelect');
         var contributionValue = document.getElementById('contributionValue');
         var opportunityValues = JSON.parse(opportunitySelect.value);
-        contributionValue.innerHTML = opportunityValues[1];
+        contributionValue.value = opportunityValues[1];
         // console.log(opportunityValues[1]);
       }
     </script>
@@ -182,9 +182,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                         <!-- display for contribution value -->
                         <!-- NOTE: May want to allow this value to be edited for more flexibility on behalf of the sponsors -->
-                        <div class="form-group">
+                        <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
                             <label>Contribution Value</label>
-                            <p class="form-control-static" id='contributionValue'></p>
+                            <input type="number" min="0" step="any" id='contributionValue' name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
+                            <span class="help-block"><?php echo $contribution_value_error;?></span>
                         </div>
 
                         <!--form for status-->
