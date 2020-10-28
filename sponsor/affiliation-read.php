@@ -50,6 +50,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
                     $sql =
                     "SELECT
+                      engagements.engagement_id AS engagement_id,
                       engagements.contribution_value AS contribution_value,
                       engagements.status AS status,
                       events.event_name AS event_name,
@@ -58,7 +59,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                       events.contact_email AS contact_email,
                       events.event_start AS event_start,
                       events.event_end AS event_end,
-                      opportunities.opportunity_name AS opportunity_name
+                      opportunities.opportunity_name AS opportunity_name,
+                      opportunities.opportunity_id AS opportunity_id
                     FROM
                       engagements
                       INNER JOIN
@@ -83,6 +85,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                         echo "<th>Event Duration</th>";
                                         echo "<th>Value</th>";
                                         echo "<th>Status</th>";
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -103,6 +106,9 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                                           else {
                                             echo "Pending";
                                           }
+                                        echo "</td>";
+                                        echo "<td>";
+                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."&engagement_id=". $row['engagement_id'] ."' title='Delete Engagement' data-toggle='tooltip' style='color:red' class='btn btn-link' ><span class='glyphicon glyphicon-trash'></span> Delete</a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
