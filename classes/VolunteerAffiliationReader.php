@@ -36,7 +36,7 @@ class VolunteerAffiliationReader {
         );
     }
 
-    public function getSemesterContributionTotal($sponsor_id): int
+    public function getSemesterContributionTotal($sponsor_id): float
 	{
         $semester_date_ranges = $this->getCurrentSemesterDateRange();
 
@@ -97,7 +97,7 @@ class VolunteerAffiliationReader {
         );
     }
 
-    public function getSchoolYearContributionTotal($sponsor_id): int
+    public function getSchoolYearContributionTotal($sponsor_id): float
 	{
         $school_year_date_ranges = $this->getCurrentSchoolYearDateRange();
 
