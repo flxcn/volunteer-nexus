@@ -30,6 +30,7 @@ $registration_start = "";
 $registration_end = "";
 $event_start = "";
 $event_end = "";
+$is_public = "";
 
 //define and initialize error message variables
 $event_name_error = "";
@@ -44,6 +45,7 @@ $registration_start_error = "";
 $registration_end_error = "";
 $event_start_error = "";
 $event_end_error = "";
+$is_public_error = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -134,14 +136,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $event_end = $input_event_end;
     }
 
+    // Validate event_end // NOTE: refer to-do list {3}
+    $is_public = trim($_POST["is_public"]);
+
     // Check input errors before inserting in database
     if(empty($event_name_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO events (sponsor_id, event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO events (sponsor_id, event_name, sponsor_name, description, location, contribution_type, contact_name, contact_phone, contact_email, registration_start, registration_end, event_start, event_end, is_public) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "issssssssssss", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end);
+            mysqli_stmt_bind_param($stmt, "issssssssssssi", $param_sponsor_id, $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end, $param_is_public);
 
             // Set parameters
             $param_sponsor_id = $sponsor_id;
@@ -157,6 +162,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_registration_end = $registration_end;
             $param_event_start = $event_start;
             $param_event_end = $event_end;
+            $param_is_public = $is_public;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -164,7 +170,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 header("location: events.php");
                 exit();
             } else{
-                echo "Something went wrong. Please try again later. If the issue persists, send an email to westlakestuco@gmail.com detailing the problem.";
+                echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
             }
         }
 
@@ -239,6 +245,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <label>Sponsor Name</label>
                             <input readonly name="sponsor_name" class="form-control" value="<?php echo $sponsor_name; ?>">
                             <span class="help-block"><?php echo $sponsor_name_error;?></span>
+                        </div>
+
+                        <!--form for is_public-->
+                        <div class="form-group <?php echo (!empty($is_public)) ? 'has-error' : ''; ?>">
+                            <label for="is_public">Visibility</label>
+                            <p>Who can see this event?</p>
+                            <select name="is_public" id="is_public">
+                                <option value="0">Affiliated volunteers only</option>
+                                <option value="1">Everyone</option>
+                            </select>
+                            <span class="help-block"><?php echo $is_public_error;?></span>
                         </div>
 
                         <!--form for description-->

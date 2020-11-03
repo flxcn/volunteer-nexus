@@ -29,6 +29,7 @@ $registration_start = "";
 $registration_end = "";
 $event_start = "";
 $event_end = "";
+$is_public = "";
 
 $event_name_error = "";
 $sponsor_name_error = "";
@@ -42,6 +43,7 @@ $registration_start_error = "";
 $registration_end_error = "";
 $event_start_error = "";
 $event_end_error = "";
+$is_public_error = "";
 
 // Processing form data when form is submitted
 if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
@@ -144,14 +146,32 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
         $event_end = $input_event_end;
     }
 
+    // Check is_public
+    $is_public = trim($_POST["is_public"]);
+
     // Check input errors before inserting in database
     if(empty($event_name_error) && empty($sponsor_name_error) && empty($description_error) && empty($location_error) && empty($contribution_type_error) && empty($registration_start_error) && empty($registration_end_error) && empty($event_start_error) && empty($event_end_error)){
         // Prepare an update statement
-        $sql = "UPDATE events SET event_name=?, sponsor_name=?, description=?, location=?, contribution_type=?, contact_name=?, contact_phone=?, contact_email=?, registration_start=?, registration_end=?, event_start=?, event_end=? WHERE event_id=?";
+        $sql = "UPDATE events SET event_name=?, sponsor_name=?, description=?, location=?, contribution_type=?, contact_name=?, contact_phone=?, contact_email=?, registration_start=?, registration_end=?, event_start=?, event_end=?, is_public=? WHERE event_id=?";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssssi", $param_event_name, $param_sponsor_name, $param_description, $param_location, $param_contribution_type, $param_contact_name, $param_contact_phone, $param_contact_email, $param_registration_start, $param_registration_end, $param_event_start, $param_event_end, $param_event_id);
+            mysqli_stmt_bind_param($stmt, "ssssssssssssii", 
+                $param_event_name, 
+                $param_sponsor_name, 
+                $param_description, 
+                $param_location, 
+                $param_contribution_type, 
+                $param_contact_name, 
+                $param_contact_phone, 
+                $param_contact_email, 
+                $param_registration_start, 
+                $param_registration_end, 
+                $param_event_start, 
+                $param_event_end, 
+                $param_is_public,
+                $param_event_id 
+            );
 
             // Set parameters
             $param_event_name = $event_name;
@@ -166,8 +186,10 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
             $param_registration_end = $registration_end;
             $param_event_start = $event_start;
             $param_event_end = $event_end;
+            $param_is_public = $is_public;
 
             $param_event_id = $event_id;
+
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -221,6 +243,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                     $registration_end = $row["registration_end"];
                     $event_start = $row["event_start"];
                     $event_end = $row["event_end"];
+                    $is_public = $row["is_public"];
 
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
@@ -306,6 +329,15 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
                           <label>Sponsor Name</label>
                           <input readonly name="sponsor_name" class="form-control" value="<?php echo $sponsor_name; ?>">
                           <span class="help-block"><?php echo $sponsor_name_error;?></span>
+                      </div>
+
+                      <!--form for is_public-->
+                      <div class="form-group <?php echo (!empty($is_public_error)) ? 'has-error' : ''; ?>">
+                          <label for="is_public">Visibility</label>
+                          <p>Who can see this event?</p>
+                          <input type="radio" name="is_public" value="0" <?php if($is_public==0){echo "checked";}?>> Affiliated Volunteers Only
+                          <input type="radio" name="is_public" value="1" <?php if($is_public==1){echo "checked";}?>> Everyone
+                          <span class="help-block"><?php echo $is_public_error;?></span>
                       </div>
 
                       <!--form for description-->
