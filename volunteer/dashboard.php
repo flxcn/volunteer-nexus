@@ -23,10 +23,13 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     </div>
 
     <p>
-        <a href="events.php" class="btn btn-success">Find Events!</a>
+        <a href="events.php" class="btn btn-success">Discover Events!</a>
     </p>
     <p>
-        <a href="attendance-anywhere.php" class="btn btn-primary"><span class='glyphicon glyphicon-qrcode'></span> Attendance Anywhere</a>
+        <a href="tutoring.php" class="btn btn-primary"><span class='glyphicon glyphicon-education'></span> <b>Tutoring@<i>VN</i></b> <span class="label label-success">New</span></a>
+    </p>
+    <p>
+        <a href="attendance-anywhere.php" class="btn btn-default"><span class='glyphicon glyphicon-qrcode'></span> <b>Attendance Anywhere</b></a>
     </p>
 
     <?php include 'affiliations.php';?>
