@@ -20,6 +20,7 @@
 		<ul class="nav navbar-nav">
 			<li <?php if ($thisPage === 'Dashboard') {echo 'class="active"';} ?>><a href="dashboard.php">Dashboard</a></li>
 			<li <?php if ($thisPage === 'Events') {echo 'class="active"';} ?>><a href="events.php">Find Events</a></li>
+            <li <?php if ($thisPage === 'Tutoring') {echo 'class="active"';} ?>><a href="tutoring.php">Tutoring</a></li>
 		</ul>
 
 		<ul class="nav navbar-nav navbar-right">
