@@ -45,64 +45,64 @@ class TutorEngagementFormPopulator {
 		}
 	}
 
-	public function getEvents(): ?string
-	{
-		$sql = 
-			"SELECT 
-				event_id, 
-				event_name 
-			FROM 
-				events 
-			WHERE 
-				sponsor_id = :sponsor_id";
+	// public function getEvents(): ?string
+	// {
+	// 	$sql = 
+	// 		"SELECT 
+	// 			event_id, 
+	// 			event_name 
+	// 		FROM 
+	// 			events 
+	// 		WHERE 
+	// 			sponsor_id = :sponsor_id";
 
-		$stmt = $this->pdo->prepare($sql);
-		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
-		if(!$status) {
-			return null;
-		}
-		else {
-			$events = array();
-			$events[] = array("event_name" => 'Select Event', "event_id" => '');
-			foreach ($stmt as $row)
-			{
-				$events[] = array("event_name" => $row['event_name'], "event_id" => $row['event_id']);
-			}
-			$jsonEvents = json_encode($events);
-			return $jsonEvents;
-		}
-	}
+	// 	$stmt = $this->pdo->prepare($sql);
+	// 	$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
+	// 	if(!$status) {
+	// 		return null;
+	// 	}
+	// 	else {
+	// 		$events = array();
+	// 		$events[] = array("event_name" => 'Select Event', "event_id" => '');
+	// 		foreach ($stmt as $row)
+	// 		{
+	// 			$events[] = array("event_name" => $row['event_name'], "event_id" => $row['event_id']);
+	// 		}
+	// 		$jsonEvents = json_encode($events);
+	// 		return $jsonEvents;
+	// 	}
+	// }
 
-	public function getOpportunities(): ?string
-	{
-		$sql = 
-			"SELECT 
-				opportunity_id, 
-				contribution_value, 
-				event_id, 
-				opportunity_name
-			FROM 
-				opportunities
-			WHERE 
-				sponsor_id = :sponsor_id
-			ORDER BY 
-				start_date 
-				DESC";
+	// public function getOpportunities(): ?string
+	// {
+	// 	$sql = 
+	// 		"SELECT 
+	// 			opportunity_id, 
+	// 			contribution_value, 
+	// 			event_id, 
+	// 			opportunity_name
+	// 		FROM 
+	// 			opportunities
+	// 		WHERE 
+	// 			sponsor_id = :sponsor_id
+	// 		ORDER BY 
+	// 			start_date 
+	// 			DESC";
 		
-		$stmt = $this->pdo->prepare($sql);
-		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
-		if(!$status) {
-			return null;
-		}
-		else {
-			$opportunities = array();
-			foreach ($stmt as $row)
-			{
-				$opportunities[$row['event_id']][] = array("opportunity_name" => $row['opportunity_name'], "opportunity_id" => $row['opportunity_id'], "contribution_value" => $row['contribution_value']);
-			}
-			$jsonOpportunities = json_encode($opportunities);
-			return $jsonOpportunities;
-		}
-	}
+	// 	$stmt = $this->pdo->prepare($sql);
+	// 	$status = $stmt->execute(['sponsor_id' => $this->sponsor_id]);
+	// 	if(!$status) {
+	// 		return null;
+	// 	}
+	// 	else {
+	// 		$opportunities = array();
+	// 		foreach ($stmt as $row)
+	// 		{
+	// 			$opportunities[$row['event_id']][] = array("opportunity_name" => $row['opportunity_name'], "opportunity_id" => $row['opportunity_id'], "contribution_value" => $row['contribution_value']);
+	// 		}
+	// 		$jsonOpportunities = json_encode($opportunities);
+	// 		return $jsonOpportunities;
+	// 	}
+	// }
 }
 ?>
