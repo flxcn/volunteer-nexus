@@ -37,6 +37,22 @@ $jsonSponsors = $tutorEngagementFormPopulatorObj->getSponsors();
 // Process Form Submission
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
+    $sponsor_id = trim($_POST["sponsor_id"]);
+    require_once '../classes/Tutor.php';
+    $obj = new TutorEngagementCreation($volunteer_id, $sponsor_id);
+
+    // Check to see that a Tutoring event exists for the selected Sponsor
+    if(doesTutoringEventExist($sponsor_id) == true) {
+        // Get event_id of Tutoring Event
+        // Create engagement
+    }
+    else {
+        // Create event
+        // Save event_id from this event
+
+        // Create engagement based on the event
+    }
+    
 
   // Instatiate EngagementCreation object
   require_once '../classes/TutorEngagementCreation.php';
@@ -181,7 +197,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         <!--form for description-->
                         <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
                             <label>Description</label>
-                            <p>Who did you tutor? What did you cover?</p>
+                            <p>Who did you tutor? What subject(s) and topic(s) did you cover?</p>
                             <textarea type="text" name="description" class="form-control"><?php echo $description; ?></textarea>
                             <span class="help-block"><?php echo $description_error;?></span>
                         </div>
