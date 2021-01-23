@@ -33,7 +33,7 @@
                     ?>
 
                     <?php if ($sponsors): ?>
-                        <table class='table table-bordered'>
+                        <table class='table table-bordered' id="affiliations">
                             <thead>
                                 <tr>
                                     <th rowspan="2">Affiliated Sponsor</th>
