@@ -8,54 +8,44 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     exit;
 }
 
-// Include config file
-require_once '../config.php';
+// Include VolunteerEngagementCreation Class
+require_once '../classes/VolunteerEngagementCreation.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     // Check input errors before inserting in database
     if(isset($_POST["event_id"]) && isset($_POST["opportunity_id"]) && isset($_POST["volunteer_id"]) && isset($_POST["sponsor_id"]) && isset($_POST["contribution_value"]) && isset($_POST["needs_verification"]))
     {
-        // Prepare an insert statement
-        $sql = "INSERT INTO engagements (event_id, opportunity_id, volunteer_id, sponsor_id, contribution_value, status) VALUES (?, ?, ?, ?, ?, ?)";
+        $obj = new VolunteerEngagementCreation($_POST["volunteer_id"]);
 
-        if($stmt = mysqli_prepare($link, $sql))
+        $obj->setEventId($_POST["event_id"]);
+        $obj->setOpportunityId($_POST["opportunity_id"]);
+        $obj->setSponsorId($_POST["sponsor_id"]);
+        $obj->setContributionValue($_POST["contribution_value"]);
+
+        if(trim($_POST["needs_verification"]) == 0)
         {
-              // Bind variables to the prepared statement as parameters
-              mysqli_stmt_bind_param($stmt, "iiiidi", $param_event_id, $param_opportunity_id, $param_volunteer_id, $param_sponsor_id, $param_contribution_value, $param_status);
+        $obj->setStatus(1);
+        }
 
-              // Set parameters
-              $param_event_id = $_POST["event_id"];
-              $param_opportunity_id = $_POST["opportunity_id"];
-              $param_volunteer_id = $_POST["volunteer_id"];
-              $param_sponsor_id = $_POST["sponsor_id"];
-              $param_contribution_value = $_POST["contribution_value"];
-
-              $param_status = NULL;
-              if(trim($_POST["needs_verification"]) == 0)
-              {
-                $param_status = 1;
-              }
-
-              // Attempt to execute the prepared statement
-              if(mysqli_stmt_execute($stmt))
-              {
-                  // Records created successfully. Redirect to landing page
-                  header("location: dashboard.php");
-                  exit();
-              }
-              else
-              {
-                echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
-              }
-
-          }
-
-          // Close statement
-          mysqli_stmt_close($stmt);
+        if($obj->isLimitPerVolunteerReached()) {
+            // Sign-up Limit Per Volunteer Reached
+            header("location: error-limit.php");
+            exit();
+        }
+        else {
+            if($obj->addEngagement()) {
+                // Success
+                header("location: dashboard.php");
+                exit();
+            }
+            else {
+                // Failure
+                header("location: error.php");
+                exit();
+            }
+        }
     }
-
-  mysqli_close($link);
 }
 
 ?>
