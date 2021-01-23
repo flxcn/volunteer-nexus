@@ -26,6 +26,7 @@ $end_date = "";
 $start_time = "";
 $end_time = "";
 $total_positions = "";
+$limit_per_volunteer = 1;
 $contribution_value = "";
 $needs_verification = "";
 $needs_reminder = "";
@@ -40,6 +41,7 @@ $end_date_error = "";
 $start_time_error = "";
 $end_time_error = "";
 $total_positions_error = "";
+$limit_per_volunteer_error = "";
 $contribution_value_error = "";
 $needs_verification_error = "";
 $needs_reminder_error = "";
@@ -112,6 +114,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $total_positions = $input_total_positions;
     }
 
+    // Validate limit_per_volunteer
+    $input_limit_per_volunteer = trim($_POST["limit_per_volunteer"]);
+    if(empty($input_limit_per_volunteer)){
+        $limit_per_volunteer_error = "Please enter the total number of sign-ups each volunteer is allowed.";
+    } else{
+        $limit_per_volunteer = $input_limit_per_volunteer;
+    }
+
     // Validate contribution_value
     $input_contribution_value = trim($_POST["contribution_value"]);
     if(empty($input_contribution_value)){
@@ -132,11 +142,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($event_id_error) && empty($sponsor_id_error) && empty($opportunity_name_error) && empty($description_error) && empty($start_date_error) && empty($end_date_error) && empty($start_time_error) && empty($end_time_error) && empty($total_positions_error) && empty($contribution_value_error) && empty($needs_verification_error) && empty($needs_reminder_error)){
         // Prepare an insert statement
-        $sql = "INSERT INTO opportunities (event_id, sponsor_id, opportunity_name, description, start_date, end_date, start_time, end_time, total_positions, contribution_value, needs_verification, needs_reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO opportunities (event_id, sponsor_id, opportunity_name, description, start_date, end_date, start_time, end_time, total_positions, limit_per_volunteer, contribution_value, needs_verification, needs_reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "iissssssidii", 
+            mysqli_stmt_bind_param($stmt, "iissssssiidii", 
                 $param_event_id, 
                 $param_sponsor_id, 
                 $param_opportunity_name, 
@@ -145,7 +155,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $param_end_date, 
                 $param_start_time, 
                 $param_end_time, 
-                $param_total_positions, 
+                $param_total_positions,
+                $param_limit_per_volunteer, 
                 $param_contribution_value, 
                 $param_needs_verification, 
                 $param_needs_reminder
@@ -161,6 +172,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_start_time = $start_time;
             $param_end_time = $end_time;
             $param_total_positions = $total_positions;
+            $param_limit_per_volunteer = $limit_per_volunteer;
             $param_contribution_value = $contribution_value;
             $param_needs_verification = $needs_verification;
             $param_needs_reminder = $needs_reminder;
@@ -283,6 +295,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <label>Total Positions</label>
                             <input type="number" name="total_positions" class="form-control" value="<?php echo $total_positions; ?>">
                             <span class="help-block"><?php echo $total_positions_error;?></span>
+                        </div>
+
+                        <!--form for limit_per_volunteer-->
+                        <div class="form-group <?php echo (!empty($limit_per_volunteer_error)) ? 'has-error' : ''; ?>">
+                            <label>Sign-up Limit per Volunteer</label>
+                            <p>How many times is a volunteer allowed to sign up for this event?</p>
+                            <input type="number" min="1" step="1" name="limit_per_volunteer" class="form-control" value="<?php echo $limit_per_volunteer; ?>">
+                            <span class="help-block"><?php echo $limit_per_volunteer_error;?></span>
                         </div>
 
                         <!--form for contribution_value-->
