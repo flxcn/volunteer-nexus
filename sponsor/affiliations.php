@@ -72,6 +72,10 @@ $volunteers = $obj->getAffiliatedVolunteers();
                               <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
                             </th>
                             <th onclick='sortTableNumerically(4)' style='cursor:pointer'>
+                              This School Year's Contributions
+                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                            </th>
+                            <th onclick='sortTableNumerically(5)' style='cursor:pointer'>
                               Total Contributions
                               <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
                             </th>
@@ -95,6 +99,9 @@ $volunteers = $obj->getAffiliatedVolunteers();
                             </td>
                             <td>
                               <?php echo $obj->getSemesterContributionTotal($volunteer['volunteer_id']); //echo $volunteer['total_contribution_value']; ?>
+                            </td>
+                            <td>
+                              <?php echo $obj->getSchoolYearContributionTotal($volunteer['volunteer_id']); //echo $volunteer['total_contribution_value']; ?>
                             </td>
                             <td>
                               <?php echo $volunteer['total_contribution_value']; ?>
