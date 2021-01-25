@@ -84,5 +84,34 @@ class VolunteerEventReader {
 		return $count;
     }
 
+    public function formatDescription($description): ?string
+	{
+		if(strlen($description)>100){
+			$truncated = substr($description, 0, 99);
+	    return $truncated . "...";
+		}
+		else {
+			return $description;
+		}
+	}
+
+	public function formatDate($date_string): ?string
+	{
+		$date = strtotime($date_string);
+    return date('D, M. jS', $date);
+	}
+
+	public function formatEventStartToEnd($event_start,$event_end): ?string
+	{
+		$date1 = $this->formatDate($event_start);
+		if (strcmp($event_start,$event_end) == 0) {
+			return $date1;
+		}
+		else {
+			$date2 = $this->formatDate($event_end);
+			return $date1 . "<br>to<br>" . $date2;
+		}
+	}
+
 }
 ?>

@@ -8,6 +8,10 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     header("location: login.php");
     exit;
 }
+
+require '../classes/VolunteerEventReader.php';
+$volunteer_id = $_SESSION['volunteer_id'];
+$obj = new VolunteerEventReader($volunteer_id);
 ?>
 
 <!DOCTYPE html>
@@ -101,12 +105,12 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)) {
                                     echo "<tr>";
-                                        echo "<td>" . $row['registration_end'] . "</td>";
+                                        echo "<td>" . $obj->formatDate($row['registration_end']) . "</td>";
                                         echo "<td>" . $row['event_name'] . "</td>";
                                         echo "<td>" . $row['sponsor_name'] . "</td>";
-                                        echo "<td>" . $row['description'] . "</td>";
+                                        echo "<td>" . $obj->formatDescription($row['description']) . "</td>";
                                         echo "<td>" . $row['location'] . "</td>";
-                                        echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
+                                        echo "<td>" . $obj->formatEventStartToEnd($row['event_start'],$row['event_end']) . "</td>";
                                         echo "<td>";
                                             echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>";
                                         echo "</td>";
