@@ -4,7 +4,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li style="padding-right: 1em">
 					<p class="navbar-text">
-						Copyright ©&nbsp;2021 Volunteer Nexus, Inc.
+						Copyright ©&nbsp;2019-<?php echo date('Y'); ?> Volunteer Nexus, Inc.
 					</p>
 				</li>
 			</ul>
