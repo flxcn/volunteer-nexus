@@ -131,7 +131,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
           }
           opportunitySelect.onchange = updateContributionValue;
         }
-
       }
 
       function updateContributionValue(){
