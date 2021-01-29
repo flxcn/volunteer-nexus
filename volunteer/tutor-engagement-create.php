@@ -12,6 +12,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 // Define and intialize variables
 $volunteer_id = $_SESSION["volunteer_id"];
 $sponsor_id = "";
+$sponsor_values = "";
 $date = "";
 $start_time = "";
 $end_time = "";
@@ -27,77 +28,111 @@ $description_error = "";
 $contribution_value_error = '';
 
 // Initialize EngagementFormPopulator object
-require_once '../classes/TutorEngagementFormPopulator.php';
-$tutorEngagementFormPopulatorObj = new TutorEngagementFormPopulator($volunteer_id);
+require_once '../classes/TutorialEngagementFormPopulator.php';
+$tutorialEngagementFormPopulatorObj = new TutorialEngagementFormPopulator($volunteer_id);
 
 // Populate volunteer array for "volunteer name" dropdown boxes, and initialize JSON object
-$jsonSponsors = $tutorEngagementFormPopulatorObj->getSponsors();
+$jsonSponsors = $tutorialEngagementFormPopulatorObj->getSponsors();
 
 
 // Process Form Submission
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $sponsor_id = trim($_POST["sponsor_id"]);
-    require_once '../classes/Tutor.php';
-    $obj = new TutorEngagementCreation($volunteer_id, $sponsor_id);
-
-    // Check to see that a Tutoring event exists for the selected Sponsor
-    if(doesTutoringEventExist($sponsor_id) == true) {
-        // Get event_id of Tutoring Event
-        // Create engagement
-    }
-    else {
-        // Create event
-        // Save event_id from this event
-
-        // Create engagement based on the event
-    }
-    
-
-  // Instatiate EngagementCreation object
-  require_once '../classes/TutorEngagementCreation.php';
-  $tutorEngagementCreationObj = new TutorEngagementCreation($sponsor_id);
-
-  // Validate volunteer_id from "volunteer_name" selector 
-  $volunteer_id = trim($_POST["volunteer_name"]);
-  $volunteer_name_error = $tutorEngagementCreationObj->setVolunteerId($volunteer_id);
-
-  // Validate event_id from "event_id" selector
-  $event_id = trim($_POST["event_name"]);
-  $event_name_error = $tutorEngagementCreationObj->setEventId($event_id);
- 
-  // Validate opportunity_id and contribution value from "opportunity_name" selector
-  $opportunity_values = json_decode($_POST["opportunity_name"]);
-  $opportunity_id = $opportunity_values[0];
-  $opportunity_name_error = $tutorEngagementCreationObj->setOpportunityId($opportunity_id);
-  $contribution_value = $opportunity_values[1];
-  $opportunity_name_error = $tutorEngagementCreationObj->setContributionValue($contribution_value);
+    // Obtain values from "sponsor_name" selector
+    $sponsor_values = json_decode($_POST['sponsor_name']);
+    $sponsor_name = $sponsor_values[0];
+    $sponsor_id = $sponsor_values[1];
   
-  // Set status of whether the engagement needs verification
-  $status = trim($_POST["status"]);
-  $tutorEngagementCreationObj->setStatus($status);
 
-  // Set sponsor_id
-  // $sponsor_id = $_SESSION["sponsor_id"];
+    // Instatiate TutorialEngagementCreation object
+    require_once '../classes/TutorialEngagementCreation.php';
+    $tutorialEngagementCreationObj = new TutorialEngagementCreation($volunteer_id, $sponsor_id);
 
-  // Check input errors before inserting in database
-  if(empty($sponsor_id_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($opportunity_name_error) && empty($contribution_value_error) && empty($status_error)) 
-  {
-    if($tutorEngagementCreationObj->addEngagement()) {
-      header("Location: dashboard.php");
-      exit();
+    // Validate sponsor_name
+    $sponsor_name_error = $tutorialEngagementCreationObj->setSponsorName($sponsor_name);
+
+    // Validate sponsor_id
+    $tutorialEngagementCreationObj->setSponsorId($sponsor_id);
+    
+    // Set opportunity_name for this Tutorial
+    $last_name = $_SESSION['last_name'];
+    $first_name = $_SESSION['first_name'];
+    $tutorialEngagementCreationObj->setOpportunityName($last_name, $first_name);
+
+    // Validate date of tutorial from "date"
+    $date = trim($_POST["date"]);
+    $date_error = $tutorialEngagementCreationObj->setStartDate($date);
+    $date_error = $tutorialEngagementCreationObj->setEndDate($date);
+
+    // Validate start time of tutorial from "start_time"
+    $start_time = trim($_POST["start_time"]);
+    $start_time_error = $tutorialEngagementCreationObj->setStartTime($start_time);
+
+    // Validate end time of tutorial from "end_time"
+    $end_time = trim($_POST["end_time"]);
+    $end_time_error = $tutorialEngagementCreationObj->setEndTime($end_time);
+
+    // Validate contribution value from "contribution_value"
+    $contribution_value = $_POST["contribution_value"];
+    $contribution_value_error = $tutorialEngagementCreationObj->setContributionValue($contribution_value);
+
+    // Validate description from "description"
+    $description = $_POST["contribution_value"];
+    $description_error = $tutorialEngagementCreationObj->setDescription($description);
+
+    // Set status of whether the engagement needs verification (always true)
+    // $needs_verification = trim($_POST["needs_verification"]);
+
+    if(empty($sponsor_name_error) && empty($volunteer_name_error) && empty($event_name_error) && empty($contribution_value_error)) 
+    {
+        // Check to see that a Tutoring event exists for the selected Sponsor
+        if($tutorialEngagementCreationObj->doesTutorialEventExist()) 
+        {
+            // Get event_id of Tutoring Event [try not to fold it into the check function]
+            
+            // Add tutorial engagement
+            if($tutorialEngagementCreationObj->addTutorial()) 
+            {
+                header("Location: dashboard.php");
+                exit();
+            }
+            else 
+            {
+                echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
+            }
+            
+        }
+        else 
+        {
+            // Create event, get event id of newly generated event             
+            // Save event_id from this event
+            /*
+            if($tutorialEngagementCreationObj->addTutorialEvent()) 
+            {
+                // Add tutorial engagement
+                // Create engagement based on the event
+                if($tutorialEngagementCreationObj->addEngagement()) 
+                {
+                    header("Location: dashboard.php");
+                    exit();
+                }
+                else 
+                {
+                    echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
+                }
+            }
+            */
+            echo "Sorry, this Sponsoring organization does not yet offer Tutoring.";
+
+        }
     }
-    else {
-      echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
-    }
-  }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Create Tutor Engagement</title>
+    <title>Create Tutorial Engagement</title>
 
     <!--Load required libraries-->
     <?php $pageContent='Form'?>
@@ -127,16 +162,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     </style>
 
     <script type='text/javascript'>
-      <?php
-        echo "var sponsors = $jsonSponsors; \n";
-      ?>
+        <?php
+            echo "var sponsors = $jsonSponsors; \n";
+        ?>
 
-      function loadSponsors(){
-        var select = document.getElementById("sponsorsSelect");
-        for(var i = 0; i < sponsors.length; i++){
-          select.options[i] = new Option(sponsors[i].sponsor_name, sponsors[i].sponsor_id);
+        function loadSponsors(){
+            console.log(sponsors);
+            var select = document.getElementById("sponsorsSelect");
+            for(var i = 0; i < sponsors.length; i++){
+                var sponsorValue = [sponsors[i].sponsor_name, sponsors[i].sponsor_id];
+                select.options[i] = new Option(sponsors[i].sponsor_name, JSON.stringify(sponsorValue));
+            }
         }
-      }
     </script>
 </head>
 
@@ -147,9 +184,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h2>Create Tutor Engagement</h2>
+                        <h2>Create Tutorial Engagement</h2>
                     </div>
-                    <p>Please fill this form and submit to create a pending engagement for tutoring.</p>
+
+                    <p>Please fill this form and submit to request engagement for tutoring.</p>
+
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
                         <!--form for volunteer_name-->
@@ -202,7 +241,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             <span class="help-block"><?php echo $description_error;?></span>
                         </div>
 
-                        <input type="hidden" name="needs_verification" value="1">
+                        <!-- <input type="hidden" name="needs_verification" value="1"> -->
 
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <a href="dashboard.php" class="btn btn-default">Cancel</a>
