@@ -1,0 +1,51 @@
+<body>
+    <h2>Hello " . $row['first_name'] . ",</h2>
+    <p>This is a friendly reminder that the <b>" . $row['opportunity_name'] . "</b> opportunity, part of the " . "<b>" . $row['event_name']."</b>" . " event, is happening tomorrow! Here are some key details to keep you informed:</p>
+
+    <table>
+        <tr>
+            <td><b>Start Date & Time:</b></td>
+            <td>" . $row['start_date'] . " " . $row['start_time'] . "</td>
+        </tr>
+        <tr>
+            <td><b>End Date & Time:</b></td>
+            <td>" . $row['end_date'] . " " . $row['end_time'] . "</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td><b>Sponsor Name:</b></td>
+            <td>" . $row['sponsor_name'] . "</td>
+        </tr>
+        <tr>
+            <td><b>Location:</b></td>
+            <td>" . $row['location'] . "</td>
+        </tr>
+        <tr>
+            <td><b>Description:</b></td>
+            <td>" . $row['description'] . "</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td><b>Contact Name:</b></td>
+            <td>" . $row['contact_name'] . "</td>
+        </tr>
+        <tr>
+            <td><b>Contact Email:</b></td>
+            <td>" . $row['contact_email'] . "</td>
+        </tr>
+        <tr>
+            <td><b>Contact Phone:</b></td>
+            <td>" . $row['contact_phone'] . "</td>
+        </tr>
+        <tr>
+        </tr>
+    </table>
+
+    <p>Best Regards,<br>Felix from VolunteerNexus</p>
+</body>
