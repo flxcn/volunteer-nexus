@@ -17,9 +17,6 @@ require 'PHPMailer/src/SMTP.php';
 //use PHPMailer\src\Exception;
 //use PHPMailer\PHPMailer\SMTP;
 
-
-
-
 function sendMessage($recipientName, $recipientEmail, $messageSubject, $messageBody, $messageAltBody)
 {
 	// Instantiation and passing `true` enables exceptions
@@ -28,27 +25,27 @@ function sendMessage($recipientName, $recipientEmail, $messageSubject, $messageB
 	    // Server settings
 	    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
 	    $mail->isSMTP();                                            // Send using SMTP
-	    $mail->Host       = 'mail.volunteernexus.com';                    // Set the SMTP server to send through
+	    $mail->Host       = 'mail.volunteernexus.com';              // Set the SMTP server to send through
 	    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-	    $mail->Username   = 'reminder@volunteernexus.com';                     // SMTP username
-	    $mail->Password   = 'VirginiaRometty';                               // SMTP password
+	    $mail->Username   = 'reminder@volunteernexus.com';          // SMTP username
+	    $mail->Password   = 'VirginiaRometty';                      // SMTP password
 	    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
-	    $mail->Port       = 25;                                    // TCP port to connect to
+	    $mail->Port       = 25;                                     // TCP port to connect to
 
 	    // Recipients
 	    $mail->setFrom('reminder@volunteernexus.com', 'Reminders from VolunteerNexus');
-	    $mail->addAddress($recipientEmail, $recipientName);     // Add a recipient
-	  	//$mail->addAddress('ellen@example.com');               // Name is optional
+	    $mail->addAddress($recipientEmail, $recipientName);         // Add a recipient
+	  	//$mail->addAddress('ellen@example.com');                   // Name is optional
 	    $mail->addReplyTo('felix@volunteernexus.com', 'Felix from VolunteerNexus');
 	    //$mail->addCC('cc@example.com');
 	    //$mail->addBCC('bcc@example.com');
 
 	    // Attachments
-	    // $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-	  	// $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+	    // $mail->addAttachment('/var/tmp/file.tar.gz');            // Add attachments
+	  	// $mail->addAttachment('/tmp/image.jpg', 'new.jpg');       // Optional name
 
 	    // Content
-	    $mail->isHTML(true);                                  // Set email format to HTML
+	    $mail->isHTML(true);                                        // Set email format to HTML
 	    $mail->Subject = $messageSubject;
 	    $mail->Body    = $messageBody;
 	    $mail->AltBody = $messageAltBody;
