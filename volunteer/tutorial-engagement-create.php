@@ -64,13 +64,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $date_error = $tutorialEngagementCreationObj->setStartDate($date);
     $date_error = $tutorialEngagementCreationObj->setEndDate($date);
 
-    // Validate start time of tutorial from "start_time"
     $start_time = trim($_POST["start_time"]);
-    $start_time_error = $tutorialEngagementCreationObj->setStartTime($start_time);
+
+    $end_time = trim($_POST["end_time"]);
+
+    // Validate start time of tutorial from "start_time"
+    $input_start_time = trim($_POST["start_time"]);
+    if(empty($input_start_time)){
+        $start_time_error = "Please enter a start time.";
+    } else{
+        // $date = DateTime::createFromFormat( 'H:i A', $input_start_time);
+        // $temp_start_time = $date->format( 'H:i:s');
+	      // $start_time = $temp_start_time;
+        $start_time = date("H:i", strtotime($input_start_time));
+        $start_time_error = $tutorialEngagementCreationObj->setStartTime($start_time);
+    }
 
     // Validate end time of tutorial from "end_time"
-    $end_time = trim($_POST["end_time"]);
-    $end_time_error = $tutorialEngagementCreationObj->setEndTime($end_time);
+    $input_end_time = trim($_POST["end_time"]);
+    if(empty($input_end_time)){
+        $end_time_error = "Please enter an end time.";
+    } else{
+      // $date = DateTime::createFromFormat( 'H:i A', $input_end_time);
+      // $temp_end_time = $date->format( 'H:i:s');
+      // $end_time = $temp_end_time;
+      $end_time = date("H:i", strtotime($input_end_time));
+      $end_time_error = $tutorialEngagementCreationObj->setEndTime($end_time);
+    }
+
+
+    
 
     // Validate contribution value from "contribution_value"
     $contribution_value = $_POST["contribution_value"];
