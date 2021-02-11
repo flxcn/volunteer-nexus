@@ -69,7 +69,7 @@ if(isset($_SESSION["volunteer_id"])) {
 
                     <h3>3. Record</h3>
                     <p>
-                    Take a picture of yourself during tutoring as proof of participation.
+                    Take a picture of yourself during tutoring as proof of participation. Send it to your respective Sponsor through their designated process.
                     </p>
                     <p>
                     Use the button above labeled <b><a href="tutor-engagement-create.php">"Record your contributions!"</a></b> and fill out the linked form. Your affiliated Sponsor will confirm your participation, and your volunteering will be recognized! Thank you for taking the time to support the learning of others! Once approved, your tutoring work will show up in your contribution history, linked <a href="dashboard.php#affiliations">here</a>.
