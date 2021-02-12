@@ -23,9 +23,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $obj->setSponsorId($_POST["sponsor_id"]);
         $obj->setContributionValue($_POST["contribution_value"]);
 
-        if(trim($_POST["needs_verification"]) == 0)
-        {
-        $obj->setStatus(1);
+        if(trim($_POST["needs_verification"]) == 0) {
+            $obj->setStatus(1);
         }
 
         if($obj->isLimitPerVolunteerReached()) {
