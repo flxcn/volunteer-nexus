@@ -75,8 +75,20 @@ class VolunteerEngagementCreation
 
     public function addEngagement(): bool
     {
-		$sql = "INSERT INTO engagements (volunteer_id, event_id, opportunity_id, sponsor_id, contribution_value, status)
-			VALUES (:volunteer_id, :event_id, :opportunity_id, :sponsor_id, :contribution_value, :status)";
+		$sql = 
+            "INSERT INTO engagements 
+                        (volunteer_id, 
+                         event_id, 
+                         opportunity_id, 
+                         sponsor_id, 
+                         contribution_value, 
+                         status)
+			VALUES      (:volunteer_id,
+                         :event_id,
+                         :opportunity_id,
+                         :sponsor_id,
+                         :contribution_value, 
+                         :status)";
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(
 			[
@@ -96,12 +108,19 @@ class VolunteerEngagementCreation
 		// find corresponding volunteer_id to input student_id
         $sql = 
             "SELECT COUNT(*) 
-            FROM engagements 
-            WHERE volunteer_id = :volunteer_id 
-                AND event_id = :event_id 
-                AND opportunity_id = :opportunity_id";
+             FROM   engagements 
+             WHERE  volunteer_id = :volunteer_id 
+                    AND event_id = :event_id 
+                    AND opportunity_id = :opportunity_id";
+        
 		$stmt = $this->pdo->prepare($sql);
-		$status = $stmt->execute(['volunteer_id' => $this->volunteer_id, 'event_id' => $this->event_id, 'opportunity_id' => $this->opportunity_id]);
+		$status = $stmt->execute(
+            [
+                'volunteer_id' => $this->volunteer_id, 
+                'event_id' => $this->event_id, 
+                'opportunity_id' => $this->opportunity_id
+            ]);
+        
 		$current_count = $stmt->fetchColumn();
 
 		if($current_count) {
@@ -112,29 +131,33 @@ class VolunteerEngagementCreation
 		}
     }
     
-    public function getLimitPerVolunteer(): ?int
+    public function getLimitPerVolunteer($opportunity_id): ?int
 	{
-		// find corresponding volunteer_id to input student_id
         $sql = 
             "SELECT limit_per_volunteer
-            FROM opportunities 
-            WHERE opportunity_id = :opportunity_id";
+             FROM   opportunities 
+             WHERE  opportunity_id = :opportunity_id";
 		$stmt = $this->pdo->prepare($sql);
 		$status = $stmt->execute(['opportunity_id' => $opportunity_id]);
-		$limit_per_volunteer = $stmt->fetchColumn();
-
-		if($limit_per_volunteer) {
-			return $limit_per_volunteer;
-		}
-		else {
-			return null;
-		}
+        
+		if($status) {
+            $limit_per_volunteer = $stmt->fetchColumn();
+            if($limit_per_volunteer) {
+                return $limit_per_volunteer;
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
 	}
 
 	public function isLimitPerVolunteerReached(): bool
 	{
         $current_count = $this->countExistingDuplicateEngagements();
-		$limit_per_volunteer_of_engagement = $this->getLimitPerVolunteer();
+		$limit_per_volunteer_of_engagement = $this->getLimitPerVolunteer($this->opportunity_id);
 
         if($limit_per_volunteer_of_engagement == null || $current_count == null) {
             return false;
