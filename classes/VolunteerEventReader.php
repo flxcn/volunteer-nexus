@@ -14,38 +14,36 @@ class VolunteerEventReader {
 	public function getEvents(): ?array
 	{
 		$sql =
-            "SELECT 
-                event_id,
-                event_name, 
-                sponsor_name,
-                description,
-                location,
-                event_start,
-                event_end,
-                registration_start, 
-                registration_end 
-            FROM events
-                INNER JOIN affiliations 
-                    ON affiliations.sponsor_id = events.sponsor_id
-                WHERE registration_start <= CURDATE()
-                AND registration_end >= CURDATE()
-                AND affiliations.volunteer_id = :volunteer_id
+            "SELECT     event_id,
+                        event_name, 
+                        sponsor_name,
+                        description,
+                        location,
+                        event_start,
+                        event_end,
+                        registration_start, 
+                        registration_end 
+            FROM        events
+            INNER JOIN  affiliations 
+            ON          affiliations.sponsor_id = events.sponsor_id
+            WHERE       registration_start <= CURDATE()
+            AND         registration_end >= CURDATE()
+            AND         affiliations.volunteer_id = :volunteer_id
             UNION
-            SELECT 
-                event_id,
-                event_name, 
-                sponsor_name,
-                description,
-                location,
-                event_start,
-                event_end,
-                registration_start, 
-                registration_end  
-            FROM events
-            WHERE events.is_public = 1
-                AND registration_start <= CURDATE()
-                AND registration_end >= CURDATE()
-            ORDER BY registration_end";
+            SELECT      event_id,
+                        event_name, 
+                        sponsor_name,
+                        description,
+                        location,
+                        event_start,
+                        event_end,
+                        registration_start, 
+                        registration_end  
+            FROM        events
+            WHERE       events.is_public = 1
+            AND         registration_start <= CURDATE()
+            AND         registration_end >= CURDATE()
+            ORDER BY    registration_end";
 
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute(['volunteer_id' => $this->volunteer_id]);
