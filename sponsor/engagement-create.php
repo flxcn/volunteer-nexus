@@ -93,53 +93,57 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <?php include '../head.php'?>
 
     <style type="text/css">
-        .wrapper{ width: 350px; padding: 20px; }
+        .wrapper { 
+            width: 350px; 
+            padding: 20px;
+            padding-bottom: 100px; 
+        }
     </style>
 
     <script type='text/javascript'>
-      <?php
+        <?php
         echo "var volunteers = $jsonVolunteers; \n";
         echo "var events = $jsonEvents; \n";
         echo "var opportunities = $jsonOpportunities; \n";
-      ?>
+        ?>
 
-      function loadVolunteers(){
-        var select = document.getElementById("volunteersSelect");
-        for(var i = 0; i < volunteers.length; i++){
-          select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
+        function loadVolunteers(){
+            var select = document.getElementById("volunteersSelect");
+            for(var i = 0; i < volunteers.length; i++){
+            select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
+            }
         }
-      }
 
-      function loadEvents(){
-        var select = document.getElementById("eventsSelect");
-        select.onchange = updateOpportunities;
-        for(var i = 0; i < events.length; i++){
-          select.options[i] = new Option(events[i].event_name, events[i].event_id);
+        function loadEvents(){
+            var select = document.getElementById("eventsSelect");
+            select.onchange = updateOpportunities;
+            for(var i = 0; i < events.length; i++){
+            select.options[i] = new Option(events[i].event_name, events[i].event_id);
+            }
         }
-      }
 
-      function updateOpportunities(){
-        var eventSelect = this;
-        var eventId = this.value;
-        var opportunitySelect = document.getElementById("opportunitiesSelect");
-        opportunitiesSelect.options.length = 0; // clear previous options
-        opportunitiesSelect.options[0] = new Option('Select Opportunity', "{'opportunity_id':'','contribution_value':''}");
-        if (typeof opportunities[eventId] != 'undefined') {
-          for(var i = 0; i < opportunities[eventId].length; i++){
-            var opportunityValue = [opportunities[eventId][i].opportunity_id, opportunities[eventId][i].contribution_value];
-            opportunitiesSelect.options[1+i] = new Option(opportunities[eventId][i].opportunity_name, JSON.stringify(opportunityValue));
-          }
-          opportunitySelect.onchange = updateContributionValue;
+        function updateOpportunities(){
+            var eventSelect = this;
+            var eventId = this.value;
+            var opportunitySelect = document.getElementById("opportunitiesSelect");
+            opportunitiesSelect.options.length = 0; // clear previous options
+            opportunitiesSelect.options[0] = new Option('Select Opportunity', "{'opportunity_id':'','contribution_value':''}");
+            if (typeof opportunities[eventId] != 'undefined') {
+            for(var i = 0; i < opportunities[eventId].length; i++){
+                var opportunityValue = [opportunities[eventId][i].opportunity_id, opportunities[eventId][i].contribution_value];
+                opportunitiesSelect.options[1+i] = new Option(opportunities[eventId][i].opportunity_name, JSON.stringify(opportunityValue));
+            }
+            opportunitySelect.onchange = updateContributionValue;
+            }
         }
-      }
 
-      function updateContributionValue(){
-        var opportunitySelect = document.getElementById('opportunitiesSelect');
-        var contributionValue = document.getElementById('contributionValue');
-        var opportunityValues = JSON.parse(opportunitySelect.value);
-        contributionValue.value = opportunityValues[1];
-        // console.log(opportunityValues[1]);
-      }
+        function updateContributionValue(){
+            var opportunitySelect = document.getElementById('opportunitiesSelect');
+            var contributionValue = document.getElementById('contributionValue');
+            var opportunityValues = JSON.parse(opportunitySelect.value);
+            contributionValue.value = opportunityValues[1];
+            // console.log(opportunityValues[1]);
+        }
     </script>
 </head>
 
@@ -179,8 +183,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             <span class="help-block"><?php echo $opportunity_name_error;?></span>
                         </div>
 
-                        <!-- display for contribution value -->
-                        <!-- NOTE: May want to allow this value to be edited for more flexibility on behalf of the sponsors -->
+                        <!-- display and form for contribution value -->
                         <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
                             <label>Contribution Value</label>
                             <input type="number" min="0" step="any" id='contributionValue' name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
