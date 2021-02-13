@@ -12,6 +12,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 require '../classes/VolunteerEventReader.php';
 $volunteer_id = $_SESSION['volunteer_id'];
 $obj = new VolunteerEventReader($volunteer_id);
+$events = $obj->getEvents();
 ?>
 
 <!DOCTYPE html>
@@ -50,85 +51,42 @@ $obj = new VolunteerEventReader($volunteer_id);
                         <a href="affiliation-create.php" class="btn btn-primary pull-right">Add New Affiliation</a>
                     </div>
 
-                    <?php
-                    require_once "../config.php";
-
-                    $sql =
-                        "SELECT 
-                            event_id,
-                            event_name, 
-                            sponsor_name,
-                            description,
-                            location,
-                            event_start,
-                            event_end,
-                            registration_start, 
-                            registration_end 
-                        FROM events
-                            INNER JOIN affiliations 
-                                ON affiliations.sponsor_id = events.sponsor_id
-                            WHERE registration_start <= CURDATE()
-                            AND registration_end >= CURDATE()
-                            AND affiliations.volunteer_id = '{$_SESSION['volunteer_id']}'
-                        UNION
-                        SELECT 
-                            event_id,
-                            event_name, 
-                            sponsor_name,
-                            description,
-                            location,
-                            event_start,
-                            event_end,
-                            registration_start, 
-                            registration_end  
-                        FROM events
-                        WHERE events.is_public = 1
-                            AND registration_start <= CURDATE()
-                            AND registration_end >= CURDATE()
-                        ORDER BY registration_end";
-                    
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<div>";
-                            echo "<table class='table table-bordered table-responsive'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th>Reg. Deadline</th>";
-                                        echo "<th>Event Name</th>";
-                                        echo "<th>Sponsor Name</th>";
-                                        echo "<th>Description</th>";
-                                        echo "<th>Location</th>";
-                                        echo "<th>Event Duration</th>";
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)) {
-                                    echo "<tr>";
-                                        echo "<td>" . $obj->formatDate($row['registration_end']) . "</td>";
-                                        echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['sponsor_name'] . "</td>";
-                                        echo "<td>" . $obj->formatDescription($row['description']) . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
-                                        echo "<td>" . $obj->formatEventStartToEnd($row['event_start'],$row['event_end']) . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='event-read.php?event_id=". $row['event_id'] ."' title='View Event' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            echo "</div>";
-                            mysqli_free_result($result);
-                        } else {
-                            echo "<p class='lead'><em>No events were found. If you have not yet, click <a href='affiliation-create.php'>here</a> to add an affiliation in order to view Events from a certain Sponsor.</em></p>";
-                        }
-                    } else {
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-                    
-                    mysqli_close($link);
-                    ?>
+                    <?php if($events): ?>
+                    <div>
+                        <table class='table table-bordered table-responsive'>
+                            <thead>
+                                <tr>
+                                    <th>Reg. Deadline</th>
+                                    <th>Event Name</th>
+                                    <th>Sponsor Name</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Event Duration</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($events as $event): ?>
+                                <tr>
+                                    <td><?php echo $obj->formatDate($event['registration_end']); ?></td>
+                                    <td><?php echo $event['event_name']; ?></td>
+                                    <td><?php echo $event['sponsor_name']; ?></td>
+                                    <td><?php echo $obj->formatDescription($event['description']); ?></td>
+                                    <td><?php echo $event['location']; ?></td>
+                                    <td><?php echo $obj->formatEventStartToEnd($event['event_start'],$event['event_end']); ?></td>
+                                    <td>
+                                        <a href='event-read.php?event_id=<?php echo $event['event_id']; ?>' title='View Event' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php else: ?>
+                    <p class='lead'>
+                        <em>No events were found. If you have not yet, click <a href='affiliation-create.php'>here</a> to join a Sponsor in order to view their Events.</em>
+                    </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
