@@ -101,7 +101,7 @@ class VolunteerLogin
 			return $this->last_name;
 		}
 
-		public function getGraduationYear(): string
+		public function getGraduationYear(): ?string
 		{
 			return $this->graduation_year;
 		}
