@@ -212,7 +212,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                     $limit_per_volunteer = $row["limit_per_volunteer"];
                     $contribution_value = $row["contribution_value"];
                     $needs_verification = $row["needs_verification"];
-                    $needs_verification = $row["needs_reminder"];
+                    $needs_reminder = $row["needs_reminder"];
 
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
