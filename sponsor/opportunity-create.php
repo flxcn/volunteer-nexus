@@ -94,7 +94,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $obj->setNeedsVerification($needs_verification);
 
     // Validate needs_reminder
-    $needs_reminder = trim($_POST["needs_reminder"]);
+    $needs_reminder = 0;
     $obj->setNeedsReminder($needs_reminder);
 
     // Check input errors before inserting in database
@@ -246,13 +246,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
 
                         <!--form for needs_reminder-->
-                        <div class="form-group <?php echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
+                        <!-- <div class="form-group <?php // echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
                             <label for="needs_reminder">Needs reminder?</label>
                             <p>Do volunteers need a reminder the day before?</p>
                             <input type="radio" name="needs_reminder" value="1"> Yes
                             <input type="radio" name="needs_reminder" value="0" checked> No
-                            <span class="help-block"><?php echo $needs_reminder_error;?></span>
-                        </div>
+                            <span class="help-block"><?php // echo $needs_reminder_error;?></span>
+                        </div> -->
 
                         <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
                         <input type="hidden" name="sponsor_id" value="<?php echo $sponsor_id;?>">

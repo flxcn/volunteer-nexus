@@ -121,7 +121,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
     $needs_verification = $input_needs_verification;
 
     // Validate needs_reminder
-    $input_needs_reminder = trim($_POST["needs_reminder"]);
+    $input_needs_reminder = 0;
     $needs_reminder = $input_needs_reminder;
 
 
@@ -360,13 +360,13 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"]) && isset($_POST["oppo
                       </div>
 
                       <!--form for needs_reminder-->
-                      <div class="form-group <?php echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
+                      <!-- <div class="form-group <?php // echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
                           <label for="needs_reminder">Needs reminder?</label>
                           <p>Do volunteers need a reminder the day before?</p>
-                          <input type="radio" name="needs_reminder" value="1" <?php if($needs_reminder==1){echo "checked";}?>> Yes
-                          <input type="radio" name="needs_reminder" value="0" <?php if($needs_reminder==0){echo "checked";}?>> No
-                          <span class="help-block"><?php echo $needs_reminder_error;?></span>
-                      </div>
+                          <input type="radio" name="needs_reminder" value="1" <?php // if($needs_reminder==1){echo "checked";}?>> Yes
+                          <input type="radio" name="needs_reminder" value="0" <?php // if($needs_reminder==0){echo "checked";}?>> No
+                          <span class="help-block"><?php // echo $needs_reminder_error;?></span>
+                      </div> -->
 
                         <input type="hidden" name="opportunity_id" value="<?php echo $_GET['opportunity_id']; ?>"/>
                         <input type="hidden" name="event_id" value="<?php echo $_GET['event_id']; ?>"/>
