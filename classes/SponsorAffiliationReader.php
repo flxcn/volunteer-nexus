@@ -58,7 +58,8 @@ class SponsorAffiliationReader {
 			WHERE 
                 (a.sponsor_id = :sponsor_id)
                 AND (v.graduation_year >= :cutoff_date
-                OR v.graduation_year IS NULL)";
+                OR v.graduation_year IS NULL
+                OR v.graduation_year = '0')";
 
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->execute(['sponsor_id' => $this->sponsor_id, 'cutoff_date' => $this->getCutoffDate()]);
@@ -71,35 +72,6 @@ class SponsorAffiliationReader {
 			return $volunteers;
 		}
 	}
-
-	public function getAffiliatedVolunteerDetails($volunteer_id): ?array
-	{
-		$sql =
-		"SELECT
-			engagements.contribution_value AS contribution_value,
-			engagements.status AS status,
-			events.event_name AS event_name,
-			events.description AS event_description,
-			events.contact_name AS contact_name,
-			events.contact_email AS contact_email,
-			events.event_start AS event_start,
-			events.event_end AS event_end,
-			opportunities.opportunity_name AS opportunity_name
-		FROM
-			engagements
-			INNER JOIN
-				events
-				ON engagements.event_id = events.event_id
-			INNER JOIN
-				opportunities
-				ON engagements.opportunity_id = opportunities.opportunity_id
-		WHERE
-			engagements.volunteer_id = :volunteer_id
-			AND engagements.sponsor_id = :sponsor_id";
-	}
-
-
-
 
 	public function getCurrentSemesterDateRange(): array {
 
