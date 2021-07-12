@@ -5,7 +5,14 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     header("location: login.php");
     exit;
 }
+
+require "../classes/SponsorAffiliationReader.php";
+
+$obj = new SponsorAffiliationReader($_SESSION["sponsor_id"]);
+$engagements = $obj->getEngagementsForAffiliatedVolunteer($_GET['volunteer_id']);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +21,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     <title>This Volunteer's Contributions</title>
     <!--Load required libraries-->
     <?php include '../head.php'?>
-
     <style type="text/css">
         .wrapper{
             margin: 0 auto;
@@ -30,12 +36,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     </script>
 </head>
 
-
-
-
-
 <body>
-  <?php $thisPage='Affiliations'; include 'navbar.php';?>
+    <?php $thisPage='Affiliations'; include 'navbar.php';?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -45,85 +47,63 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                         <a href='affiliations.php' class="btn btn-primary pull-right">Back</a>
                     </div>
 
-                    <?php
-                    require_once "../config.php";
+                    <?php if ($engagements): ?>
+                        <table class='table table-bordered table-striped' id='engagements'>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Event Description</th>
+                                    <th>Opportunity Name</th>
+                                    <th>Contact Info</th>
+                                    <th>Event Duration</th>
+                                    <th>Value</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                    $sql =
-                    "SELECT
-                      engagements.engagement_id AS engagement_id,
-                      engagements.contribution_value AS contribution_value,
-                      engagements.status AS status,
-                      events.event_name AS event_name,
-                      events.description AS event_description,
-                      events.contact_name AS contact_name,
-                      events.contact_email AS contact_email,
-                      events.event_start AS event_start,
-                      events.event_end AS event_end,
-                      opportunities.opportunity_name AS opportunity_name,
-                      opportunities.opportunity_id AS opportunity_id
-                    FROM
-                      engagements
-                      INNER JOIN
-                        events
-                        ON engagements.event_id = events.event_id
-                      INNER JOIN
-                        opportunities
-                        ON engagements.opportunity_id = opportunities.opportunity_id
-                    WHERE
-                      engagements.volunteer_id = '{$_GET['volunteer_id']}'
-                      AND engagements.sponsor_id = '{$_SESSION['sponsor_id']}'";
-
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th>Event Name</th>";
-                                        echo "<th>Event Description</th>";
-                                        echo "<th>Opportunity Name</th>";
-                                        echo "<th>Contact Info</th>";
-                                        echo "<th>Event Duration</th>";
-                                        echo "<th>Value</th>";
-                                        echo "<th>Status</th>";
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['event_name'] . "</td>";
-                                        echo "<td>" . $row['event_description'] . "</td>";
-                                        echo "<td>" . $row['opportunity_name'] . "</td>";
-                                        echo "<td>" . $row['contact_name'] . "<br>" . $row['contact_email'] . "</td>";
-                                        echo "<td>" . $row['event_start'] . " to " . $row['event_end'] . "</td>";
-                                        echo "<td>" . $row['contribution_value'] . "</td>";
-                                        echo "<td>";
-                                          if(strcmp($row['status'],'1') == 0)
+                            <tbody>
+                            <?php foreach($engagements as $engagement): ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $engagement['event_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['event_description']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['opportunity_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['contact_name'] . "<br>" . $engagement['contact_email']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['event_start'] . " to " . $engagement['event_end']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['contribution_value']; ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if (strcmp($engagement['status'],'1') == 0):
                                             echo "Confirmed";
-                                          elseif (strcmp($row['status'],'0') == 0) {
+                                        elseif (strcmp($engagement['status'],'0') == 0):
                                             echo "Denied";
-                                          }
-                                          else {
+                                        else:
                                             echo "Pending";
-                                          }
-                                        echo "</td>";
-                                        echo "<td>";
-                                            echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."&engagement_id=". $row['engagement_id'] ."' title='Delete Engagement' data-toggle='tooltip' style='color:red' class='btn btn-link' ><span class='glyphicon glyphicon-trash'></span> Delete</a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>No past engagements were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-
-                    mysqli_close($link);
-                    ?>
+                                        endif;
+                                        ?>
+                                    </td>   
+                                    <td>
+                                        <a href=<?php echo "engagement-delete.php?opportunity_id=".$engagement['opportunity_id']."&engagement_id=". $engagement['engagement_id']; ?> title='Delete Engagement' data-toggle='tooltip' style='color:red' class='btn btn-link' ><span class='glyphicon glyphicon-trash'></span> Delete</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p class='lead'><em>No past engagements were found.</em></p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
