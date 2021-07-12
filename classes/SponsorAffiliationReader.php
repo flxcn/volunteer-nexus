@@ -73,6 +73,44 @@ class SponsorAffiliationReader {
 		}
 	}
 
+    public function getEngagementsForAffiliatedVolunteer(int $volunteer_id) {
+        $sql =
+            "SELECT
+                engagements.engagement_id AS engagement_id,
+                engagements.contribution_value AS contribution_value,
+                engagements.status AS status,
+                events.event_name AS event_name,
+                events.description AS event_description,
+                events.contact_name AS contact_name,
+                events.contact_email AS contact_email,
+                events.event_start AS event_start,
+                events.event_end AS event_end,
+                opportunities.opportunity_name AS opportunity_name,
+                opportunities.opportunity_id AS opportunity_id
+            FROM
+                engagements
+                INNER JOIN
+                events
+                ON engagements.event_id = events.event_id
+                INNER JOIN
+                opportunities
+                ON engagements.opportunity_id = opportunities.opportunity_id
+            WHERE
+                engagements.volunteer_id = :volunteer_id
+                AND engagements.sponsor_id = :sponsor_id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['sponsor_id' => $this->sponsor_id, 'volunteer_id' => $volunteer_id]);
+        $engagements = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if(!$engagements) {
+			return null;
+		}
+		else {
+			return $engagements;
+		}
+    }
+
 	public function getCurrentSemesterDateRange(): array {
 
         $start_date = date("Y-m-d");
