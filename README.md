@@ -19,7 +19,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/flxcn/volunteer-nexus">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="assets/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">volunteer-nexus</h3>
@@ -212,5 +212,5 @@ Project Link: [https://github.com/flxcn/volunteer-nexus](https://github.com/flxc
 [license-url]: https://github.com/flxcn/volunteer-nexus/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/felixchen1a/
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: assets/images/screenshot.png
 
