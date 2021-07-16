@@ -235,8 +235,8 @@ $jsonOpportunities = $populatorObj->getOpportunities();
           <hr>
 
           <script type="module">
-              import QrScanner from "../qr-scanner/qr-scanner.min.js";
-              QrScanner.WORKER_PATH = '../qr-scanner/qr-scanner-worker.min.js';
+              import QrScanner from "../assets/qr-scanner/qr-scanner.min.js";
+              QrScanner.WORKER_PATH = '../assets/qr-scanner/qr-scanner-worker.min.js';
 
               const video = document.getElementById('qr-video');
               const camHasCamera = document.getElementById('cam-has-camera');
