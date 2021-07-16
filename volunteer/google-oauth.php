@@ -16,59 +16,55 @@ $client->addScope("profile");
 
 // authenticate code from Google OAuth Flow
 if (isset($_GET['code'])) {
-  $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-  $client->setAccessToken($token['access_token']);
+    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+    $client->setAccessToken($token['access_token']);
 
-  // get profile info
-  $google_oauth = new Google_Service_Oauth2($client);
-  $google_account_info = $google_oauth->userinfo->get();
-  $username =  $google_account_info->email;
-  $first_name =  $google_account_info->given_name;
-  $last_name =  $google_account_info->family_name;
+    // get profile info
+    $google_oauth = new Google_Service_Oauth2($client);
+    $google_account_info = $google_oauth->userinfo->get();
+    $username =  $google_account_info->email;
+    $first_name =  $google_account_info->given_name;
+    $last_name =  $google_account_info->family_name;
 
-  // now you can use this profile info to create account in your website and make user logged in.
-  // Initialize User class
-  require "../classes/VolunteerGoogleAuthentication.php";
-  $obj = new VolunteerGoogleAuthentication();
+    // now you can use this profile info to create account in your website and make user logged in.
+    // Initialize User class
+    require "../classes/VolunteerGoogleAuthentication.php";
+    $obj = new VolunteerGoogleAuthentication();
 
-  // Getting user profile info
+    // Getting user profile info
 	$obj->setUsername($username);
 	$obj->setFirstName($first_name);
 	$obj->setLastName($last_name);
 
-  if($obj->authenticate()) {
-		// Start a new session
-		if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+    if($obj->authenticate()) {
+        // Start a new session
+        if(session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-		// Store data in session variables
-		$_SESSION["volunteer_loggedin"] = true;
-		$_SESSION["volunteer_id"] = $obj->getVolunteerId();
-		$_SESSOPM["username"] = $obj->getUsername();
-		$_SESSION["first_name"] = $obj->getFirstName();
-		$_SESSION["last_name"] = $obj->getLastName();
-		//$_SESSION["graduation_year"] = $obj->getGraduationYear();
+        // Store data in session variables
+        $_SESSION["volunteer_loggedin"] = true;
+        $_SESSION["volunteer_id"] = $obj->getVolunteerId();
+        $_SESSOPM["username"] = $obj->getUsername();
+        $_SESSION["first_name"] = $obj->getFirstName();
+        $_SESSION["last_name"] = $obj->getLastName();
+        //$_SESSION["graduation_year"] = $obj->getGraduationYear();
 
-		// Redirect user to dashboard
-		header("location: dashboard.php");
-	}
+        // Redirect user to dashboard
+        header("location: dashboard.php");
+    }
 
 } else {
-  // echo
-  //   "<!-- Compiled and minified CSS -->
-  //   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css'>
-  //   <!-- Compiled and minified JavaScript -->
-  //   <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js'></script>";
 
-  echo
-    "<br>
-    <div class='col s12 m6 offset-m3 center-align'>
-      <a class='oauth-container btn darken-4 white black-text' href='".$client->createAuthUrl() ."' style='text-transform:none; background-color: white; border-color: black;'>
-        <div class='left'>
-          <img width='20px' style='margin-top:7px; margin-right:8px' alt='Google sign-in' src='../images/google-g-logo.png' />
-        </div>
-        Login with Google
-      </a>
-    </div>
-    <br>";
+    $auth_url = $client->createAuthUrl();
+
+    // echo "<br>
+    //     <div class='col s12 m6 offset-m3 center-align'>
+    //     <a class='oauth-container btn darken-4 white black-text' href='".$auth_url ."' style='text-transform:none; background-color: white; border-color: black;'>
+    //         <div class='left'>
+    //         <img width='20px' style='margin-top:7px; margin-right:8px' alt='Google sign-in' src='../assets/images/google-g-logo.png' />
+    //         </div>
+    //         Login with Google
+    //     </a>
+    //     </div>
+    //     <br>";
 }
 ?>
