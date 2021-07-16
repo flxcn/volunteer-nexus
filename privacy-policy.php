@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- (START) For Local -->
-  <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
-  <script src="jQuery/jquery-3.4.1.min.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
+  <script src="assets/jQuery/jquery-3.4.1.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   <!-- (END) For Local -->
 
   <style type="text/css">
@@ -27,7 +27,7 @@
 <body>
   <div class="wrapper">
     <div class="jumbotron">
-      <img src="images/logo.png" alt="VolunteerNexus" style="width:80px;height:80px;"></img>
+      <img src="assets/images/logo.png" alt="VolunteerNexus" style="width:80px;height:80px;"></img>
       <h1><b>VolunteerNexus</b></h1>
     </div>
 
