@@ -22,7 +22,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     font-weight: bold;
   }
   </style>
-  <script src="../EasyQRCodeJS/easy.qrcode.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../assets/EasyQRCodeJS/easy.qrcode.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
   <?php $thisPage='Dashboard'; include 'navbar.php';?>
@@ -84,7 +84,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     quietZoneColor: "#ffffff",
 
 		// Logo
-		logo: "../images/logo.png",
+		logo: "../assets/images/logo.png",
 		logoWidth: 80,
 		logoHeight: 80,
 		logoBackgroundColor: '#ffffff', // Invalid when `logBgTransparent` is true; default is '#ffffff'
