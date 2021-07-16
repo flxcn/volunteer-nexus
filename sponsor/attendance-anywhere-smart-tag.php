@@ -195,7 +195,7 @@ $jsonOpportunities = $populatorObj->getOpportunities();
   }
   </script>
 
-  <script src="../quaggaJS/quagga.min.js"></script>
+  <script src="../assets/quaggaJS/quagga.min.js"></script>
   <script>
   Quagga.init({
     inputStream : {
@@ -273,7 +273,7 @@ $jsonOpportunities = $populatorObj->getOpportunities();
           <input type="btn" id="scannerToggler" class="btn btn-primary" value="Finish Scanning" style="display:none; text-align:center">
 
           <!-- Include the image-diff library -->
-          <script src="../quaggaJS/quagga.min.js"></script>
+          <script src="../assets/quaggaJS/quagga.min.js"></script>
 
           <script>
           var _scannerIsRunning = false;
