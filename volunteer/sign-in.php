@@ -94,7 +94,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <button class="w-100 mt-0 btn btn-lg btn-primary" type="submit">Sign in</button>
 
                 <div class="mt-3">
-                    Don't have an account? <a href="sign-up.php">Sign up here.</a>
+                    Don't have an account? <a href="register.php">Sign up here.</a>
                 </div>
 
                 <p class="mt-5 mb-3 text-muted text-white">&copy; 2019–2021 Volunteer Nexus, Inc.</p>
