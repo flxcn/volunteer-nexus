@@ -32,7 +32,7 @@
 
 
 		</script>
-		<script src="../quaggaJS/quagga.min.js"></script>
+		<script src="../assets/quaggaJS/quagga.min.js"></script>
 		<script>
 		Quagga.init({
 		    inputStream : {
@@ -69,7 +69,7 @@
     <input type="button" id="btn" value="Start/Stop the scanner" />
 
     <!-- Include the image-diff library -->
-    <script src="../quaggaJS/quagga.min.js"></script>
+    <script src="../assets/quaggaJS/quagga.min.js"></script>
 
     <script>
         var _scannerIsRunning = false;
