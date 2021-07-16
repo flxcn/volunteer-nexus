@@ -4,11 +4,11 @@
 
 
 <!-- (START) For Local -->
-<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
+<link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
 
-<script src="../jQuery/jquery-3.4.1.min.js"></script>
+<script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 <!-- (END) For Local -->
 
 <style type="text/css">
