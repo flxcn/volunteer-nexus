@@ -1,66 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <title>VolunteerNexus</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="VolunteerNexus is an online platform for finding, joining, and tracking relevant volunteer opportunities in your community.">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="VolunteerNexus offers a centralized platform for students to discover, join, and track volunteer opportunities in their community.">
+        <meta name="author" content="Felix Chen">
+        <link rel="icon" type="image/png" href="assets/images/volunteernexus-logo-1.png">
+    
+        <title>VolunteerNexus</title>
 
-    <!-- (START) For Local -->
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="all">
-    <script src="jQuery/jquery-3.4.1.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <!-- (END) For Local -->
-
-    <style type="text/css">
-        .jumbotron
-        {
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="wrapper">
-        <div class="jumbotron">
-        <img src="images/logo.png" alt="VolunteerNexus" style="width:80px;height:80px;"></img>
-        <h1><b>VolunteerNexus</b></h1>
-        <p>
-            <span>
-                <a href="volunteer/login.php" class="btn btn-success">I'm a Volunteer</a>
-                <a href="sponsor/login.php" class="btn btn-success">I'm a Sponsor</a>
-            </span>
-        </p>
-        </div>
-
-        <div class="container">
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">VolunteerNexus 2.0 Launch!</div>
-            <div class="panel-body">
-                We are excited to announce the next major update of the VolunteerNexus platform. 
-            </div>
-            <div class="panel-footer">May 12th, 2021</div>
-        </div>
+        <!-- Bootstrap core CSS -->
+        <link href="assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
         
-        <div class="page-header">
-            <h2>About</h2>
-        </div>
-        <p><i>VolunteerNexus</i> provides a unified platform to connect students with service opportunities.</p>
-        <p>Currently, <i>VolunteerNexus</i> is available to use for <b>all Westlake students</b>.</p>
+        <!-- Custom styles for this template -->
+        <link href="assets/css/index.css" rel="stylesheet">
+    </head>
 
-        <div class="page-header">
-            <h2>Contact</h2>
-        </div>
-        <p>If you have any questions, please reach out to Felix at <a href="mailto:felix@volunteernexus.com">felix@volunteernexus.com</a></p>
+    <body class="text-center">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <header class="masthead mb-auto">
+                <div class="inner">
+                    <h3 class="masthead-brand mb-2"><img class="border rounded border-white" src="assets/images/volunteernexus-logo-1.png" width="50px"></h3>
+                    <nav class="nav nav-masthead justify-content-center">
+                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link" href="about.php">About</a>
+                        <a class="nav-link" href="sponsor/login.php">For Sponsors</a>
+                         <a class="nav-link" href="https://github.com/flxcn/volunteer-nexus/wiki">Wiki</a>
+                        <a class="nav-link" href="https://github.com/flxcn/volunteer-nexus/wiki/Privacy-Policy.md">Privacy</a>
+                    </nav>
+                </div>
+            </header>
 
-        <div class="page-header">
-            <h2>Privacy Policy</h2>
-        </div>
-            <p>Because VolunteerNexus utilizes Google's sign-in API in order to provide a more seamless user experience, we've created a privacy policy to communicate what we do with your data. You can check it out <a href="privacy-policy.php">here</a>.</p>
-        </div>
-    </div>
-</body>
+            <main role="main" class="inner cover mb-3">
+                <h1 class="cover-heading mt-5">VolunteerNexus 2.0</h1>
+                <p class="lead">Join us to find service opportunities, interact with organizations, and track your progress over time! Now available to all Westlake students. </p>
+                <p class="lead">
+                    <a href="volunteer/sign-in.php" class="btn btn-lg btn-success">Access the Nexus!</a>
+                </p>
+            </main>
 
+            <footer class="mastfoot mt-auto">
+                <div class="inner">
+                <p>Built by <a href="https://felixchen.com" target="_blank">Felix Chen</a>.</p>
+                </div>
+            </footer>
+        </div>
+    </body>
 </html>
