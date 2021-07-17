@@ -1,41 +1,52 @@
 <?php
 require_once 'DatabaseConnection.php';
 
-class SponsorRegistration
+class VolunteerRegistration
 {
     protected $pdo = null;
-    private $sponsor_name;
+    private $first_name;
+    private $last_name;
     private $username;
     private $password;
     private $confirm_password;
-    private $contribution_type;
-    private $advisors;
+    private $graduation_year;
 
     public function __construct()
     {
-      $this->pdo = DatabaseConnection::instance();
-      $this->sponsor_name = "";
+        $this->pdo = DatabaseConnection::instance();
+        $this->first_name = "";
+        $this->last_name = "";
         $this->username = "";
         $this->password = "";
         $this->confirm_password = "";
-        $this->contribution_type = "";
-        $this->advisors = array();
+        $this->graduation_year = "";
     }
 
-    public function setSponsorName(string $sponsor_name): string
+    public function setFirstName(string $first_name): string
     {
-        if(empty($sponsor_name)) {
-            return "Please enter the name of your sponsoring organization.";
+        if(empty($first_name)) {
+            return "Please enter your first name.";
         }
         else {
-            $this->sponsor_name = $sponsor_name;
+            $this->first_name = $first_name;
+            return "";
+        }
+    }
+
+    public function setLastName(string $last_name): string
+    {
+        if(empty($last_name)) {
+            return "Please enter your first name.";
+        }
+        else {
+            $this->last_name = $last_name;
             return "";
         }
     }
 
     public function setUsername(string $username): string
     {
-        $stmt = $this->pdo->prepare('SELECT count(*) FROM sponsors WHERE username = :username');
+        $stmt = $this->pdo->prepare('SELECT count(*) FROM volunteers WHERE username = :username');
         $stmt->execute(['username' => strtolower($username)]);
         $same_usernames = $stmt->fetchColumn();
         if($same_usernames > 0){
@@ -78,46 +89,33 @@ class SponsorRegistration
         return "";
     }
 
-    public function setContributionType(string $contribution_type): string
+    public function setGraduationYear(string $graduation_year): string
     {
-        if(empty($contribution_type)) {
-            return "Please enter a contribution type.";
+        if(empty($graduation_year)) {
+            return "Please enter a graduation year.";
         }
         else {
-            $this->contribution_type = $contribution_type;
+            $this->graduation_year = $graduation_year;
             return "";
         }
     }
 
-    public function addAdvisor(string $advisor_name, string $advisor_email, string $advisor_phone)
+    public function addVolunteer(): bool
     {
-        $advisor = array("name" => $advisor_name, "email" => $advisor_email, "phone" => $advisor_phone);
-        array_push($this->advisors, $advisor);
-    }
+        $sql = 
+            "INSERT INTO volunteers (first_name, last_name, username, password, graduation_year)
+            VALUES (:first_name, :last_name, :username, :password, :graduation_year)";
+        $stmt = $this->pdo->prepare($sql);
+        $status = $stmt->execute(
+            [
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'username' => $this->username,
+                'password' => password_hash($this->password, PASSWORD_DEFAULT),
+                'graduation_year' => $this->graduation_year
+            ]);
 
-    public function addSponsor(): bool
-    {
-			$sql = "INSERT INTO sponsors (sponsor_name, username, password, contribution_type, advisor1_name, advisor1_email, advisor1_phone, advisor2_name, advisor2_email, advisor2_phone, advisor3_name, advisor3_email, advisor3_phone)
-				VALUES (:sponsor_name, :username, :password, :contribution_type, :advisor1_name, :advisor1_email, :advisor1_phone, :advisor2_name, :advisor2_email, :advisor2_phone, :advisor3_name, :advisor3_email, :advisor3_phone)";
-			$stmt = $this->pdo->prepare($sql);
-			$status = $stmt->execute(
-				[
-					'sponsor_name' => $this->sponsor_name,
-					'username' => $this->username,
-					'password' => password_hash($this->password, PASSWORD_DEFAULT),
-					'contribution_type' => $this->contribution_type,
-					'advisor1_name' => $this->advisors[0]["name"],
-					'advisor1_email' => $this->advisors[0]["email"],
-					'advisor1_phone' => $this->advisors[0]["phone"],
-					'advisor2_name' => $this->advisors[1]["name"],
-					'advisor2_email' => $this->advisors[1]["email"],
-					'advisor2_phone' => $this->advisors[1]["phone"],
-					'advisor3_name' => $this->advisors[2]["name"],
-					'advisor3_email' => $this->advisors[2]["email"],
-					'advisor3_phone' => $this->advisors[2]["phone"],
-				]);
-
-      return $status;
+        return $status;
     }
 }
 ?>
