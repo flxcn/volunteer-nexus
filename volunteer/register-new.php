@@ -1,3 +1,64 @@
+<?php
+
+session_start();
+
+if(isset($_SESSION["delegate_signed_in"]) && $_SESSION["delegate_signed_in"] === true){
+    header("location: dashboard.php");
+    exit;
+}
+
+require_once "../classes/VolunteerRegistration.php";
+
+// Define variables and initialize with empty values
+$username = "";
+$password = "";
+$confirm_password = "";
+$graduation_year = "";
+$first_name = "";
+$last_name = "";
+
+$error = "";
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $obj = new VolunteerRegistration();
+
+    // Set first_name
+    $first_name = trim($_POST["first_name"]);
+    $error .= $obj->setFirstName($first_name);
+
+    // Set last_name
+    $last_name = trim($_POST["last_name"]);
+    $error .= $obj->setLastName($last_name);
+
+    // Set graduation_year
+    $graduation_year = trim($_POST["graduation_year"]);
+    $error .= $obj->setGraduationYear($graduation_year);
+
+    // Set username
+    $username = trim($_POST["username"]);
+    $error .= $obj->setUsername($username);
+
+    // Set password
+    $password = trim($_POST["password"]);
+    $error .= $obj->setPassword($password);
+
+    // Set confirm_password
+    $confirm_password = trim($_POST["confirm_password"]);
+    $error .= $obj->setConfirmPassword($confirm_password);
+
+    if(empty($error))
+    {
+        if($obj->addVolunteer()) {
+        header("location: sign-in.php");
+        }
+        else {
+            echo "Something went wrong. Please try again later.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,14 +99,14 @@
                             <label for="first_name">First name</label>
                             <input type="text" class="form-control" id="first_name" name="first_name" placeholder="" value="" required="">
                             <div class="invalid-feedback">
-                            Valid first name is required.
+                                Valid first name is required.
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="last_name">Last name</label>
                             <input type="text" class="form-control" id="last_name" name="last_name" placeholder="" value="" required="">
                             <div class="invalid-feedback">
-                            Valid last name is required.
+                                Valid last name is required.
                             </div>
                         </div>
                     </div>
@@ -58,8 +119,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="committee_id">Graduation Year</label>
-                        <select class="form-select d-block w-100" id="committee_id" name="committee_id" required="">
+                        <label for="graduation_year">Graduation Year</label>
+                        <select class="form-select d-block w-100" id="graduation_year" name="graduation_year" required="">
                             <option value="">Choose...</option>
                             <option value="2022">2022</option>
                             <option value="2023">2023</option>
@@ -68,7 +129,7 @@
                             <option value="0">N/A</option> 
                         </select>
                         <div class="invalid-feedback">
-                        Please select a committee.
+                            Please select a graduation year.
                         </div> 
                     </div>
 
@@ -102,23 +163,15 @@
 
                     <hr class="mb-4">
 
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Register!</button>
+                    <button class="w-100 btn btn-primary btn-lg btn-block" type="submit">Create your account!</button>
                 </form>
             </div>
         </div>
 
         <footer class="my-5 pt-5 text-muted text-center text-small">
             <p class="mb-1">&copy; 2021 Felix Chen</p>
-            <!-- <ul class="list-inline">
-            <li class="list-inline-item"><a href="https://getbootstrap.com/docs/4.6/examples/checkout/#">Privacy</a></li>
-            <li class="list-inline-item"><a href="https://getbootstrap.com/docs/4.6/examples/checkout/#">Terms</a></li>
-            <li class="list-inline-item"><a href="https://getbootstrap.com/docs/4.6/examples/checkout/#">Support</a></li>
-            </ul> -->
         </footer>
     </div>
-
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
 
     <!-- Custom js for this page -->
     <script src="../assets/js/register.js"></script>
