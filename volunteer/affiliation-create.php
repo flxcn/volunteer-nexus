@@ -23,23 +23,23 @@ $jsonSponsors = $obj->getSponsors();
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-  // Set sponsor name
-  $sponsor_id = trim($_POST["sponsor_id"]);
-  $sponsor_id_error = $obj->setSponsorId($sponsor_id);
+    // Set sponsor name
+    $sponsor_id = trim($_POST["sponsor_id"]);
+    $sponsor_id_error = $obj->setSponsorId($sponsor_id);
 
-  if(empty($volunteer_id_error) && empty($sponsor_id_error)) {
-    if($obj->checkAffiliationExists()) {
-      $error .= "You've already joined this Sponsor.";
+    if(empty($volunteer_id_error) && empty($sponsor_id_error)) {
+        if($obj->checkAffiliationExists()) {
+            $error .= "You've already joined this Sponsor.";
+        }
+        else {
+            if($obj->addAffiliation()) {
+            header("location: dashboard.php");
+            }
+            else {
+                echo "Error!";
+            }
+        }
     }
-    else {
-      if($obj->addAffiliation()) {
-        header("location: dashboard.php");
-      }
-      else {
-        echo "Error!";
-      }
-    }
-  }
 }
 ?>
 
