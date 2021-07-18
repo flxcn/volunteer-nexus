@@ -74,7 +74,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../assets/css/register.css" rel="stylesheet">
+    <link href="../assets/css/form.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -83,7 +83,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
             <h2>Volunteer Registration</h2>
-            <p class="lead">Fill out this form to create your <i><b>VolunteerNexus</b></i> account.</p>
+            <p class="lead">Fill out this form to create your <i><b>VolunteerNexus</b></i> account.<br>Already have an account? <a href="sign-in.php">Sign in here</a>.</p>
         </div>
 
         <div class="text-danger text-center"><?php echo $error; ?></div>
@@ -92,7 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="col-md-12 d-flex justify-content-center order-md-1">
                 <form class="needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate="" oninput='confirm_password.setCustomValidity(confirm_password.value != password.value ? "Passwords do not match." : "")'>
                 
-                <h4 class="mb-3">Volunteer details</h4>
+                    <h4 class="mb-3">Volunteer details</h4>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -174,6 +174,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <!-- Custom js for this page -->
-    <script src="../assets/js/register.js"></script>
+    <script src="../assets/js/form.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>
+        $("body").on("submit", "form", function() {
+            $(this).submit(function() {
+                return false;
+            });
+            return true;
+        });
+    </script>
 </body>
 </html>
