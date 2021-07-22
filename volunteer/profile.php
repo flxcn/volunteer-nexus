@@ -58,10 +58,10 @@ if(isset($_SESSION["volunteer_id"])) {
                                 <p class="card-text"><?php echo $obj->getUsername(); ?></p>
                                 <p class="card-text"><small class="text-muted">Member since <?php echo $obj->getTimeCreated(); ?></small></p>
                                 <hr>
-                                <p class="card-text"><?php echo "Class of " . $obj->getGraduationYear(); ?></p>
+                                <p class="card-text"><?php echo $obj->getGraduationYear(); ?></p>
                                 <p class="card-text">Student ID: <?php echo $obj->getStudentId(); ?></p>
                                 <div class="btn-group text-center mb-2 mb-md-0">
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Update profile</a>  
+                                    <a href="profile-update.php" class="btn btn-sm btn-outline-primary">Update profile</a>  
                                     <a href="reset.php" class="btn btn-sm btn-outline-primary">Reset password</a>  
                                 </div>
                             </div>
