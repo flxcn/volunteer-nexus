@@ -93,7 +93,6 @@ $engagements = $obj->getEngagementsForAffiliatedSponsor($_GET['sponsor_id']);
                 <?php else: ?>
                 <p class='lead'><em>No past engagements were found.</em></p>
                 <?php endif; ?>
-
             </main>
         </div>
     </div>
@@ -103,12 +102,12 @@ $engagements = $obj->getEngagementsForAffiliatedSponsor($_GET['sponsor_id']);
     <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        (function () {
-        'use strict'
+    (function () {
+    'use strict'
 
-        feather.replace({ 'aria-hidden': 'true' })
+    feather.replace({ 'aria-hidden': 'true' })
 
-        })()
-        </script>
+    })()
+    </script>
 </body>
 <html>
