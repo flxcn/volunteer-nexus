@@ -29,7 +29,7 @@ $engagements = $obj->getEngagementsForAffiliatedSponsor($_GET['sponsor_id']);
 </head>
 
 <body>
-    <?php include "navbar-new.php"; ?>
+    <?php include "navbar.php"; ?>
 
     <div class="container-fluid">
         <div class="row">
@@ -94,6 +94,8 @@ $engagements = $obj->getEngagementsForAffiliatedSponsor($_GET['sponsor_id']);
                 <p class='lead'><em>No past engagements were found.</em></p>
                 <?php endif; ?>
             </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
 
