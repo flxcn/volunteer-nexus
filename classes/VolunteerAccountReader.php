@@ -35,7 +35,7 @@ class VolunteerAccountReader
                 last_name,
                 graduation_year,
                 student_id,
-								time_created
+				time_created
             FROM
                 volunteers
             WHERE
@@ -51,7 +51,7 @@ class VolunteerAccountReader
             $this->last_name = $volunteer["last_name"];
             $this->graduation_year = $volunteer["graduation_year"];
             $this->student_id = $volunteer["student_id"];
-						$this->time_created = $volunteer["time_created"];
+			$this->time_created = $volunteer["time_created"];
 
             return true;
         } else {
@@ -92,9 +92,9 @@ class VolunteerAccountReader
     public function getGraduationYear(): string
     {
         if($this->graduation_year) {
-            return $this->graduation_year;
+            return "Class of " . $this->graduation_year;
         } else {
-            return "N/A";
+            return "Graduation Year: N/A";
         }
     }
 
