@@ -24,6 +24,39 @@ class VolunteerAccountUpdate
         $this->graduation_year = "";
     }
 
+    public function getVolunteerDetails(): bool
+    {
+        $sql =
+            "SELECT
+                username,
+                first_name,
+                last_name,
+                graduation_year,
+                student_id,
+				time_created
+            FROM
+                volunteers
+            WHERE
+                volunteer_id = :volunteer_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['volunteer_id' => $this->volunteer_id]);
+        $volunteer = $stmt->fetch();
+
+        if ($volunteer)
+        {
+            $this->username = $volunteer["username"];
+            $this->first_name = $volunteer["first_name"];
+            $this->last_name = $volunteer["last_name"];
+            $this->graduation_year = $volunteer["graduation_year"];
+            $this->student_id = $volunteer["student_id"];
+			$this->time_created = $volunteer["time_created"];
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function setGraduationYear(string $graduation_year): string
     {
         if(empty($graduation_year)) {
@@ -31,6 +64,18 @@ class VolunteerAccountUpdate
         }
         else {
             $this->graduation_year = $graduation_year;
+            return "";
+        }
+    }
+
+    public function setStudentId(string $student_id): string
+    {
+        if(empty($student_id)) {
+            $this->student_id = null;
+            return "";
+        }
+        else {
+            $this->student_id = $student_id;
             return "";
         }
     }
@@ -114,6 +159,11 @@ class VolunteerAccountUpdate
     public function getVolunteerId(): int
     {
         return $this->volunteer_id;
+    }
+
+    public function getStudentId(): ?string
+    {
+        return $this->student_id;
     }
 
     public function getGraduationYear(): string
