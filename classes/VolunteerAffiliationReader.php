@@ -181,20 +181,20 @@ class VolunteerAffiliationReader {
 	{
 		$sql =
 			"SELECT
-				events.event_name AS event_name,
-				events.description AS event_description,
-				o.opportunity_name AS opportunity_name
-				events.contact_name AS contact_name,
-				events.contact_email AS contact_email,
-				events.event_start AS event_start,
-				events.event_end AS event_end,
+				e2.event_name AS event_name,
+				e2.description AS event_description,
+				o.opportunity_name AS opportunity_name,
+				e2.contact_name AS contact_name,
+				e2.contact_email AS contact_email,
+				e2.event_start AS event_start,
+				e2.event_end AS event_end,
 				e1.contribution_value AS contribution_value,
-				e1.status AS status,
+				e1.status AS status
 			FROM
 				engagements AS e1
 				INNER JOIN
 					events AS e2
-					ON e1.event_id = events.event_id
+					ON e1.event_id = e2.event_id
 				INNER JOIN
 					opportunities AS o
 					ON e1.opportunity_id = o.opportunity_id
@@ -213,5 +213,26 @@ class VolunteerAffiliationReader {
 			return $engagements;
 		}
 	}
+
+    public function getAffiliatedSponsorName($sponsor_id) {
+        $sql =
+            "SELECT
+                sponsor_name
+            FROM
+                sponsors
+            WHERE 
+                sponsor_id = :sponsor_id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['sponsor_id' => $sponsor_id]);
+        $sponsor_name = $stmt->fetchColumn();
+
+        if($sponsor_name) {
+            return " for " . $sponsor_name;
+        }
+        else {
+            return "";
+        }
+    }
 }
 ?>
