@@ -35,11 +35,10 @@ $sponsors = $obj->getAffiliatedSponsors();
                                         <?php echo $sponsor['total_contribution_value']; ?>
                                     </td>
                                     <td>
-                                        <!-- <div class="btn-group"> -->
-                                        <a href=<?php echo "affiliation-read.php?sponsor_id=".$sponsor['sponsor_id']; ?> class='btn btn-sm btn-primary' >View</a>
-                                        
-                                        <!-- <a href=<?php // echo "affiliation-delete.php?affiliation_id=". $sponsor['affiliation_id']; ?> class='btn btn-sm btn-danger'><span data-feather="trash"></span> Delete</a> -->
-                                        <!-- </div> -->
+                                        <div class="btn-group">
+                                            <a href=<?php echo "affiliation-read.php?sponsor_id=".$sponsor['sponsor_id']; ?> class='btn btn-sm btn-primary' >View</a>
+                                            <a href=<?php echo "affiliation-delete.php?affiliation_id=". $sponsor['affiliation_id']; ?> class='btn btn-sm btn-danger'>Leave</a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
