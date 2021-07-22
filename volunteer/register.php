@@ -2,7 +2,7 @@
 
 session_start();
 
-if(isset($_SESSION["delegate_signed_in"]) && $_SESSION["delegate_signed_in"] === true){
+if(isset($_SESSION["volunteer_loggedin"]) && $_SESSION["volunteer_loggedin"] === true){
     header("location: dashboard.php");
     exit;
 }
