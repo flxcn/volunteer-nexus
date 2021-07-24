@@ -37,40 +37,34 @@ $events = $obj->getEvents();
         <div class="row">
             <main class="ms-sm-auto px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">All Events</h1>
+                    <h1 class="h2">Discover Events!</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print(); return false;"><span data-feather="printer"></span> Print</button>
                         </div>
                     </div>
                 </div>
 
                 <?php if($events): ?>
                     <div class="table-responsive">
-                        <table class='table table-bordered table-responsive'>
+                        <table class='table table-hover'>
                             <thead>
                                 <tr>
                                     <th>Reg. Deadline</th>
-                                    <th>Event Name</th>
-                                    <th>Sponsor Name</th>
+                                    <th>Event</th>
+                                    <th>Sponsor</th>
                                     <th>Description</th>
-                                    <th>Location</th>
                                     <th>Event Duration</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach($events as $event): ?>
-                                <tr>
+                                <tr onclick="window.location='<?php echo 'event-read.php?event_id='.$event['event_id']; ?>';">
                                     <td><?php echo $obj->formatDate($event['registration_end']); ?></td>
                                     <td><?php echo $event['event_name']; ?></td>
                                     <td><?php echo $event['sponsor_name']; ?></td>
                                     <td><?php echo $obj->formatDescription($event['description']); ?></td>
-                                    <td><?php echo $event['location']; ?></td>
                                     <td><?php echo $obj->formatEventStartToEnd($event['event_start'],$event['event_end']); ?></td>
-                                    <td>
-                                        <a href='event-read.php?event_id=<?php echo $event['event_id']; ?>' title='View Event' data-toggle='tooltip' class='btn btn-link' ><span class='glyphicon glyphicon-eye-open'></span> View</a>
-                                    </td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
