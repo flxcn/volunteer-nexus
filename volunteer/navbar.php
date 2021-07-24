@@ -1,4 +1,4 @@
-<header>
+<header class="print">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="dashboard.php">
