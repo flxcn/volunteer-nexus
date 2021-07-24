@@ -5,6 +5,7 @@
 </head>
 <body>
     <p>Get this Volunteer ID scanned to track your attendance at opportunities.</p>
+    
     <div id="container">
         <div id="generated_qr_code"></div>
     </div>
@@ -64,6 +65,7 @@
         // Generate QR Code
         new QRCode(document.getElementById("generated_qr_code"), config);
     </script>
+    
     <script type="text/javascript">
         function getLink() {
             var imageSource = document.querySelectorAll('#generated_qr_code img')[0].src
