@@ -5,7 +5,7 @@ $sponsors = $obj->getAffiliatedSponsors();
 ?>
 <html>
 <body>
-    <div class="row my-4">
+    <div class="row my-4 print">
         <div class="col-12 col-xl-12 mb-4 mb-lg-0">
             <div class="card">
                 <h5 class="card-header">My contributions</h5>
@@ -46,8 +46,7 @@ $sponsors = $obj->getAffiliatedSponsors();
                         </table>
                     </div>
                 </div>
-                <a href="#" class="btn btn-block btn-light card-footer">Join a sponsor</a>
-
+                <a href="affiliation-create.php" class="btn btn-block btn-light card-footer">Join a sponsor</a>
             </div>
         </div>
     </div>
