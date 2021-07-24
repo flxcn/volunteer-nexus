@@ -80,6 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <h2>Join a Sponsor</h2>
             <p class="lead">After joining, you'll be able to see a Sponsor's events and opportunities.v</p>
         </div>
+        
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center order-md-1">
                 <form class="needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate="" oninput='confirm_password.setCustomValidity(confirm_password.value != password.value ? "Passwords do not match." : "")'>
