@@ -8,3 +8,4 @@ height: 16px;
 vertical-align: text-bottom;
 }
   
+tbody tr { cursor: pointer; }
