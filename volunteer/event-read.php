@@ -6,10 +6,6 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
     exit;
 }
 
-function formatLinks($text) {
-    return preg_replace('@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@', '<a target="ref" href="http$2://$4">$1$2$3$4</a>', $text);
-}
-
 // Check existence of id parameter before processing further
 if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
     
@@ -108,12 +104,12 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                     <th>Role</th>
                                                     <th>Description</th>
                                                     <th>Duration</th>
-                                                    <!-- <th>Participants</th> -->
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $modalCount = 0; 
+                                                <?php 
+                                                $modalCount = 0; 
                                                 foreach($opportunities as $opportunity): 
                                                     $modalCount++;
                                                 ?>
@@ -121,9 +117,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                     <td><?php echo $opportunity['opportunity_name']; ?></td>
                                                     <td><?php echo $eventObj->formatDescription($opportunity['description']); ?></td>
                                                     <td><?php echo $opportunity['start_time'] . " to " . $opportunity['end_time']; ?></td>
-                                                    <!-- <td><?php // echo $opportunity['positions_filled'] . "/" . $opportunity['total_positions']; ?></td> -->
                                                     <td>
-
                                                         <!-- Button trigger modal -->
                                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">
                                                         View
@@ -137,16 +131,14 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                                         <h5 class="modal-title" id="modal<?php echo $modalCount;?>Label"><?php echo $opportunity["opportunity_name"]; ?></h5>                           
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
+
                                                                     <div class="modal-body">
                                                                         <h6 class="small text-muted"><?php echo $opportunity["contribution_value"] . " " . $eventObj->getContributionType(); ?></h6>
-
                                                                         <p><?php echo $opportunity["description"]; ?></p>
                                                                         <hr>
-                                                                        <p>
-                                                                            <b>from </b><?php echo $opportunity['start_date'] . " @ " . $opportunity['start_time'] . " <br><b>to</b>   " . $opportunity['end_date'] . " @ " . $opportunity['end_time']; ?>
-
-                                                                        </p>
+                                                                        <p><b>from </b><?php echo $opportunity['start_date'] . " @ " . $opportunity['start_time'] . " <br><b>to</b>   " . $opportunity['end_date'] . " @ " . $opportunity['end_time']; ?></p>
                                                                     </div>
+
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                                         <form action="engagement-create.php" method="post">
@@ -162,9 +154,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
-                                                        
-                                                        <!-- <a class="btn btn-primary btn-sm align-center" href=<?php echo "opportunity-read.php?event_id=". $_GET["event_id"] ."&opportunity_id=". $opportunity['opportunity_id']; ?>>View</a> -->
                                                     </td>
                                                 </tr>
                                                 <?php endforeach; ?>
