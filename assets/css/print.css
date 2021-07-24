@@ -1,0 +1,16 @@
+body {
+    visibility:hidden;
+}
+
+.print {
+    visibility:visible;
+}
+
+.no-print {
+    visibility:hidden;
+} 
+
+/* 
+.landscape {
+    @media print{@page {size: landscape}}
+} */
