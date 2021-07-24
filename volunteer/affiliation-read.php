@@ -26,6 +26,7 @@ $engagements = $obj->getEngagementsForAffiliatedSponsor($_GET['sponsor_id']);
     
     <!-- Custom styles for this template -->
     <link href="../assets/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 
 <body>
@@ -33,10 +34,10 @@ $engagements = $obj->getEngagementsForAffiliatedSponsor($_GET['sponsor_id']);
 
     <div class="container-fluid">
         <div class="row">
-            <main class="ms-sm-auto px-md-4">
+            <main class="ms-sm-auto px-md-4 print">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">My contributions <?php echo $obj->getAffiliatedSponsorName($_GET["sponsor_id"]);?></h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
                         <div class="btn-group me-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
                         </div>
