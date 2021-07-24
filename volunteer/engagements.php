@@ -8,7 +8,7 @@ $engagements = $obj->getUpcomingEngagements();
 <!DOCTYPE html>
 <html>
 <body>
-    <div class="row mt-4">
+    <div class="row mt-4 print">
         <div class="mb-lg-0">
             <div class="card">
                 <h5 class="card-header">Upcoming Engagements</h5>
