@@ -208,6 +208,19 @@ class VolunteerOpportunityReader
         }
     }
 
+    public function formatDate($date_string): ?string
+	{
+		$date = strtotime($date_string);
+        // return date('D, M. jS', $date);
+        return date('M. jS', $date);
+	}
+
+    public function formatTime($time_string): ?string
+	{
+		$time = strtotime($time_string);
+        return date('g:i A', $time);
+	}
+
     public function getOpportunityName(): string
     {
         return $this->opportunity_name;
