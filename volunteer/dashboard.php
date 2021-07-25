@@ -57,7 +57,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
 
                 <!-- <div class="btn-group btn-group-lg mb-4"> --> 
                     <a href="events.php" class="btn btn-success">Discover Events!</a>
-                    <a href="tutoring.php" class="btn btn-primary">Tutoring</a>
+                    <a href="../tutor/dashboard.php" class="btn btn-primary">Tutoring</a>
                     <a href="affiliation-create.php" class="btn btn-primary">Join a Sponsor</a>
                     <a href="profile.php#volunteer_id" class="btn btn-primary">Volunteer ID</a>
                 <!-- </div> -->
