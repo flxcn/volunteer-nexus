@@ -10,6 +10,8 @@ define('DB_CHARSET','utf8mb4');
 define('DB_USERNAME','root');
 define('DB_PASSWORD','root');
 
+date_default_timezone_set('America/Chicago');
+
 class DatabaseConnection
 {
     protected static $instance;
