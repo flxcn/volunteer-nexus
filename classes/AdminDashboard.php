@@ -86,6 +86,15 @@ class AdminDashboard {
 		return $count;
     }
 
+    public function formatDisplayNumber($number) {
+        if($number < 1000) {
+            return $number;
+        } else {
+            $number / 1000;
+            return round($number/1000, 1, PHP_ROUND_HALF_UP) . "k";
+        }
+    }
+
 	public function getAllVolunteers(): ?string
 	{
 		$sql =
