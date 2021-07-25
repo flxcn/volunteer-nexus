@@ -68,10 +68,10 @@ $engagements = $obj->getUpcomingEngagements();
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        <h6 class="small text-muted"><?php echo $engagement["contribution_value"] . " " . $engagement['contribution_type']; ?></h6>
+                                                        <h6 class="small"><?php echo $engagement["contribution_value"] . " " . $engagement['contribution_type']; ?></h6>
                                                         <p><?php echo $engagement["description"]; ?></p>
-                                                        <hr>
-                                                        <p><b>From </b><?php echo $engagement['start_date'] . " @ " . $engagement['start_time'] . " <br><b>To</b>   " . $engagement['end_date'] . " @ " . $engagement['end_time']; ?></p>
+                                                        <p><b>From </b><?php echo $obj->formatDate($engagement['start_date']) . " @ " . $obj->formatTime($engagement['start_time']) . " <br><b>To </b>" . $obj->formatDate($engagement['end_date']) . " @ " . $obj->formatTime($engagement['end_time']); ?></p>
+                                                        <p class="small text-muted"><?php echo "Submitted on " . $engagement["time_submitted"]; ?></p>
                                                     </div>
 
                                                     <div class="modal-footer">
