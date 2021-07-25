@@ -139,7 +139,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                                         <h6 class="small text-muted"><?php echo $opportunity["contribution_value"] . " " . $eventObj->getContributionType(); ?></h6>
                                                                         <p><?php echo $opportunity["description"]; ?></p>
                                                                         <hr>
-                                                                        <p><b>from </b><?php echo $opportunity['start_date'] . " @ " . $opportunity['start_time'] . " <br><b>to</b>   " . $opportunity['end_date'] . " @ " . $opportunity['end_time']; ?></p>
+                                                                        <p><b>From </b><?php echo $opportunityObj->formatDate($opportunity['start_date']) . " @ " . $opportunityObj->formatTime($opportunity['start_time']) . " <br><b>To</b>   " . $opportunityObj->formatDate($opportunity['end_date']) . " @ " . $opportunityObj->formatTime($opportunity['end_time']); ?></p>
                                                                     </div>
 
                                                                     <div class="modal-footer">
