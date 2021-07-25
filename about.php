@@ -37,21 +37,11 @@ $obj = new NexusOverview();
 
             <main role="main" class="mb-3">
 
-                <!-- <div class="row mt-2">
-                    <div class="col-md col-xs-12 m-2">
-                        <img src="assets/images/Chen,Felix-Headshot.JPG" width="200px" height="200px" ><img>
-                    </div>
-                    <div class="col-md col-xs-12 m-2">
-                    <p>Felix Chen is a rising senior at Westlake High School who is passionate about finding new solutions through technology. The need for the solution provided by the VolunteerNexus was made evident through his experience working with numerous student organizations at Westlake High School. You can see some of his other coding projects at his GitHub profile, linked below.</p>
-                    </div>
-                </div> -->
-
-                <!-- <p class="my-3">VolunteerNexus began in 2019 to improve student access to service opportunities across Westlake High School.</p> -->
+                <p class="my-3">VolunteerNexus began in 2019 to improve student access to service opportunities within the school and community.</p>
 
                 <hr>
 
                 <h5 class="m-sm-3">So far, we have connected...</h5>
-
 
                 <div class="row">
                     <div class="card col-md col-xs-6 m-2">
