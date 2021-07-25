@@ -1,3 +1,7 @@
+<?php
+require "classes/NexusOverview.php";
+$obj = new NexusOverview();
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -31,7 +35,7 @@
                 </div>
             </header>
 
-            <main role="main" class="inner cover mb-3">
+            <main role="main" class="mb-3">
 
                 <!-- <div class="row mt-2">
                     <div class="col-md col-xs-12 m-2">
@@ -46,14 +50,14 @@
 
                 <hr>
 
-                <h5 class="m-sm-3">So far, we have facilitated...</h5>
+                <h5 class="m-sm-3">So far, we have connected...</h5>
 
 
                 <div class="row">
                     <div class="card col-md col-xs-6 m-2">
 
                         <div class="card-body text-dark">
-                        <p class="card-text display-3"><b>9</b></p>
+                        <p class="card-text display-3"><b><?php echo $obj->countSponsors(); ?></b></p>
                         <p>Organizations</p>
 
                         </div>
@@ -61,14 +65,14 @@
 
                     <div class="card col-md col-xs-6 m-2">
                         <div class="card-body text-dark">
-                        <p class="card-text display-3"><b>894</b></p>
+                        <p class="card-text display-3"><b><?php echo $obj->formatDisplayNumber($obj->countVolunteers()); ?></b></p>
                         <p>Volunteers</p>
                         </div>
                     </div>
 
                     <div class="card col-md col-xs-6 m-2">
                         <div class="card-body text-dark">
-                        <p class="card-text display-3"><b>3.3k</b></p>
+                        <p class="card-text display-3"><b><?php echo $obj->formatDisplayNumber($obj->countEngagements()); ?></b></p>
                         <p class="p-0">Engagements</p>                        
                     </div>
                     </div>
