@@ -4,10 +4,9 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
-
 
 // Define and intialize variables
 $volunteer_id = $_SESSION["volunteer_id"];
@@ -16,7 +15,8 @@ $sponsor_values = "";
 $date = "";
 $start_time = "";
 $end_time = "";
-$description = "";
+$description1 = "";
+$description2 = "";
 $contribution_value = "";
 
 // Define and initialize error message variables
@@ -57,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     // Set opportunity_name for this Tutorial
     $last_name = $_SESSION['last_name'];
     $first_name = $_SESSION['first_name'];
-    $tutorialEngagementCreationObj->setOpportunityName($last_name, $first_name);
+    $tutorialEngagementCreationObj->setOpportunityName($last_name, $first_name, $_POST["date"]);
 
     // Validate date of tutorial from "date"
     $date = trim($_POST["date"]);
@@ -97,7 +97,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $contribution_value_error = $tutorialEngagementCreationObj->setContributionValue($contribution_value);
 
     // Validate description from "description"
-    $description = $_POST["description"];
+    $description1 = $_POST["description1"];
+    $description2 = $_POST["description2"];
+    $description = "Tutored " . $description1 . ". Content: " . $description2;
     $description_error = $tutorialEngagementCreationObj->setDescription($description);
 
     // Set status of whether the engagement needs verification (always true)
@@ -107,9 +109,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         // Check to see that a Tutoring event exists for the selected Sponsor
         if($tutorialEngagementCreationObj->doesTutorialEventExist()) 
-        {
-            // Get event_id of Tutoring Event [try not to fold it into the check function]
-            
+        {            
             // Add tutorial engagement
             if($tutorialEngagementCreationObj->addTutorial()) 
             {
@@ -124,26 +124,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         else 
         {
-            // Create event, get event id of newly generated event             
-            // Save event_id from this event
-            /*
-            if($tutorialEngagementCreationObj->addTutorialEvent()) 
-            {
-                // Add tutorial engagement
-                // Create engagement based on the event
-                if($tutorialEngagementCreationObj->addEngagement()) 
-                {
-                    header("Location: dashboard.php");
-                    exit();
-                }
-                else 
-                {
-                    echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
-                }
-            }
-            */
             echo "Sorry, this Sponsoring organization does not yet offer Tutoring.";
-
         }
     }
 }
@@ -201,14 +182,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         <label for="graduation_year">Sponsor</label>
                         <select class="form-select d-block w-100" name='sponsor_name' id='sponsorsSelect' class="form-control" required>
                         </select>
+                        <div class="text-danger">
+                        <?php echo $sponsor_name_error;?>
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="date">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" value="<?php echo date('Y-m-d'); ?>" min="2002-10-28" required>
-                        <!-- <div class="invalid-feedback">
-                            Please enter a valid email address for your username.
-                        </div> -->
+                        <input type="date" class="form-control" id="date" name="date" value="" min="2002-10-28" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid date.
+                        </div>
                     </div>
 
                     <div class="row">
@@ -238,7 +222,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                     <div class="mb-3">
                         <label for="description1">Who did you tutor?</label>
-                        <input type="text" name="description1" id="description" rows="5" class="form-control">
+                        <input type="text" name="description1" id="description1" class="form-control" required>
                         <div class="invalid-feedback">
                             Please enter a description.
                         </div>
@@ -246,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                     <div class="mb-3">
                         <label for="description2">What subjects/topics did you cover?</label>
-                        <textarea type="text" name="description2" id="description" rows="3" class="form-control"></textarea>
+                        <textarea type="text" name="description2" id="description2" rows="3" class="form-control" required></textarea>
                         <div class="invalid-feedback">
                             Please enter a description.
                         </div>
