@@ -19,20 +19,26 @@ $engagements = $obj->getUpcomingEngagements();
                             <thead>
                             <tr>
                                 <th scope="col">Event</th>
-                                <th scope="col">Description</th>
+                                <!-- <th scope="col">Description</th> -->
                                 <th scope="col">Opportunity</th>
                                 <th scope="col">Contact Info</th>
-                                <th scope="col">Event Duration</th>
+                                <th scope="col">Duration</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach($engagements as $engagement): ?>
+                            <?php 
+                            $modalCount = 0; 
+                            foreach($engagements as $engagement): 
+                                $modalCount++;
+                            ?>
                                 <tr>
-                                    <th scope="row"><?php echo $engagement['event_name']; ?></th>
-                                    <td>
-                                        <?php echo $engagement['event_description']; ?>
-                                    </td>
+                                    <th scope="row">
+                                        <?php echo $engagement['event_name']; ?>
+                                    </th>
+                                    <!-- <td>
+                                        <?php //echo $engagement['description']; ?>
+                                    </td> -->
                                     <td>
                                         <?php echo $engagement['opportunity_name']; ?>
                                     </td>
@@ -40,7 +46,7 @@ $engagements = $obj->getUpcomingEngagements();
                                         <?php echo $engagement['contact_name'] . "<br>" . $engagement['contact_email']; ?>
                                     </td>
                                     <td>
-                                        <?php echo $engagement['event_start'] . " to " . $engagement['event_end']; ?>
+                                        <?php echo $obj->formatOpportunityStartToEnd($engagement['start_date'],$engagement['end_date']); ?>
                                     </td>
                                     <td>
                                         <!-- <a href=<?php // echo "engagement-read.php?engagement_id=" . $engagement['engagement_id'] . "&opportunity_id=" . $engagement['opportunity_id']; ?> class="btn btn-primary">View</a> -->
