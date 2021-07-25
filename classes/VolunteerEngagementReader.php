@@ -11,13 +11,12 @@ class VolunteerEngagementReader {
 		$this->volunteer_id = $volunteer_id;
     }
 
-    
-
 	public function getUpcomingEngagements(): ?array
 	{
 		$sql =
             "SELECT     engagements.engagement_id       AS engagement_id,
                         engagements.contribution_value  AS contribution_value,
+                        engagements.time_submitted      AS time_submitted,
                         opportunities.opportunity_id    AS opportunity_id,
                         opportunities.description       AS description,
                         opportunities.start_date        AS start_date,
@@ -47,7 +46,8 @@ class VolunteerEngagementReader {
                         opportunities.opportunity_name,
                         opportunities.opportunity_id,
                         events.contribution_type,
-                        engagements.contribution_value";
+                        engagements.contribution_value,
+                        engagements.time_submitted";
 
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute(['volunteer_id' => $this->volunteer_id]);
@@ -78,6 +78,12 @@ class VolunteerEngagementReader {
 			$date2 = $this->formatDate($event_end);
 			return $date1 . " to " . $date2;
 		}
+	}
+
+    public function formatTime($time_string): ?string
+	{
+		$time = strtotime($time_string);
+        return date('g:i A', $time);
 	}
 }
 ?>
