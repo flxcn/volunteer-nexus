@@ -89,8 +89,13 @@ class TutorialEngagementCreation
     
     public function setContributionValue(float $contribution_value)
     {
-        $this->contribution_value = $contribution_value;
-        // return $this->contribution_value;
+        if(!empty($contribution_value)) {
+            $this->contribution_value = $contribution_value;
+            return "";
+        }
+        else {
+            return "Please enter a valid contribution value";
+        }
     }
     
     public function setStatus(bool $status): bool
@@ -101,31 +106,52 @@ class TutorialEngagementCreation
 
     public function setStartTime(string $start_time)
     {
-        $this->start_time = $start_time;
-        return "";
+        if(!empty($start_time)) {
+            $this->start_time = $start_time;
+            return "";
+        }
+        else {
+            return "Please enter a valid time";
+        }
+        
     }
 
     public function setEndTime(string $end_time)
     {
-        $this->end_time = $end_time;
-        return "";
+        if(!empty($end_time)) {
+            $this->end_time = $end_time;
+            return "";
+        }
+        else {
+            return "Please enter a valid time";
+        }
     }
 
     public function setStartDate(string $start_date)
     {
-        $this->start_date = $start_date;
-        return "";
+        if(!empty($start_date)) {
+            $this->start_date = $start_date;
+            return "";
+        }
+        else {
+            return "Please enter a valid date";
+        }
     }
 
     public function setEndDate(string $end_date)
     {
-        $this->end_date = $end_date;
-        return "";
+        if(!empty($end_date)) {
+            $this->end_date = $end_date;
+            return "";
+        }
+        else {
+            return "Please enter a valid date";
+        }    
     }
 
-    public function setOpportunityName(string $last_name, string $first_name) 
+    public function setOpportunityName(string $last_name, string $first_name, string $date) 
     {
-        $this->opportunity_name = $last_name . ", " . $first_name . " - Tutoring - " . date('Y-m-d H:i:s');
+        $this->opportunity_name = $last_name . ", " . $first_name . " - Tutorial on " . $this->formatDateTimeForOpportunityName($date);
 
     }
 
@@ -315,6 +341,20 @@ class TutorialEngagementCreation
         }
     }
 
+    public function formatDateTimeForOpportunityName($date_string): ?string
+	{
+		$date = strtotime($date_string);
+
+        return date('M. jS, Y', $date); 
+        //return date('M. jS, Y', $date) . " from " . date('g:i A', $start_time) . " to " . date('g:i A', $end_time);
+	}
+
+    public function formatTime($time_string): ?string
+	{
+		$time = strtotime($time_string);
+        return date('g:i A', $time);
+	}
+
     public function getEngagementId(): int
     {
         return $this->engagement_id;
@@ -345,9 +385,19 @@ class TutorialEngagementCreation
         return $this->contribution_value;
     }
     
-    public function getStatus(): bool
+    public function getStatus(): ?bool
     {
         return $this->status;
+    }
+
+    public function getStartTime(): string
+    {
+        return $this->start_time;
+    }
+
+    public function getEndTime(): string
+    {
+        return $this->end_time;
     }
 }
 ?>
