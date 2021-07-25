@@ -61,7 +61,8 @@ if(isset($_SESSION["volunteer_id"])) {
                                 <p class="card-text"><?php echo $obj->getGraduationYear(); ?></p>
                                 <p class="card-text">Student ID: <?php echo $obj->getStudentId(); ?></p>
                                 <div class="btn-group text-center mb-2 mb-md-0">
-                                    <a href="tutor-create.php" class="btn btn-sm btn-outline-primary">Register as a tutor</a>  
+                                    <a href="tutor-create.php" class="btn btn-sm btn-outline-primary">Register as a tutor</a>                                      
+                                    <a href="../volunteer/affiliation-create.php" class="btn btn-sm btn-outline-primary">Register with a sponsor</a>  
                                     <a href="tutor-request.php" class="btn btn-sm btn-outline-primary">Request tutoring</a>  
                                     <a href="tutorial-create.php" class="btn btn-sm btn-outline-primary">Log tutoring hours</a>  
                                 </div>
