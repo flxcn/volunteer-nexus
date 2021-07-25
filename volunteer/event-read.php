@@ -66,6 +66,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
 
                 <div class="row">
                     <div class="col-sm-12 col-lg-4 mb-4">
+                        <!-- Event Details -->
                         <div class="card border-dark mb-3">
                             <div class="card-body">
                                 <h4 class="card-title"><?php echo $eventObj->getEventName(); ?></h4>
@@ -79,6 +80,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                             <button onclick="toggleContactInfo();" class="btn btn-block btn-light card-footer" id="toggleButton"><small id="toggleButtonText">See contact info</small></button>
                         </div>
 
+                        <!-- Contact Info -->
                         <div class="card border-dark" style="display:none;" id="contactInfo">
                             <div class="card-body">
                                 <h5 class="card-title mb-3">Contact Info</h4>
@@ -92,6 +94,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                         </div>
                     </div>
     
+                    <!-- Opportunities -->
                     <div class="col-sm-12 col-lg-8 mb-4">
                         <div class="card border-primary">
                             <div class="card-body">
