@@ -1,5 +1,24 @@
 # Page Designs
 
+## Overall Structure 
+Should we prioritize modularity, or integration?
+
+### Option 1
+sponsor/
+volunteer/
+tutoring/
+    - tutor/
+    - learner/
+    - organizer/
+
+### Option 2
+sponsor/
+    - organizer/
+volunteer/
+    - tutor/
+tutoring/
+    - request.php
+
 ## Tutor Perspective 
 
 ### tutor-create.php
