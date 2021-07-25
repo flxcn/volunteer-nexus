@@ -43,8 +43,38 @@ $engagements = $obj->getUpcomingEngagements();
                                         <?php echo $engagement['event_start'] . " to " . $engagement['event_end']; ?>
                                     </td>
                                     <td>
-                                        <a href=<?php echo "engagement-read.php?engagement_id=" . $engagement['engagement_id'] . "&opportunity_id=" . $engagement['opportunity_id']; ?> class="btn btn-primary">View</a>";
-                                        <a href=<?php echo "engagement-delete.php?engagement_id=" . $engagement['engagement_id']; ?> class='btn btn-danger' >Delete</a>";
+                                        <!-- <a href=<?php // echo "engagement-read.php?engagement_id=" . $engagement['engagement_id'] . "&opportunity_id=" . $engagement['opportunity_id']; ?> class="btn btn-primary">View</a> -->
+                                        
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">
+                                            View
+                                        </button>
+
+                                        <!-- <a href=<?php //echo "engagement-delete.php?engagement_id=" . $engagement['engagement_id']; ?> class='btn btn-danger' >Cancel</a> -->
+                                        
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal<?php echo $modalCount;?>" tabindex="-1" aria-labelledby="modal<?php echo $modalCount;?>Label" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modal<?php echo $modalCount;?>Label"><?php echo $engagement["opportunity_name"]; ?></h5>                           
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <h6 class="small text-muted"><?php echo $engagement["contribution_value"] . " " . $engagement['contribution_type']; ?></h6>
+                                                        <p><?php echo $engagement["description"]; ?></p>
+                                                        <hr>
+                                                        <p><b>From </b><?php echo $engagement['start_date'] . " @ " . $engagement['start_time'] . " <br><b>To</b>   " . $engagement['end_date'] . " @ " . $engagement['end_time']; ?></p>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a href=<?php echo "engagement-delete.php?engagement_id=" . $engagement['engagement_id']; ?> class='btn btn-danger'>Cancel sign-up</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
