@@ -51,7 +51,7 @@ if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !=
                     </div>
                 </div>
                 <?php 
-                $_SESSION["engagement_creation_success"] = false;
+                    $_SESSION["engagement_creation_success"] = false;
                 endif; 
                 ?>
 
