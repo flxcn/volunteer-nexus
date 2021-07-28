@@ -62,7 +62,7 @@ if(isset($_SESSION["volunteer_id"])) {
                                 <p class="card-text">Student ID: <?php echo $obj->getStudentId(); ?></p>
                                 <div class="btn-group text-center mb-2 mb-md-0">
                                     <a href="profile-update.php" class="btn btn-sm btn-outline-primary">Update profile</a>  
-                                    <a href="reset.php" class="btn btn-sm btn-outline-primary">Reset password</a>  
+                                    <a href="password-reset.php" class="btn btn-sm btn-outline-primary">Reset password</a>  
                                 </div>
                             </div>
                         </div>
