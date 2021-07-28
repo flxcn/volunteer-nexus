@@ -18,10 +18,53 @@ class VolunteerAccountUpdate
         $this->volunteer_id = $volunteer_id;
         $this->username = "";
         $this->password = "";
+        $this->confirm_password = "";
         $this->first_name = "";
         $this->last_name = "";
         $this->student_id = "";
         $this->graduation_year = "";
+    }
+
+    public function setPassword(string $password): string
+    {
+        if(empty($password)) {
+            return "Please enter a password.";
+        }
+        elseif(strlen($password) < 6) {
+            return "Password must have at least 6 characters.";
+        }
+        else {
+            $this->password = $password;
+            return "";
+        }
+    }
+
+    public function setConfirmPassword(string $confirm_password): string
+    {
+        if(empty($confirm_password)) {
+            return "Please confirm password.";
+        }
+
+        if(strcmp($this->password,$confirm_password) != 0){
+            return "Password did not match.";
+        }
+
+        $this->confirm_password = $confirm_password;
+        return "";
+    }
+
+    public function updatePassword(): bool
+    {
+        $sql = 
+            "UPDATE volunteers SET password = :password WHERE volunteer_id = :volunteer_id";
+        $stmt = $this->pdo->prepare($sql);
+        $status = $stmt->execute(
+            [
+                'password' => password_hash($this->password, PASSWORD_DEFAULT),
+                'volunteer_id' => $this->volunteer_id
+            ]);
+
+        return $status;
     }
 
     public function getVolunteerDetails(): bool
