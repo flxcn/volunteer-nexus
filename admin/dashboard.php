@@ -43,7 +43,7 @@ $obj = new AdminDashboard();
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
         
         <!-- Custom styles for this template -->
-        <link href="dashboard.css" rel="stylesheet">
+        <link href="main.css" rel="stylesheet">
     </head>
 
     <body>

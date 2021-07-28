@@ -37,7 +37,7 @@ if(isset($_SESSION["volunteer_id"])) {
     <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom styles for this template -->
-    <link href="../assets/css/dashboard.css" rel="stylesheet">
+    <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 <body>
     <?php $thisPage='Tutoring'; include '../volunteer/navbar.php';?>
