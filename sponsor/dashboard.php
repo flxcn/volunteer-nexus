@@ -4,80 +4,66 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
     <title>Dashboard</title>
 
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
-
     <?php $thisPage='Dashboard'; include 'navbar.php';?>
-    <div class="page-header">
-        <h1>Howdy, <b><?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?></b>!</h1>
-        <p> Welcome to <b>VolunteerNexus</b></p>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom print">
+                    <h1 class="h2">Welcome, <?php echo htmlspecialchars($_SESSION["sponsor_name"]); ?>!</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="events.php" class="btn btn-primary">Sponsored Events</a>
+                <a href="affiliations.php" class="btn btn-primary">Affiliated Volunteers</a>
+                <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
+                <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
+                <a href="engagement-batch-create.php" class="btn btn-primary">Add Multiple Engagements</a>
+                <a href="attendance-anywhere.php" class="btn btn-success"><span class='glyphicon glyphicon-qrcode'></span> Attendance Anywhere</a>
+
+            </main>
+
+            <?php include "footer.php"; ?>
+        </div>
     </div>
-    <p>
-        <a href="events.php" class="btn btn-primary">Sponsored Events</a>
-    </p>
-    <p>
-        <a href="affiliations.php" class="btn btn-primary">Affiliated Volunteers</a>
-    </p>
-    <p>
-        <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
-    </p>
-    <p>
-        <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
-    </p>
-    <p>
-        <a href="engagement-batch-create.php" class="btn btn-primary">Add Multiple Engagements</a>
-    </p>
 
-    <!-- <p>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Engagements
-            <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="engagements.php">Pending/Active</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="engagement-create.php">Create</a></li>
-                <li><a href="engagement-batch-create.php">Create Multiple</a></li>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 
-            </ul>
-        </div>
-    </p> -->
-        
-    <!-- <div class="dropdown">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown link
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">Pending Engagements</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Add Engagement</a>
-            <a class="dropdown-item" href="#">Add Multiple Engagements</a>
-        </div>
-    </div> -->
+    <script>
+    (function () {
+    'use strict'
 
-    <!-- <p>
-        <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
-    </p>
-    <p>
-        <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
-    </p> -->
-    <p>
-        <a href="attendance-anywhere.php" class="btn btn-success"><span class='glyphicon glyphicon-qrcode'></span> Attendance Anywhere</a>
-    </p>
+    feather.replace({ 'aria-hidden': 'true' })
 
-    <?php include '../footer.php';?>
+    })()
+    </script>
 </body>
 </html>
