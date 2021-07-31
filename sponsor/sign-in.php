@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Check if the volunteer is already logged in, if yes then redirect to dashboard
+// Check if the sponsor is already logged in, if yes then redirect to dashboard
 if(isset($_SESSION["sponsor_loggedin"]) && $_SESSION["sponsor_loggedin"] === true){
     header("location: dashboard.php");
     exit;
