@@ -1,6 +1,5 @@
 <?php
 require_once 'DatabaseConnection.php';
-require_once 'SponsorAccountReader';
 
 class SponsorAccountUpdate
 {
@@ -31,7 +30,7 @@ class SponsorAccountUpdate
         $this->confirm_password = "";
         $this->sponsor_name = "";
         $this->contribution_type = "";
-        $this->advisors = "";
+        $this->advisors = [];
         $this->advisor1_name = "";
         $this->advisor1_email = "";
         $this->advisor1_phone = "";
@@ -248,7 +247,7 @@ class SponsorAccountUpdate
         $stmt = $this->pdo->prepare($sql);
         $status = $stmt->execute(
             [
-                'password' => $this->password_hash($this->password, PASSWORD_DEFAULT),
+                'password' => password_hash($this->password, PASSWORD_DEFAULT),
                 'sponsor_id' => $this->sponsor_id
             ]
         );
