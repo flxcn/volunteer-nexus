@@ -1,34 +1,43 @@
-<nav class="navbar navbar-inverse">
-<div class="container-fluid">
-	<div class="navbar-header">
+<header class="print">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="dashboard.php">
+            <img src="../assets/images/volunteernexus-logo-1.png" alt="" width="24" height="24" class="d-inline-block align-text-center">    
+            VolunteerNexus
+            </a>
 
-		<!--hamburger-->
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#theNavbar">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-		<!--logo-->
-		<a class="navbar-brand" href="dashboard.php">VolunteerNexus</a>
+            <div class="collapse navbar-collapse" id="navbarsExample03">
+                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Dashboard') {echo 'active';} ?>" aria-current="page" href="dashboard.php">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Events') {echo 'active';} ?>" href="events.php">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Engagements') {echo 'active';} ?>" href="engagements.php">Engagements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Affiliations') {echo 'active';} ?>" href="affiliations.php">Affiliations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Tutoring') {echo 'active';} ?>" href="../organizer/dashboard.php">Tutoring</a>
+                    </li>
+                </ul>
 
-	</div>
-
-	<!-- links -->
-	<div class="collapse navbar-collapse" id="theNavbar">
-
-		<ul class="nav navbar-nav">
-			<li <?php if ($thisPage === 'Dashboard') {echo 'class="active"';} ?>><a href="dashboard.php">Dashboard</a></li>
-			<li <?php if ($thisPage === 'Events') {echo 'class="active"';} ?>><a href="events.php">Events</a></li>
-			<li <?php if ($thisPage === 'Engagements') {echo 'class="active"';} ?>><a href="engagements.php">Engagements</a></li>
-			<li <?php if ($thisPage === 'Affiliations') {echo 'class="active"';} ?>><a href="affiliations.php">Affiliations</a></li>
-		</ul>
-
-		<ul class="nav navbar-nav navbar-right">
-			<li <?php if ($thisPage === 'Account') {echo 'class="active"';} ?>><a href="account.php"><span class="glyphicon glyphicon-user"></span> Account</a></li>
-			<li><a href="../logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-		</ul>
-
-	</div>
-</div>
-</nav>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Profile') {echo 'active';} ?>" href="profile.php">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-out.php">Sign out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
