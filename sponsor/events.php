@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
@@ -14,127 +14,125 @@ $events = $obj->getUpcomingSponsoredEvents();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
     <title>Events</title>
 
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-    </style>
-
-    <!-- toggle Bootstrap tooltip functionality -->
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 
-
-
-
-
 <body>
-  <?php $thisPage='Events'; include 'navbar.php';?>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">My Sponsored Events</h2>
-                        <a href="event-create.php" class="btn btn-success pull-right">Add New Event</a>
+    <?php $thisPage='Events'; include 'navbar.php';?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom print">
+                    <h1 class="h2">My Events</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                        <div class="btn-group me-2">
+                            <a class="btn btn-sm btn-outline-success" href="event-create.php">Create Event</a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
+                        </div>
                     </div>
+                </div>
 
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#top" onclick="showTable('upcoming')">Upcoming <span class="badge"><?php echo $obj->countUpcomingSponsoredEvents(); ?></span></a></li>
-                        <li><a data-toggle="tab" href="#top" onclick="showTable('ongoing')">Ongoing <span class="badge"><?php echo $obj->countOngoingSponsoredEvents(); ?></span></a></li>
-                        <li><a data-toggle="tab" href="#top" onclick="showTable('completed')">Completed <span class="badge"><?php echo $obj->countCompletedSponsoredEvents(); ?></span></a></li>
-                        <li><a data-toggle="tab" href="#top" onclick="showTable('all')">All <span class="badge"><?php echo $obj->countSponsoredEvents(); ?></span></a></li>
-                    </ul>
+                <!-- Tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" onclick="showTable('upcoming')" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab" aria-controls="home" aria-selected="true">Upcoming <span class="badge bg-secondary rounded-pill"><?php echo $obj->countUpcomingSponsoredEvents(); ?></span></button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" onclick="showTable('ongoing')" id="ongoing-tab" data-bs-toggle="tab" data-bs-target="#ongoing" type="button" role="tab" aria-controls="ongoing" aria-selected="false">Ongoing <span class="badge bg-secondary rounded-pill"><?php echo $obj->countOngoingSponsoredEvents(); ?></span></button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" onclick="showTable('completed')" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">Completed <span class="badge bg-secondary rounded-pill"><?php echo $obj->countCompletedSponsoredEvents(); ?></span></button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" onclick="showTable('all')" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">All <span class="badge bg-secondary rounded-pill"><?php echo $obj->countSponsoredEvents(); ?></span></button>
+                    </li>
+                </ul>
 
-                    <!-- Search Bar -->
-                    <br>
-                    <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
-                    <input class="form-control" id="searchInput" type="text" placeholder="Search">
-                    <br>
+                <!-- Search Bar -->
+                <input class="form-control my-3" id="searchInput" type="text" placeholder="Search">
 
-                    <div id="eventsContent">
+                <!-- Events Table -->
+                <div id="eventsContent">
                     <?php if ($events): ?>
-                      <table class='table table-condensed' id='events'>
-                        <thead>
-                          <tr>
-                            <th style='cursor:pointer'>
-                              Reg. Deadline
-                              <!-- <a href='#'><span class='glyphicon glyphicon-sort'></span></a> -->
-                            </th>
-                            <th onclick='sortTable(1)' style='cursor:pointer'>
-                              Event Name
-                              <!-- <a href='#'><span class='glyphicon glyphicon-sort'></span></a> -->
-                            </th>
-                            <th>
-                              Description
-                            </th>
-                            <th>
-                              Location
-                            </th>
-                            <th>
-                              Duration
-                            </th>
-                            <th>
-                              Action
-                            </th>
-                          </tr>
-                        </thead>
+                        <table class='table table-condensed print' id='events'>
+                            <thead>
+                                <tr>
+                                    <th style='cursor:pointer'>Reg. Deadline</th>
+                                    <th onclick='sortTable(1)' style='cursor:pointer'>Event Name</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Duration</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                        <tbody id="eventTableBody">
-                        <?php foreach($events as $event): ?>
-                          <tr>
-                            <td class="text-nowrap">
-                              <?php echo $obj->formatDate($event['registration_end']); ?>
-                            </td>
-                            <td>
-                              <?php echo $event['event_name']; ?>
-                            </td>
-                            <td>
-                              <?php echo $obj->formatDescription($event['description']); ?>
-                            </td>
-                            <td>
-                              <?php echo $event['location']; ?>
-                            </td>
-                            <td class="text-nowrap">
-                              <?php echo $obj->formatEventStartToEnd($event['event_start'],$event['event_end']); ?>
-                            </td>
-                            <td>
-                                <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='View Event' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
-                                <br>
-                                <a href=<?php echo "event-update.php?event_id=".$event['event_id']; ?> title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>
-                                <br>
-                                <a href=<?php echo "event-delete.php?event_id=".$event['event_id']; ?> title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>
-                            </td>
-                          </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-
-                      </table>
+                            <tbody id="eventTableBody">
+                                <?php foreach($events as $event): ?>
+                                <tr>
+                                    <td class="text-nowrap">
+                                        <?php echo $obj->formatDate($event['registration_end']); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $event['event_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $obj->formatDescription($event['description']); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $event['location']; ?>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <?php echo $obj->formatEventStartToEnd($event['event_start'],$event['event_end']); ?>
+                                    </td>
+                                    <td>
+                                        <a href=<?php echo "event-read.php?event_id=".$event['event_id']; ?> title='View Event' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
+                                        <br>
+                                        <a href=<?php echo "event-update.php?event_id=".$event['event_id']; ?> title='Update Event' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Update</a>
+                                        <br>
+                                        <a href=<?php echo "event-delete.php?event_id=".$event['event_id']; ?> title='Delete Event' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     <?php else: ?>
-                      <p class='lead'><em>No events were found.</em></p>
+                        <p class='lead'><em>No events were found.</em></p>
                     <?php endif; ?>
+                </div>
+            </main>
 
-            </div>
+            <?php include "footer.php"; ?>
         </div>
     </div>
 
-    <!-- Sort table functionality -->
+    <script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+
     <script>
+    // Activate feather icon 
+    (function () {
+    'use strict'
+
+    feather.replace({ 'aria-hidden': 'true' })
+
+    })()
+
+    // Sort table functionality 
     function sortTable(n) {
       var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
       table = document.getElementById("events");
@@ -190,46 +188,37 @@ $events = $obj->getUpcomingSponsoredEvents();
       }
     }
 
-    </script>
-
-    <!-- AJAX script to fetch table -->
-    <script>
-      function showTable(interval) {
-        if (interval == "")
-        {
-          return;
+    // AJAX script to fetch table
+    function showTable(interval) {
+        if (interval == "") {
+            return;
         }
-        else
-        {
-          if (window.XMLHttpRequest)
-          {
-            xmlhttp = new XMLHttpRequest();
-          }
-
-          xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              document.getElementById("eventsContent").innerHTML = this.responseText;
+        else {
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
             }
-          };
-          xmlhttp.open("GET","events-get-table.php?interval="+interval,true);
-          xmlhttp.send();
-        }
-      }
-    </script>
 
-    <!-- Search Feature -->
-    <script>
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("eventsContent").innerHTML = this.responseText;
+                }
+            };
+
+            xmlhttp.open("GET","events-get-table.php?interval="+interval,true);
+            xmlhttp.send();
+        }
+    }
+
     // search feature
     $(document).ready(function(){
-    $("#searchInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#eventTableBody tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#eventTableBody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
         });
-    });
     });
     </script>
 
-    <?php include '../footer.php';?>
 </body>
 </html>
