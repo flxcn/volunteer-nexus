@@ -24,7 +24,7 @@
                     <nav class="nav nav-masthead justify-content-center">
                         <a class="nav-link active" href="#">Home</a>
                         <a class="nav-link" href="about.php">About</a>
-                        <a class="nav-link" href="sponsor/login.php">For Sponsors</a>
+                        <a class="nav-link" href="sponsor/sign-in.php">For Sponsors</a>
                          <a class="nav-link" href="https://github.com/flxcn/volunteer-nexus/wiki">Wiki</a>
                         <a class="nav-link" href="https://github.com/flxcn/volunteer-nexus/wiki/Privacy-Policy.md">Privacy</a>
                     </nav>
