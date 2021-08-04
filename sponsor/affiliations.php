@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
@@ -12,118 +12,137 @@ $volunteers = $obj->getAffiliatedVolunteers();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Affiliations</title>
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
-    <style type="text/css">
-        .wrapper{
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
+    <title>My Volunteers</title>
 
-    <!--Toggle Bootstrap tooltip-->
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 
-
 <body>
-  <?php $thisPage='Affiliations'; include 'navbar.php';?>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">Affiliated Volunteers</h2>
+    <?php $thisPage='Affiliations'; include 'navbar.php';?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom print">
+                    <h1 class="h2">My Volunteers</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
+                        </div>
                     </div>
-
-                    <!-- Search Bar -->
-                    <br>
-                    <!-- <p>Type something in the input field to search the table for first names, last names or emails:</p>   -->
-                    <input class="form-control" id="searchInput" type="text" placeholder="Search">
-                    <br>
-
-                    <?php if ($volunteers): ?>
-                      <table class='table table-bordered table-striped' id='affiliations'>
-                        <thead>
-                          <tr>
-                            <th onclick='sortTable(0)' style='cursor:pointer'>
-                              Member Name
-                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
-                              <!-- <button type='button' class='btn btn-link'><span class='glyphicon glyphicon-sort'></span></button> -->
-                            </th>
-                            <th onclick='sortTable(1)' style='cursor:pointer'>
-                              Email Address
-                            </th>
-                            <th onclick='sortTableNumerically(2)' style='cursor:pointer'>
-                              Graduation Year
-                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
-                            </th>
-                            <th onclick='sortTableNumerically(3)' style='cursor:pointer'>
-                              This Semester's Contributions
-                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
-                            </th>
-                            <th onclick='sortTableNumerically(4)' style='cursor:pointer'>
-                              This School Year's Contributions
-                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
-                            </th>
-                            <th onclick='sortTableNumerically(5)' style='cursor:pointer'>
-                              Total Contributions
-                              <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
-                            </th>
-                            <th>
-                              Action
-                            </th>
-                          </tr>
-                        </thead>
-
-                        <tbody id="affiliationTableBody">
-                        <?php foreach($volunteers as $volunteer): ?>
-                          <tr>
-                            <td>
-                              <?php echo $volunteer['last_name'] . ", " . $volunteer['first_name']; ?>
-                            </td>
-                            <td>
-                              <?php echo $volunteer['email_address']; ?>
-                            </td>
-                            <td>
-                              <?php echo $volunteer['graduation_year']; ?>
-                            </td>
-                            <td>
-                              <?php echo $obj->getSemesterContributionTotal($volunteer['volunteer_id']); //echo $volunteer['total_contribution_value']; ?>
-                            </td>
-                            <td>
-                              <?php echo $obj->getSchoolYearContributionTotal($volunteer['volunteer_id']); //echo $volunteer['total_contribution_value']; ?>
-                            </td>
-                            <td>
-                              <?php echo $volunteer['total_contribution_value']; ?>
-                            </td>
-                            <td>
-                              <a href=<?php echo "affiliation-read.php?volunteer_id=".$volunteer['volunteer_id']; ?> title="View Volunteer's Contributions" data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>
-                              <a href=<?php echo "affiliation-delete.php?affiliation_id=".$volunteer['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash' style='color:red'></span> Delete</a>
-                            </td>
-                          </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-
-                      </table>
-                    <?php else: ?>
-                      <p class='lead'><em>No affiliated volunteers were found.</em></p>
-                    <?php endif; ?>
                 </div>
-            </div>
+
+                <!-- Search Bar -->
+                <input class="form-control my-3" id="searchInput" type="text" placeholder="Search">
+
+                <!-- Volunteers Table -->
+                <?php if ($volunteers): ?>
+                    <div class="table-responsive">
+                        <table class='table table-condensed print' id='affiliations'>
+                            <thead>
+                                <tr>
+                                    <th onclick='sortTable(0)' style='cursor:pointer'>
+                                    Volunteer Name
+                                    </th>
+                                    <th onclick='sortTable(1)' style='cursor:pointer'>
+                                    Email Address
+                                    </th>
+                                    <th onclick='sortTableNumerically(2)' style='cursor:pointer'>
+                                    Graduation Year
+                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                    </th>
+                                    <th onclick='sortTableNumerically(3)' style='cursor:pointer'>
+                                    This Semester's Contributions
+                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                    </th>
+                                    <th onclick='sortTableNumerically(4)' style='cursor:pointer'>
+                                    This School Year's Contributions
+                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                    </th>
+                                    <th onclick='sortTableNumerically(5)' style='cursor:pointer'>
+                                    Total Contributions
+                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                    </th>
+                                    <th>
+                                    Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="affiliationTableBody">
+                            <?php foreach($volunteers as $volunteer): ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $volunteer['last_name'] . ", " . $volunteer['first_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $volunteer['email_address']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $volunteer['graduation_year']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $obj->getSemesterContributionTotal($volunteer['volunteer_id']); //echo $volunteer['total_contribution_value']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $obj->getSchoolYearContributionTotal($volunteer['volunteer_id']); //echo $volunteer['total_contribution_value']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $volunteer['total_contribution_value']; ?>
+                                    </td>
+                                    <td>
+                                        <a href=<?php echo "affiliation-read.php?volunteer_id=".$volunteer['volunteer_id']; ?> title="View Volunteer's Contributions" data-toggle='tooltip' class='btn btn-link btn-sm'><span class='glyphicon glyphicon-eye-open'></span> View</a>
+                                        <a href=<?php echo "affiliation-delete.php?affiliation_id=".$volunteer['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip' class='btn btn-link btn-sm' style='color:red'><span class='glyphicon glyphicon-trash' style='color:red'></span> Delete</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class='lead'><em>No affiliated volunteers were found.</em></p>
+                <?php endif; ?>
+            </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
 
+    <script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+
     <script>
+    // Activate feather icon 
+    (function () {
+    'use strict'
+
+    feather.replace({ 'aria-hidden': 'true' })
+
+    })()
+
+    // search feature
+    $(document).ready(function(){
+    $("#searchInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#engagementTableBody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
+
+    // sort table alphabetically
     function sortTable(n) {
       var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
       table = document.getElementById("affiliations");
@@ -179,8 +198,7 @@ $volunteers = $obj->getAffiliatedVolunteers();
       }
     }
 
-
-
+    // sort table numerically
     function sortTableNumerically(n) {
       var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
       table = document.getElementById("affiliations");
@@ -235,20 +253,25 @@ $volunteers = $obj->getAffiliatedVolunteers();
         }
       }
     }
-    </script>
 
-    <script>
     // search feature
     $(document).ready(function(){
-    $("#searchInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#affiliationTableBody tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#affiliationTableBody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
         });
     });
-    });
     </script>
-    
-    <?php include '../footer.php';?>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
