@@ -28,14 +28,14 @@ if($_SERVER["REQUEST_METHOD"] == "GET")
 
     if($obj->updateEngagement()) {
       if($engagement_status == -1) {
-        echo "<a onclick='showStatus(" . $engagement_id .",1)' title='Confirm This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:green'><span class='glyphicon glyphicon-ok'></span></a>";
-        echo "<a onclick='showStatus(" . $engagement_id .",0)' title='Deny This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-remove'></span></a>";
+        echo "<a onclick='showStatus(" . $engagement_id .",1)' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-ok'></span>Confirm</a> ";
+        echo "<a onclick='showStatus(" . $engagement_id .",0)' class='btn btn-danger btn-sm' ><span class='glyphicon glyphicon-remove'></span>Deny</a>";
       }
       elseif($engagement_status == 0) {
-        echo "<b>Denied!</b> <a onclick='showStatus(" . $engagement_id .", -1)' class='btn btn-outline-secondary'>Undo</a>";
+        echo "<b>Denied!</b> <a onclick='showStatus(" . $engagement_id .", -1)' class='btn btn-outline-secondary btn-sm'>Undo</a>";
       }
       elseif($engagement_status == 1) {
-        echo "<b>Confirmed!</b> <a onclick='showStatus(" . $engagement_id .", -1)' class='btn btn-outline-secondary'>Undo</a>";
+        echo "<b>Confirmed!</b> <a onclick='showStatus(" . $engagement_id .", -1)' class='btn btn-outline-secondary btn-sm'>Undo</a>";
       }
       else {
         echo "Error!";
