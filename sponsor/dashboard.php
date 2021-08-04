@@ -41,12 +41,25 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                     </div>
                 </div>
 
-                <a href="events.php" class="btn btn-primary">Sponsored Events</a>
-                <a href="affiliations.php" class="btn btn-primary">Affiliated Volunteers</a>
-                <a href="engagements.php" class="btn btn-primary">Pending Engagements</a>
-                <a href="engagement-create.php" class="btn btn-primary">Add Engagement</a>
-                <a href="engagement-batch-create.php" class="btn btn-primary">Add Multiple Engagements</a>
-                <a href="attendance-anywhere.php" class="btn btn-success"><span class='glyphicon glyphicon-qrcode'></span> Attendance Anywhere</a>
+                <a href="events.php" class="btn btn-success mb-1">My Events</a>
+
+                <a href="affiliations.php" class="btn btn-primary mb-1">My Volunteers</a>
+
+                <div class="btn-group mb-1">
+                    <button class="btn btn-primary dropdown-toggle dropdown-menu-end"" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Engagements
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="engagements.php">Pending</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="engagement-create.php">Add New</a></li>
+                        <li><a class="dropdown-item" href="engagement-batch-create.php">Multi-Add</a></li>
+                    </ul>
+                </div>
+
+                <a href="../organizer/dashboard.php" class="btn btn-primary mb-1">Tutoring</a>
+
+                <a href="attendance-anywhere.php" class="btn btn-primary mb-1">ID Scanner</a>
 
             </main>
 
@@ -54,8 +67,8 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
     <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 
     <script>
     (function () {
