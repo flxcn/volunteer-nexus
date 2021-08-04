@@ -1,225 +1,202 @@
 <?php
-// Initialize the session
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
-}
-
-function formatLinks($text) {
-    return preg_replace('@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@', '<a target="ref" href="http$2://$4">$1$2$3$4</a>', $text);
 }
 
 // Check existence of id parameter before processing further
 if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
-    // Include config file
-    require_once "../config.php";
+    
+    $sponsor_id = $_SESSION["sponsor_id"];
+    $event_id = $_GET["event_id"];
 
-    // Prepare a select statement
-    $sql = "SELECT * FROM events WHERE event_id = ?";
-
-    if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "i", $param_event_id);
-
-        // Set parameters
-        $param_event_id = trim($_GET["event_id"]);
-
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            $result = mysqli_stmt_get_result($stmt);
-
-            if(mysqli_num_rows($result) == 1){
-                /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
-                $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-                // Retrieve individual field value
-                $event_id = $row["event_id"];
-                $event_name = $row["event_name"];
-                $sponsor_name = $row["sponsor_name"];
-                $description = $row["description"];
-                $location = $row["location"];
-                $contribution_type = $row["contribution_type"];
-                $contact_name = $row["contact_name"];
-                $contact_phone = $row["contact_phone"];
-                $contact_email = $row["contact_email"];
-                $registration_start = $row["registration_start"];
-                $registration_end = $row["registration_end"];
-                $event_start = $row["event_start"];
-                $event_end = $row["event_end"];
-            } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
-                exit();
-            }
-
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
+    require_once "../classes/SponsorEventReader.php";
+    $eventObj = new SponsorEventReader($sponsor_id);
+    $eventObj->setEventId($event_id);
+    
+    if($eventObj->getEventDetails()) {
+        require_once "../classes/SponsorOpportunityReader.php";
+        $opportunityObj = new SponsorOpportunityReader($sponsor_id, $event_id);
+        $opportunities = $opportunityObj->getOpportunities();
+    } else {
+        header("location: error.php");
     }
 
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-    // Close connection
-    //mysqli_close($link);
-} else{
-    // URL doesn't contain id parameter. Redirect to error page
+} else {
     header("location: error.php");
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
     <title>View Event</title>
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
-    <style type="text/css">
-        .wrapper{
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-        .table-details{
-          table-layout: fixed;
-          border: none;
-        }
-    </style>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/events.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
-  <?php $thisPage='Events'; include 'navbar.php';?>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">View Event</h2>
-                        <p>
-                          <a href="event-update.php?event_id=<?php echo $_GET["event_id"];?>" class="btn btn-primary pull-right"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
-                          <a href="events.php" class="btn btn-default pull-right">Back</a>
-                        </p>
+    <!-- Navbar -->
+    <?php $thisPage='Events'; include 'navbar.php';?>
+
+    <div class="container-fluid print">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">View Event</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                        <div class="btn-group me-2">
+                            <a class="btn btn-sm btn-outline-secondary" href="events.php">Go back</a>
+                            <a class="btn btn-sm btn-primary" href="event-update.php?event_id=<?php echo $_GET["event_id"];?>">Edit Event</a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print(); return false;"><span data-feather="printer"></span> Print</button>
+                        </div>
                     </div>
-
-                    <table class='table table-details'>
-                        <tr>
-                          <th>Event Name</th>
-                          <td><?php echo $row["event_name"]; ?></td>
-                        </tr>
-                        <tr>
-                          <th>Sponsor Name</th>
-                          <td><?php echo $row["sponsor_name"]; ?></td>
-                        </tr>
-                        <tr>
-                          <th>Description</th>
-                          <td><?php echo formatLinks($row["description"]); ?></td>
-                        </tr>
-                        <tr>
-                          <th>Location</th>
-                          <td><?php echo $row["location"]; ?></td>
-                        </tr>
-                        <tr>
-                          <th>Contribution Type</th>
-                          <td><?php echo $row["contribution_type"]; ?></td>
-                        </tr>
-                    </table>
-
-                    <table class="table table-details">
-                        <tr>
-                          <th>Contact Name(s)</th>
-                          <td><?php echo $row["contact_name"]; ?></td>
-                        </tr>
-                        <tr>
-                          <th>Contact Phone(s)</th>
-                          <td><?php echo $row["contact_phone"]; ?></td>
-                        </tr>
-                        <tr>
-                          <th>Contact Email(s)</th>
-                          <td><?php echo $row["contact_email"]; ?></td>
-                        </tr>
-                    </table>
-
-                    <table class="table table-details">
-                        <tr>
-                          <th style="color:red">Registration Deadline</th>
-                          <td><?php echo $row["registration_end"]; ?></td>
-                        </tr>
-                        <tr>
-                          <th>Event Duration</th>
-                          <td><?php echo $row["event_start"]; ?> to <?php echo $row["event_end"]; ?></td>
-                        </tr>
-                    </table>
-                  </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">Opportunities</h2>
-                        <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"]?>" class="btn btn-success pull-right">Add New Opportunity</a>
-                    </div>
-
-                    <?php
-                    // Attempt select query execution
-                    $sql = "SELECT opportunities.opportunity_id AS opportunity_id, opportunities.event_id AS event_id, opportunity_name, description, start_date, start_time, end_date, end_time, total_positions, COUNT(engagement_id) AS positions_filled
-                    FROM opportunities LEFT JOIN engagements ON opportunities.opportunity_id = engagements.opportunity_id
-                    WHERE opportunities.event_id = '{$_GET["event_id"]}'
-                    GROUP BY opportunity_name, description, start_date, start_time, end_date, end_time, total_positions, opportunities.opportunity_id";
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th>Role Name</th>";
-                                        echo "<th>Description</th>";
-                                        echo "<th>Start Date</th>";
-                                        echo "<th>End Date</th>";
-                                        echo "<th>Positions Filled</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['opportunity_name'] . "</td>";
-                                        echo "<td>" . $row['description'] . "</td>";
-                                        echo "<td>" . $row['start_date'] . " " . $row['start_time'] ."</td>";
-                                        echo "<td>" . $row['end_date'] . " " . $row['end_time'] . "</td>";
-                                        echo "<td>" . $row['positions_filled'] . "/" . $row['total_positions'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='opportunity-read.php?event_id=" . $_GET["event_id"] . "&opportunity_id=". $row['opportunity_id'] ."' title='View Opportunity' data-toggle='tooltip' class='btn btn-link'><span class='glyphicon glyphicon-eye-open'></span> View</a>";
-                                            echo "<br>";
-                                            echo "<a href='opportunity-update.php?event_id=" . $_GET["event_id"] . "&opportunity_id=". $row['opportunity_id'] ."' title='Update Opportunity' data-toggle='tooltip' class='btn btn-link' style='color:black'><span class='glyphicon glyphicon-pencil'></span> Edit</a>";
-                                            echo "<br>";
-                                            echo "<a href='opportunity-delete.php?event_id=" . $_GET["event_id"] . "&opportunity_id=". $row['opportunity_id'] ."' title='Delete Opportunity' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-trash'></span> Delete</a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>No opportunities were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-
-                    // Close connection
-                    mysqli_close($link);
-                    ?>
                 </div>
-            </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-lg-4 mb-4">
+                        <!-- Event Details -->
+                        <div class="card border-dark mb-3">
+                            <div class="card-body">
+                                <h4 class="card-title"><?php echo $eventObj->getEventName(); ?></h4>
+                                <h6 class="card-subtitle mb-2 text-muted"><?php echo $eventObj->getIsPublic(); ?></h6>
+                                <hr>
+                                <p class="card-text"><?php echo $eventObj->formatLinks($eventObj->getDescription()); ?></p>
+                                <hr>
+                                <p class="card-text"><b>When: </b><?php echo $eventObj->formatEventStartToEnd($eventObj->getEventStart(), $eventObj->getEventEnd()) ?> <i>(Register by <b><?php echo $eventObj->formatDate($eventObj->getRegistrationEnd()); ?></b>)</i></p>
+                                <p class="card-text"><b>Where: </b><?php echo $eventObj->getLocation(); ?></p>
+                            </div>
+                            <button onclick="toggleContactInfo();" class="btn btn-block btn-light card-footer" id="toggleButton"><small id="toggleButtonText">See contact info</small></button>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="card border-dark" style="display:none;" id="contactInfo">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Contact Info</h4>
+                                <p class="card-text"><b>Name:</b> <?php echo $eventObj->getContactName(); ?></p>
+                                <p class="card-text"><b>Email Address:</b> <?php echo $eventObj->getContactEmail(); ?></p>
+                                <p class="card-text"><b>Phone Number:</b> <?php echo $eventObj->getContactPhone(); ?></p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Opportunities -->
+                    <div class="col-sm-12 col-lg-8 mb-4">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">Opportunities</h5>
+                                <?php if($opportunities): ?>
+                                    <div class="table-responsive">
+                                        <table class='table table-hover'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Role</th>
+                                                    <th>Description</th>
+                                                    <th>Duration</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                $modalCount = 0; 
+                                                foreach($opportunities as $opportunity): 
+                                                    $modalCount++;
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $opportunity['opportunity_name']; ?></td>
+                                                    <td><?php echo $eventObj->formatDescription($opportunity['description']); ?></td>
+                                                    <td><?php echo $opportunityObj->formatTime($opportunity['start_time']) . " to<br>" . $opportunityObj->formatTime($opportunity['end_time']); ?></td>
+                                                    <td>
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">
+                                                        View
+                                                        </button>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="modal<?php echo $modalCount;?>" tabindex="-1" aria-labelledby="modal<?php echo $modalCount;?>Label" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="modal<?php echo $modalCount;?>Label"><?php echo $opportunity["opportunity_name"]; ?></h5>                           
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <h6 class="small text-muted"><?php echo $opportunity["contribution_value"] . " " . $eventObj->getContributionType(); ?></h6>
+                                                                        <p><?php echo $opportunity["description"]; ?></p>
+                                                                        <hr>
+                                                                        <p><b>From </b><?php echo $opportunityObj->formatDate($opportunity['start_date']) . " @ " . $opportunityObj->formatTime($opportunity['start_time']) . " <br><b>To</b>   " . $opportunityObj->formatDate($opportunity['end_date']) . " @ " . $opportunityObj->formatTime($opportunity['end_time']); ?></p>
+                                                                        <p><b>Participants: </b><?php echo $opportunity['positions_filled'] . "/" . $opportunity['total_positions']; ?></p>
+                                                                    </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        <a class="btn btn-primary" href=<?php echo "opportunity-read.php?event_id=" . $_GET["event_id"] . "&opportunity_id=" . $opportunity['opportunity_id']; ?>>See participants</a>
+                                                                        <a class="btn btn-success" href=<?php echo "opportunity-update.php?event_id=" . $_GET["event_id"] . "&opportunity_id=" . $opportunity['opportunity_id']; ?>>Edit</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <?php else: ?>
+                                    <p class='lead'>
+                                        <em>There are currently no opportunities.</em>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Footer -->
+            <?php include "footer.php"; ?>
         </div>
     </div>
-    <?php include '../footer.php';?>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function toggleContactInfo() {
+            var contactInfo = document.getElementById("contactInfo");
+            var toggleButton = document.getElementById("toggleButton");
+            var toggleButtonText = document.getElementById("toggleButtonText");
+            if (contactInfo.style.display === "none") {
+                contactInfo.style.display = "block";
+                toggleButtonText.textContent = "Hide contact info";
+            } else {
+                contactInfo.style.display = "none";
+                toggleButtonText.textContent = "See contact info";
+            }
+        }
+    </script>
+
+    <script>
+    (function () {
+    'use strict'
+
+    feather.replace({ 'aria-hidden': 'true' })
+
+    })()
+    </script>
 </body>
 </html>
