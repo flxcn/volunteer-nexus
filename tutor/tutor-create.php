@@ -13,7 +13,7 @@ if($_SESSION["is_tutor"] && $_SESSION["is_tutor"] == true) {
     header("location: tutor-update.php");
 }
 
-// echo     disk_total_space("../");
+// echo disk_total_space("../");
 
 // Define and intialize variables
 $volunteer_id = $_SESSION["volunteer_id"];
@@ -64,7 +64,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     // Set opportunity_name for this Tutorial
     $last_name = $_SESSION['last_name'];
     $first_name = $_SESSION['first_name'];
-    $tutorialEngagementCreationObj->setOpportunityName($last_name, $first_name);
 
     // Validate date of tutorial from "date"
     $date = trim($_POST["date"]);
@@ -172,6 +171,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     <!-- Custom styles for this template -->
     <link href="../assets/css/form.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css" />
 </head>
 
 <body class="bg-light" onload='loadSponsors();'>
@@ -187,7 +194,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center order-md-1">
-                <form class="needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate="" oninput='confirm_password.setCustomValidity(confirm_password.value != password.value ? "Passwords do not match." : "")'>
+                <form class="needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate="">
                 
                     <h4 class="mb-3">Tutorial details</h4>
 
@@ -203,7 +210,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         </div>
                     </div>
 
-
                     <div class="mb-3">
                         <label for="phone_number">Phone Number <small>(Format: 123-456-7890)</small></label>
                         <input type="tel" class="form-control" id="contribution_value" name="phone_number" placeholder="###-###-####" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
@@ -212,8 +218,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         </div>
                     </div>
 
-                    
-
                     <!-- Make this better, perhaps build it off of affiliations, to reduce redundancy. -->
                     <div class="mb-3">
                         <label for="graduation_year">Sponsor</label>
@@ -221,33 +225,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         </select>
                     </div>
 
-                    <h4 class="mb-3">Areas of Expertise</h4>
+                    <h4 class="mb-3">Tutoring Focus</h4>
 
+                        <!-- <input type="password" name="password" class="form-control" placeholder="New Password" value="<?php //echo $password; ?>" id="password" name="password"> -->
                     <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="geometry">
-                            <label class="form-check-label" for="geometry">
-                                Geometry
-                            </label>
-                        </div>
+                        <!-- data-allow-clear="1" -->
+                        <label for="subjects">Subjects</label>
+                        <select class="form-select w-100 js-example-basic-multiple" data-placeholder="Choose anything"  id="subjects" name="states[]" id="js-example-basic-multiple" multiple="multiple">
+                            <optgroup label="Math">
+                                <option value="AL">Geometry</option>
+                                <option value="OZ">Algebra I</option>
+                                <option value="WY">Algebra II</option>
+                            </optgroup>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="alg1">
-                            <label class="form-check-label" for="alg1">
-                                Algebra I
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="alg2">
-                            <label class="form-check-label" for="alg2">
-                                Algebra II
-                            </label>
-                        </div>
-
-                        <!-- <div class="invalid-feedback">
-                            Please enter a valid email address for your username.
-                        </div> -->
+                            <optgroup label="Social Studies">
+                                <option value="AL">Human Geography</option>
+                                <option value="OZ">Government</option>
+                                <option value="WY">US History</option>
+                            </optgroup>
+                        </select>
                     </div>
 
                     <h4 class="mb-3">Target Audience</h4>
@@ -279,24 +275,79 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         </div> -->
                     </div>
 
+
                     <h4 class="mb-3">Availability</h4>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="start_time">Start Time</label>
-                            <input type="time" class="form-control" id="start_time" name="start_time" min="00:00" max="23:59" required>
-                            <div class="invalid-feedback">
-                                Valid start time is required.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="end_time">End Time</label>
-                            <input type="time" class="form-control" id="end_time" name="end_time" min="00:00" max="23:59" required>
-                            <div class="invalid-feedback">
-                                Valid end time is required.
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table table-bordered table-sm border-dark align-middle text-center">
+                        <thead class="table-dark">
+                            <td class="col-3" scope="col">Day</td>
+                            <td class="col-3" scope="col">Morning</td>
+                            <td class="col-3" scope="col">After School</td>
+                            <td class="col-3" scope="col">Evening</td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row">Mon.</td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row">Tue.</td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row">Wed.</td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row">Thu.</td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row">Fri.</td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" value="" id="elem">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
 
                     <hr class="mb-4">
 
@@ -312,9 +363,73 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     <!-- Custom js for this page -->
     <!-- <script src="../assets/js/form.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- select2-bootstrap-5-theme -->
+    <script src="/select2-bootstrap-5-theme/script.js"></script>
     
+
     <script>
+        function select2( size ) {
+            $( ".js-example-basic-multiple" ).each( function () {
+                $( this ).select2( {
+                    theme: "bootstrap-5",
+                    width: $( this ).data( "width" ) ? $( this ).data( "width" ) : $( this ).hasClass( "w-100" ) ? "100%" : "style",
+                    placeholder: $( this ).data( "placeholder" ),
+                    allowClear: Boolean( $( this ).data( "allow-clear" ) ),
+                    closeOnSelect: !$( this ).attr( "multiple" ),
+                    containerCssClass: size == "small" || size == "large" ? "select2--" + size : "",
+                    selectionCssClass: size == "small" || size == "large" ? "select2--" + size : "",
+                    dropdownCssClass: size == "small" || size == "large" ? "select2--" + size : "",
+                } );
+            } );
+        }
+
+        select2()
+
+        var buttons = document.querySelectorAll(".select2-size")
+
+        buttons.forEach( function( button ) {
+            var id = button.id
+            button.addEventListener( "click", function( e ) {
+                e.preventDefault()
+                select2( id )
+                document.querySelectorAll(".select2-size").forEach( function( item ) {
+                    item.classList.remove( "active" )
+                } )
+
+                this.classList.add( "active" )
+            } )
+        } )
+
+        // $(document).ready(function() {
+        //     $('.js-example-basic-multiple').select2();
+        // });
+
+        // Basic
+        $(".js-example-basic-multiple").select2({
+            theme: "bootstrap-5",
+        });
+
+        // Small using Bootstrap 5 classes
+        // $("#form-select-sm").select2({
+        //     theme: "bootstrap-5",
+        //     dropdownParent: $("#form-select-sm").parent(), // Required for dropdown styling
+        // });
+
+        // Large using Select2 properties
+        // $(".js-example-basic-multiple").select2({
+        //     theme: "bootstrap-5",
+        //     containerCssClass: "select2--large", // For Select2 v4.0
+        //     selectionCssClass: "select2--large", // For Select2 v4.1
+        //     dropdownCssClass: "select2--large",
+        // });
+
         $("body").on("submit", "form", function() {
             $(this).submit(function() {
                 return false;
