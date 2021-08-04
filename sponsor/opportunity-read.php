@@ -4,200 +4,176 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-  header("location: login.php");
-  exit;
+    header("location: sign-in.php");
+    exit;
 }
 
-function formatLinks($text) {
-    return preg_replace('@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@', '<a target="ref" href="http$2://$4">$1$2$3$4</a>', $text);
-}
+$event_id = trim($_GET["event_id"]);
+$opportunity_id = trim($_GET["opportunity_id"]);
+$sponsor_id = trim($_GET["sponsor_id"]);
 
-// Check existence of id parameter before processing further
-if(isset($_GET["opportunity_id"])){
-  // Include config file
-  require_once "../config.php";
-
-  // Prepare a select statement
-  $sql = "SELECT * FROM opportunities WHERE opportunity_id = ?";
-
-  if($stmt = mysqli_prepare($link, $sql)){
-    // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
-
-    // Set parameters
-    $param_opportunity_id = trim($_GET["opportunity_id"]);
-
-    // Attempt to execute the prepared statement
-    if(mysqli_stmt_execute($stmt)){
-      $result = mysqli_stmt_get_result($stmt);
-
-      if(mysqli_num_rows($result) == 1){
-        /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
-        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-        // Retrieve individual field value
-        $opportunity_name = $row["opportunity_name"];
-        $description = $row["description"];
-        $start_date = $row["start_date"];
-        $start_time = $row["start_time"];
-        $end_date = $row["end_date"];
-        $end_time = $row["end_time"];
-        $total_positions = $row["total_positions"];
-        //{7} $positions_available = $[];
-
-      } else{
-        // URL doesn't contain valid id parameter. Redirect to error page
-        header("location: error.php");
-        exit();
-      }
-
-    } else{
-      echo "Oops! Something went wrong. Please try again later.";
-    }
-  }
-
-  // Close statement
-  mysqli_stmt_close($stmt);
-
-  // Close connection
-  //mysqli_close($link);
-} else{
-  // URL doesn't contain id parameter. Redirect to error page
-  header("location: error.php");
-  exit();
-}
+require '../classes/SponsorOpportunityReader.php';
+$obj = new SponsorOpportunityReader($sponsor_id, $event_id);
+$engagements = $obj->getEngagements($opportunity_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>View Opportunity</title>
-  <!--Load required libraries-->
-  <?php include '../head.php'?>
-  <style type="text/css">
-  body{
-    font: 12px sans-serif;
-  }
-  .wrapper{
-    margin: 0 auto;
-  }
-  .page-header h2{
-    margin-top: 0;
-  }
-  .table-details{
-    table-layout: fixed;
-    border: none;
-  }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
+    <title>View Opportunity</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
+
 <body>
+    <?php $thisPage=''; include 'navbar.php';?>
 
-  <?php $thisPage='Events'; include 'navbar.php';?>
-
-  <div class="wrapper">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="page-header clearfix">
-            <h2 class="pull-left">View Opportunity</h2>
-            <p><a href='event-read.php?event_id=<?php echo $_GET["event_id"]; ?>' class="btn btn-primary pull-right">Back</a></p>
-          </div>
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom print">
+                    <h1 class="h2">View Opportunity Signups</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                        <div class="btn-group me-2">
+                            <a class="btn btn-sm btn-outline-primary" href="event-read.php?event_id=<?php echo $event_id; ?>">View Event</a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
+                        </div>
+                    </div>
+                </div>
 
-          <!-- General Information -->
-          <table class='table table-details'>
-            <tr>
-              <th>Opportunity Name</th>
-              <td><?php echo $row["opportunity_name"]; ?></td>
-            </tr>
-            <tr>
-              <th>Description</th>
-              <td><?php echo formatLinks($row["description"]); ?></td>
-            </tr>
-          </table>
+                <!-- Search Bar -->
+                <input class="form-control my-3" id="searchInput" type="text" placeholder="Search">
 
-          <!-- Date & Time Information -->
-          <table class="table table-details">
-            <tr>
-              <th>On what date(s)?</th>
-              <td>From <?php echo $row["start_date"]; ?> to <?php echo $row["end_date"]; ?></td>
-            </tr>
-            <tr>
-              <th>At what time(s)?</th>
-              <td>From <?php echo $row["start_time"]; ?> to <?php echo $row["end_time"]; ?></td>
-            </tr>
-          </table>
+                <!-- Events Table -->
+                <div id="engagementsContent">
+                    <?php if ($engagements): ?>
+                        <table class='table table-condensed print' id='engagements'>
+                            <thead>
+                                <tr>
+                                    <th onclick='sortTable(0)' style='cursor:pointer'>Time Submitted</th>
+                                    <th onclick='sortTable(1)' style='cursor:pointer'>Volunteer Name</th>
+                                    <th>Email Address</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
 
-          <!-- Contribution System Information -->
-          <table class="table table-details">
-            <tr>
-              <th>Total Positions</th>
-              <td><?php echo $row["total_positions"]; ?></td>
-            </tr>
-            <tr>
-              <th>Contribution Value</th>
-              <td><?php echo $row["contribution_value"]; ?></td>
-            </tr>
-          </table>
+                            <tbody id="engagementTableBody">
+                                <?php foreach($engagements as $engagement): ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $engagement['time_submitted']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['last_name'] . ", " . $engagement['first_name']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $engagement['email_address']; ?>
+                                    </td>
+                                    <td>
+                                        <a href=<?php echo "opportunity-delete.php?opportunity_id=" . $engagement['opportunity_id']; ?> class='btn btn-link btn-sm'>Delete</a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p class='lead'><em>No engagements so far.</em></p>
+                    <?php endif; ?>
+                </div>
+            </main>
 
+            <?php include "footer.php"; ?>
         </div>
-      </div>
     </div>
-  </div>
 
-  <div class="wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="page-header clearfix">
-            <h2 class="pull-left">Who's Signed Up?</h2>
-          </div>
+    <script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 
-          <?php
-          // Attempt select query execution
-          $sql = "SELECT engagements.time_submitted AS time_submitted, engagements.opportunity_id AS opportunity_id, volunteers.first_name AS first_name, volunteers.last_name AS last_name, volunteers.username AS email_address, engagements.engagement_id AS engagement_id
-          FROM engagements LEFT JOIN volunteers ON volunteers.volunteer_id = engagements.volunteer_id
-          WHERE engagements.opportunity_id = '{$_GET['opportunity_id']}'
-          GROUP BY engagements.time_submitted, volunteers.first_name, volunteers.last_name, volunteers.username, engagements.engagement_id";
+    <script>
+    // Activate feather icon 
+    (function () {
+    'use strict'
 
-          if($result = mysqli_query($link, $sql)){
-            if(mysqli_num_rows($result) > 0){
-              echo "<table class='table table-bordered table-striped'>";
-              echo "<thead>";
-              echo "<tr>";
-              echo "<th>Time Submitted</th>";
-              echo "<th>Name</th>";
-              echo "<th>Email</th>";
-              echo "</tr>";
-              echo "</thead>";
-              echo "<tbody>";
-              while($row = mysqli_fetch_array($result)){
-                echo "<tr>";
-                echo "<td>" . $row['time_submitted'] . "</td>";
-                echo "<td>" . $row['last_name'] . ", " . $row['first_name'] . "</td>";
-                echo "<td>" . $row['email_address'] . "</td>";
-                echo "<td>";
-                echo "<a href='engagement-delete.php?opportunity_id=". $row['opportunity_id'] ."&engagement_id=". $row['engagement_id'] ."' title='Delete Engagement' data-toggle='tooltip' style='color:red' class='btn btn-link' ><span class='glyphicon glyphicon-trash'></span> Delete</a>";
-                echo "</td>";
-                echo "</tr>";
-              }
-              echo "</tbody>";
-              echo "</table>";
-              // Free result set
-              mysqli_free_result($result);
-            } else{
-              echo "<p class='lead'><em>No opportunities were found.</em></p>";
+    feather.replace({ 'aria-hidden': 'true' })
+
+    })()
+
+    // Sort table functionality 
+    function sortTable(n) {
+      var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
+      table = document.getElementById("engagements");
+      switching = true;
+      // Set the sorting direction to ascending:
+      direction = "asc";
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName("TD")[n];
+          y = rows[i + 1].getElementsByTagName("TD")[n];
+          /* Check if the two rows should switch place,
+          based on the direction, asc or desc: */
+          if (direction == "asc") {
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
             }
-          } else{
-            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+          } else if (direction == "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
           }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          // Each time a switch is done, increase this count by 1:
+          switchcount ++;
+        } else {
+          /* If no switching has been done AND the direction is "asc",
+          set the direction to "desc" and run the while loop again. */
+          if (switchcount == 0 && direction == "asc") {
+            direction = "desc";
+            switching = true;
+          }
+        }
+      }
+    }
 
-          // Close connection
-          mysqli_close($link);
-          ?>
-        </div>
-      </div>
-    </div>
-  </div>
-  <?php include '../footer.php';?>
+    // search feature
+    $(document).ready(function(){
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#engagementTableBody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+    </script>
+
 </body>
 </html>
