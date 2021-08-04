@@ -53,29 +53,25 @@ $volunteers = $obj->getAffiliatedVolunteers();
                             <thead>
                                 <tr>
                                     <th onclick='sortTable(0)' style='cursor:pointer'>
-                                    Volunteer Name
+                                        Volunteer Name
                                     </th>
                                     <th onclick='sortTable(1)' style='cursor:pointer'>
-                                    Email Address
+                                        Email Address
                                     </th>
                                     <th onclick='sortTableNumerically(2)' style='cursor:pointer'>
-                                    Graduation Year
-                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                        Graduation Year
                                     </th>
                                     <th onclick='sortTableNumerically(3)' style='cursor:pointer'>
-                                    This Semester's Contributions
-                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                        This Semester's Contributions
                                     </th>
                                     <th onclick='sortTableNumerically(4)' style='cursor:pointer'>
-                                    This School Year's Contributions
-                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                        This School Year's Contributions
                                     </th>
                                     <th onclick='sortTableNumerically(5)' style='cursor:pointer'>
-                                    Total Contributions
-                                    <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
+                                        Total Contributions
                                     </th>
                                     <th>
-                                    Action
+                                        Action
                                     </th>
                                 </tr>
                             </thead>
@@ -102,8 +98,8 @@ $volunteers = $obj->getAffiliatedVolunteers();
                                         <?php echo $volunteer['total_contribution_value']; ?>
                                     </td>
                                     <td>
-                                        <a href=<?php echo "affiliation-read.php?volunteer_id=".$volunteer['volunteer_id']; ?> title="View Volunteer's Contributions" data-toggle='tooltip' class='btn btn-link btn-sm'><span class='glyphicon glyphicon-eye-open'></span> View</a>
-                                        <a href=<?php echo "affiliation-delete.php?affiliation_id=".$volunteer['affiliation_id']; ?> title='Delete This Affiliation' data-toggle='tooltip' class='btn btn-link btn-sm' style='color:red'><span class='glyphicon glyphicon-trash' style='color:red'></span> Delete</a>
+                                        <a href=<?php echo "affiliation-read.php?volunteer_id=".$volunteer['volunteer_id']; ?> class='btn btn-link btn-sm'>View</a>
+                                        <a href=<?php echo "affiliation-delete.php?affiliation_id=".$volunteer['affiliation_id']; ?> class='btn btn-link btn-sm' style='color:red'>Remove</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -131,16 +127,6 @@ $volunteers = $obj->getAffiliatedVolunteers();
     feather.replace({ 'aria-hidden': 'true' })
 
     })()
-
-    // search feature
-    $(document).ready(function(){
-    $("#searchInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#engagementTableBody tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
-    });
 
     // sort table alphabetically
     function sortTable(n) {
