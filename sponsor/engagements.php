@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
@@ -14,76 +14,49 @@ $engagements = $obj->getPendingEngagements();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
     <title>Pending Engagements</title>
 
-    <!--Load required libraries-->
-    <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-    </style>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-
-    <script>
-      function showStatus(id,num) {
-        if (id == "" && num=="")
-        {
-          return;
-        }
-        else
-        {
-          if (window.XMLHttpRequest)
-          {
-            xmlhttp = new XMLHttpRequest();
-          }
-
-          xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              document.getElementById("statusOf"+id).innerHTML = this.responseText;
-            }
-          };
-          xmlhttp.open("GET","engagement-verify.php?engagement_id="+id+"&status="+num,true);
-          xmlhttp.send();
-        }
-      }
-    </script>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 
 <body>
     <?php $thisPage='Engagements'; include 'navbar.php';?>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">Engagements</h2>
-                        <a href="engagement-create.php" class="btn btn-success pull-right"><span class='glyphicon glyphicon-plus'></span> Add Engagement</a>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom print">
+                    <h1 class="h2">Pending Engagements</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                        <div class="btn-group me-2">
+                            <a class="btn btn-sm btn-outline-success" href="engagement-create.php">Create Engagement</a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><span data-feather="printer"></span> Print</button>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Search Bar -->
-                    <br>
-                    <input class="form-control" id="searchInput" type="text" placeholder="Search">
-                    <br>
+                <!-- Search Bar -->
+                <input class="form-control my-3" id="searchInput" type="text" placeholder="Search">
 
-                    <div id="engagementsContent">
+                <!-- Events Table -->
+                <div id="engagementsContent">
                     <?php if ($engagements): ?>
                         <table class='table table-hover' id="engagements">
                             <thead class='thead-dark'>
                                 <tr>
                                     <th onclick='sortTable(0)' style='cursor:pointer'>
                                         Name
-                                        <a href='#'><span class='glyphicon glyphicon-sort'></span></a>
                                     </th>
                                     <th onclick='sortTable(1)' style='cursor:pointer'>
                                         Opportunity
@@ -91,7 +64,8 @@ $engagements = $obj->getPendingEngagements();
                                     <th onclick='sortTable(2)' style='cursor:pointer'>
                                         Event
                                     </th>
-                                    <th>Action</th>
+                                    <th>
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -109,8 +83,8 @@ $engagements = $obj->getPendingEngagements();
                                     </td>
                                     <td>
                                         <div id=<?php echo "statusOf" . $engagement['engagement_id']; ?> >
-                                            <a onclick=<?php echo "showStatus(" . $engagement['engagement_id'] .",1)"; ?> title='Confirm This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:green'><span class='glyphicon glyphicon-ok'></span></a>
-                                            <a onclick=<?php echo "showStatus(" . $engagement['engagement_id'] .",0)"; ?> title='Deny This Engagement' data-toggle='tooltip' class='btn btn-link' style='color:red'><span class='glyphicon glyphicon-remove'></span></a>
+                                            <a onclick=<?php echo "showStatus(" . $engagement['engagement_id'] .",1)"; ?>  class='btn btn-success btn-sm'><span class='glyphicon glyphicon-ok'></span>Confirm</a>
+                                            <a onclick=<?php echo "showStatus(" . $engagement['engagement_id'] .",0)"; ?>  class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-remove'></span>Deny</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -121,10 +95,25 @@ $engagements = $obj->getPendingEngagements();
                       <p class='lead'><em>No pending engagements were found.</em></p>
                     <?php endif; ?>
                     </div>
-                </div>
-            </div>
+            </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
+
+    <script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+
+    <script>
+    // Activate feather icon 
+    (function () {
+    'use strict'
+
+    feather.replace({ 'aria-hidden': 'true' })
+
+    })()
+    </script>
 
     <script>
     // search feature
@@ -194,6 +183,29 @@ $engagements = $obj->getPendingEngagements();
     }
     </script>
 
-    <?php include '../footer.php';?>
+    <script>
+    function showStatus(id,num) {
+        if (id == "" && num=="")
+        {
+            return;
+        }
+        else
+        {
+            if (window.XMLHttpRequest)
+            {
+            xmlhttp = new XMLHttpRequest();
+            }
+
+            xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("statusOf"+id).innerHTML = this.responseText;
+            }
+            };
+            xmlhttp.open("GET","engagement-verify.php?engagement_id="+id+"&status="+num,true);
+            xmlhttp.send();
+        }
+    }
+    </script>
+
 </body>
 </html>
