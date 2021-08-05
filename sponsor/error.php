@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
     header("location: sign-in.php");
     exit;
 }
