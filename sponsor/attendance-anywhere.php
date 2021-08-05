@@ -81,9 +81,6 @@ $jsonOpportunities = $populatorObj->getOpportunities();
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-center order-md-1">
                     <form name="engagementForm">
-                    
-                        <h4 class="mb-3">Volunteer details</h4>
-
                         <div class="mb-3">
                             <label for="eventsSelect">Event Name</label>
                             <select name='event_name' id='eventsSelect' class="form-control">
@@ -113,9 +110,12 @@ $jsonOpportunities = $populatorObj->getOpportunities();
 
                         <hr class="mb-3">
 
-                        <input type="button" class="w-100 btn btn-primary btn-lg btn-block" value="Start scanning!" onclick="return validateForm()">
-                        <a href="dashboard.php" class="btn btn-default">Cancel</a>
+                        <button type="button" class="w-100 col-12 btn btn-primary btn-lg btn-block" onclick="return validateForm()">Start scanning!</button>                    
+                        <div class="row">
+                            <a href="dashboard.php" class="btn btn-default">Cancel</a>
+                        </div>
                     </form>
+
                 </div>
             </div>
         </div>
