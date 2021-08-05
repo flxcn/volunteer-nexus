@@ -37,42 +37,48 @@ else {
     }
 }
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Delete Affiliation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
+    <title>Remove volunteer</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            margin: 0 auto;
-        }
-    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h1>Delete Affiliation</h1>
-                    </div>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="alert alert-danger fade in">
+    <?php $thisPage='Affiliations'; include 'navbar.php';?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="card mt-3">
+                    <h5 class="card-header">Remove volunteer</h5>
+                    <div class="card-body">
+                        <p class="card-text">Are you sure you want to delete this affiliation? The volunteer would need to join again.</p>
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <input type="hidden" name="affiliation_id" value="<?php echo trim($_GET["affiliation_id"]); ?>"/>
-                            <p>Are you sure you want to delete this affiliation? This action can be undone.</p><br>
-                            <p>
-                                <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="affiliations.php" class="btn btn-default">No</a>
-                            </p>
-                        </div>
-                    </form>
+                            <input type="submit" value="Yes" class="btn btn-danger"> 
+                            <a href="affiliations.php" class="btn btn-default">No</a>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
+
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+
 </body>
 </html>
