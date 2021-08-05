@@ -4,85 +4,75 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
 // Process delete operation after confirmation
-if(isset($_POST["event_id"]) && !empty($_POST["event_id"])){
-  // Include config file
-  require_once "../config.php";
+if(isset($_POST["event_id"]) && !empty($_POST["event_id"])) {
+    // Include config file
+    require_once "../classes/SponsorEvent.php";
 
-  // Prepare a delete statement
-  $sql = "DELETE FROM events WHERE event_id = ?";
+    $obj = new SponsorEvent($_SESSION['sponsor_id']);
 
-  if($stmt = mysqli_prepare($link, $sql)){
-    // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt, "i", $param_event_id);
-
-    // Set parameters
-    $param_event_id = trim($_POST["event_id"]);
-
-    // Attempt to execute the prepared statement
-    if(mysqli_stmt_execute($stmt)){
-      // Records deleted successfully. Redirect to landing page
-      header("location: events.php");
-      exit();
-    } else{
-      echo "Oops! Something went wrong. Please try again later.";
+    $event_id = trim($_POST["event_id"]);
+    if($obj->removeEvent($event_id)) {
+        header("location: events.php");
+        exit();
+    } else {
+        echo "Oops! Something went wrong. Please try again later.";
     }
-  }
-
-  // Close statement
-  mysqli_stmt_close($stmt);
-
-  // Close connection
-  mysqli_close($link);
-} else{
-  // Check existence of id parameter
-  if(empty(trim($_GET["event_id"]))){
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
-  }
+  
+} else {
+    // Check existence of id parameter
+    if(empty(trim($_GET["event_id"]))) {
+        // URL doesn't contain id parameter. Redirect to error page
+        header("location: error.php");
+        exit();
+    }
 }
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Event</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
+    <title>Delete event</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h1>Delete Event</h1>
-                    </div>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="alert alert-danger fade in">
+    <?php $thisPage='Events'; include 'navbar.php';?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="card mt-3">
+                    <h5 class="card-header">Delete event</h5>
+                    <div class="card-body">
+                        <p class="card-text">Are you sure you want to delete this event? This cannot be undone.</p>
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <input type="hidden" name="event_id" value="<?php echo trim($_GET["event_id"]); ?>"/>
-                            <p>Are you sure you want to delete this record?</p><br>
-                            <p>
-                                <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="events.php" class="btn btn-default">No</a>
-                            </p>
-                        </div>
-                    </form>
+                            <input type="submit" value="Yes" class="btn btn-danger"> 
+                            <a href="events.php" class="btn btn-default">No</a>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
+
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
