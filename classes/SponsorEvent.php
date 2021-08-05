@@ -121,13 +121,8 @@ class SponsorEvent
 
     public function setContactPhone(string $contact_phone): ?string
     {
-        if(empty($contact_phone)) {
-            return "Please enter the contact phone.";
-        }
-        else {
-            $this->contact_phone = $contact_phone;
-            return "";
-        }
+        $this->contact_phone = $contact_phone;
+        return "";
     }
 
     public function setContactEmail(string $contact_email): ?string
