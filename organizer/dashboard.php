@@ -2,25 +2,25 @@
 // Initialize the session
 session_start();
 
-// // Check if the user is logged in, if not then redirect him to login page
-// if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
-//     header("location: sign-in.php");
-//     exit;
-// }
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
+    header("location: ../sponsor/sign-in.php");
+    exit;
+}
 
 // Check existence of id parameter before processing further
-if(isset($_SESSION["volunteer_id"])) {
+// if(isset($_SESSION["sponsor_id"])) {
     
-    $volunteer_id = $_SESSION["volunteer_id"];
-    require_once "../classes/VolunteerAccountReader.php";
-    $obj = new VolunteerAccountReader($volunteer_id);
+//     $volunteer_id = $_SESSION["sponsor_id"];
+//     require_once "../classes/VolunteerAccountReader.php";
+//     $obj = new VolunteerAccountReader($volunteer_id);
 
-    $obj->getVolunteerDetails();
+//     $obj->getVolunteerDetails();
 
-} else {
-    header("location: error.php");
-    exit();
-}
+// } else {
+//     header("location: error.php");
+//     exit();
+// }
 ?>
 
 <!doctype html>
@@ -40,7 +40,7 @@ if(isset($_SESSION["volunteer_id"])) {
     <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-    <?php $thisPage='Tutoring'; include '../volunteer/navbar.php';?>
+    <?php $thisPage='Tutoring'; include 'navbar.php';?>
 
     <div class="container-fluid">
         <div class="row">
@@ -62,7 +62,7 @@ if(isset($_SESSION["volunteer_id"])) {
                 <a href="assignment-read.php" class="btn btn-primary">Read Assignment</a>
                 <a href="engagements.php" class="btn btn-info">Engagements</a>
 
-                <?php include "requests.php"; ?>
+                <?php // include "requests.php"; ?>
 
                 <?php // include "assignments.php"; ?>
 
