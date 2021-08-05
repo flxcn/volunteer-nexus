@@ -49,40 +49,52 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])) {
     $contribution_type = $_POST["contribution_type"];
 
     // Validate event name
-    $event_name_error = $obj->setEventName(trim($_POST["event_name"]));
+    $event_name = trim($_POST["event_name"]);
+    $event_name_error = $obj->setEventName($event_name);
 
     // Validate sponsor
-    $sponsor_name_error = $obj->setSponsorName(trim($_POST["sponsor_name"]));
+    $sponsor_name = trim($_POST["sponsor_name"]);
+    $sponsor_name_error = $obj->setSponsorName($sponsor_name);
 
     // Validate description
-    $description_error = $obj->setDescription(trim($_POST["description"]));
+    $description = trim($_POST["description"]);
+    $description_error = $obj->setDescription($description);
 
     // Validate location
-    $location_error = $obj->setLocation(trim($_POST["location"]));
+    $location = trim($_POST["location"]);
+    $location_error = $obj->setLocation($location);
 
     // Validate contact_name
-    $contact_name_error = $obj->setContactName(trim($_POST["contact_name"]));
+    $contact_name = trim($_POST["contact_name"]);
+    $contact_name_error = $obj->setContactName($contact_name);
 
     // Validate contact_phone
-    $contact_phone_error = $obj->setContactPhone(trim($_POST["contact_phone"]));
+    $contact_phone = trim($_POST["contact_phone"]);
+    $contact_phone_error = $obj->setContactPhone($contact_phone);
 
     // Validate contact_email
-    $contact_email_error = $obj->setContactEmail(trim($_POST["contact_email"]));
+    $contact_email = trim($_POST["contact_email"]);
+    $contact_email_error = $obj->setContactEmail($contact_email);
 
     // Validate registration_start
-    $registration_start_error = $obj->setRegistrationStart(trim($_POST["registration_start"]));
+    $registration_start = trim($_POST["registration_start"]);
+    $registration_start_error = $obj->setRegistrationStart($registration_start);
 
     // Validate registration_end
-    $registration_end_error = $obj->setRegistrationEnd(trim($_POST["registration_end"]));
+    $registration_end = trim($_POST["registration_end"]);
+    $registration_end_error = $obj->setRegistrationEnd($registration_end);
 
     // Validate event_start
-    $event_start_error = $obj->setEventStart(trim($_POST["event_start"]));
+    $event_start = trim($_POST["event_start"]);
+    $event_start_error = $obj->setEventStart($event_start);
 
-    // Validate event_end // NOTE: refer to-do list {3}
-    $event_end_error = $obj->setEventEnd(trim($_POST["event_end"]));
+    // Validate event_end
+    $event_end = trim($_POST["event_end"]);
+    $event_end_error = $obj->setEventEnd($event_end);
 
     // Check is_public
-    $is_public_error = $obj->setIsPublic(trim($_POST["is_public"]));
+    $is_public = trim($_POST["is_public"]);
+    $is_public_error = $obj->setIsPublic($is_public);
 
     // Check input errors before inserting in database
     if( empty($event_name_error) 
@@ -93,7 +105,7 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])) {
         && empty($registration_start_error) 
         && empty($registration_end_error) 
         && empty($event_start_error) 
-        && empty($event_end_error)) {
+        && empty($event_end_error) ) {
         
         if($obj->updateEvent($event_id)) {
             header("location: event-read.php?event_id=".$event_id);
@@ -232,7 +244,7 @@ else {
                             <div class="input-group">
                                 <input type="tel" name="contact_phone" id="contact_phone" class="form-control" value="<?php echo $contact_phone; ?>">
                             </div>
-                            <span class="help-block"><?php echo $contact_phone_error;?></span>
+                            <span class="help-block text-danger"><?php echo $contact_phone_error;?></span>
                         </div>
 
                         <!--form for contact_email-->
@@ -241,7 +253,7 @@ else {
                             <div class="input-group">
                                 <input type="email" name="contact_email" class="form-control" value="<?php echo $contact_email; ?>">
                             </div>
-                            <span class="help-block"><?php echo $contact_email_error;?></span>
+                            <span class="help-block text-danger"><?php echo $contact_email_error;?></span>
                         </div>
                     </div>
 
