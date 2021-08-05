@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
@@ -66,7 +66,7 @@ else {
                             <p>Are you sure you want to delete this affiliation? This action can be undone.</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="dashboard.php" class="btn btn-default">No</a>
+                                <a href="affiliations.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>
