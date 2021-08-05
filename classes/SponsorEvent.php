@@ -110,7 +110,7 @@ class SponsorEvent
 
     public function setContactName(string $contact_name): ?string
     {
-        if(empty($total_positions)) {
+        if(empty($contact_name)) {
             return "Please enter the contact name.";
         }
         else {
@@ -185,78 +185,10 @@ class SponsorEvent
         }
     }
 
-    public function setIsPublic(bool $is_public): string
+    public function setIsPublic($is_public): string
     {
         $this->is_public = $is_public;
         return "";
-    }
-
-    // Get Event
-    public function getEvent(): bool
-    {
-        $sql =
-            "SELECT
-                *
-            FROM
-                opportunities
-            WHERE
-                opportunity_id = :opportunity_id
-                AND sponsor_id = :sponsor_id";
-        $stmt = $this->pdo->prepare($sql);
-        $opportunity = $stmt->execute(['opportunity_id' => $this->opportunity_id, 'sponsor_id' => $this->sponsor_id])->fetch(PDO::FETCH_ASSOC);
-
-        if($opportunity) {
-            $this->setOpportunityName($opportunity['opportunity_name']);
-            $this->setDescription($opportunity['description']);
-            $this->setStartDate($opportunity['start_date']);
-            $this->setStartTime($opportunity['start_time']);
-            $this->setEndDate($opportunity['end_date']);
-            $this->setEndTime($opportunity['end_time']);
-            $this->setTotalPositions($opportunity['total_positions']);
-            $this->setContributionValue($opportunity['contribution_value']);
-            $this->setNeedsVerification($opportunity['needs_verification']);
-            $this->setNeedsReminder($opportunity['needs_reminder']);
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public function updateOpportunity(): bool
-    {
-			$sql =
-				"UPDATE opportunities
-				SET
-					opportunity_name = :opportunity_name,
-					description = :description,
-					start_date = :start_date,
-					start_time = :start_time,
-					end_date = :end_date,
-					end_time = :end_time,
-					total_positions = :total_positions,
-					contribution_value = :contribution_value,
-					needs_verification = :needs_verification,
-					needs_reminder = :needs_reminder
-				WHERE
-					opportunity_id= :opportunity_id
-					AND sponsor_id = :sponsor_id";
-			$stmt = $this->pdo->prepare($sql);
-			$status = $stmt->execute(
-				[
-					'opportunity_name' => $this->opportunity_name,
-					'description' => $this->description,
-					'start_date' => $this->start_date,
-					'start_time' => $this->start_time,
-					'end_date' => $this->end_date,
-					'end_time' => $this->end_time,
-					'total_positions' => $this->total_positions,
-					'contribution_value' => $this->contribution_value,
-					'needs_verification' => $this->needs_verification,
-					'needs_reminder' => $this->needs_reminder
-				]
-			);
-      return $status;
     }
 
     public function getEventName(): string
@@ -319,7 +251,7 @@ class SponsorEvent
         return $this->event_end;
     }
 
-    public function getIsPublic(): bool
+    public function getIsPublic()
     {
         return $this->is_public;
     }
@@ -328,6 +260,95 @@ class SponsorEvent
     {
         return $this->time_posted;
     }
+
+    public function getEvent($event_id): bool
+	{
+		$sql =
+            "SELECT *
+            FROM        events
+            WHERE       event_id = :event_id";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute(['event_id' => $event_id]);
+		$event = $stmt->fetch();
+
+		if($event) {
+            $this->event_id = $event["event_id"];
+            $this->sponsor_id = $event["sponsor_id"];
+            $this->event_name = $event["event_name"];
+            $this->sponsor_name = $event["sponsor_name"];
+            $this->description = $event["description"];
+            $this->location = $event["location"];
+            $this->contribution_type = $event["contribution_type"];
+            $this->contact_name = $event["contact_name"];
+            $this->contact_phone = $event["contact_phone"];
+            $this->contact_email = $event["contact_email"];
+            $this->registration_start = $event["registration_start"];
+            $this->registration_end = $event["registration_end"];
+            $this->event_start = $event["event_start"];
+            $this->event_end = $event["event_end"];
+            $this->is_public = $event["is_public"];
+            return true;
+        }
+		else {
+			return false;
+		}
+    }
+
+    public function updateEvent($event_id): bool 
+	{
+		$sql =
+			"UPDATE events 
+            SET     event_name = :event_name, 
+                    sponsor_name = :sponsor_name, 
+                    description = :description, 
+                    location = :location, 
+                    contact_name = :contact_name, 
+                    contact_phone = :contact_phone, 
+                    contact_email = :contact_email, 
+                    registration_start = :registration_start, 
+                    registration_end = :registration_end, 
+                    event_start = :event_start, 
+                    event_end = :event_end, 
+                    is_public = :is_public 
+            WHERE   event_id = :event_id
+                    AND sponsor_id = :sponsor_id";
+		$stmt = $this->pdo->prepare($sql);
+		$status = $stmt->execute([
+            'event_name' => $this->event_name, 
+            'sponsor_name' => $this->sponsor_name, 
+            'description' => $this->description, 
+            'location' => $this->location, 
+
+            'contact_name' => $this->contact_name, 
+            'contact_phone' => $this->contact_phone, 
+            'contact_email' => $this->contact_email, 
+
+            'registration_start' => $this->registration_start, 
+            'registration_end' => $this->registration_end, 
+            'event_start' => $this->event_start, 
+            'event_end' => $this->event_end, 
+
+            'is_public' => $this->is_public, 
+
+            'sponsor_id' => $this->sponsor_id, 
+            'event_id' => $event_id
+        ]);
+		return $status;
+	}
+
+    public function removeEvent($event_id): bool 
+	{
+		$sql =
+			"DELETE FROM 
+				events
+			WHERE
+				sponsor_id = :sponsor_id
+				AND event_id = :event_id";
+		$stmt = $this->pdo->prepare($sql);
+		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id, 'event_id' => $event_id]);
+		return $status;
+	}
 
 }
 ?>
