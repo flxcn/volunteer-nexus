@@ -55,14 +55,14 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])) {
     <div class="container-fluid">
         <div class="row">
             <main class="ms-sm-auto px-md-4">
-                <div class="card mt-3">
-                    <h5 class="card-header">Delete event</h5>
+                <div class="col-12 col-md-6 card mt-3 mx-auto border-danger">
+                    <h5 class="card-header bg-danger text-light">Delete event</h5>
                     <div class="card-body">
                         <p class="card-text">Are you sure you want to delete this event? This cannot be undone.</p>
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <input type="hidden" name="event_id" value="<?php echo trim($_GET["event_id"]); ?>"/>
                             <input type="submit" value="Yes" class="btn btn-danger"> 
-                            <a href="events.php" class="btn btn-default">No</a>
+                            <a href="events.php" class="btn btn-outline-secondary">No</a>
                         </form>
                     </div>
                 </div>
