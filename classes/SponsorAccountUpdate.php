@@ -102,8 +102,8 @@ class SponsorAccountUpdate
 
     public function setUsername(string $username): string
     {
-        $stmt = $this->pdo->prepare('SELECT count(*) FROM sponsors WHERE username = :username');
-        $stmt->execute(['username' => strtolower($username)]);
+        $stmt = $this->pdo->prepare('SELECT count(*) FROM sponsors WHERE username = :username AND sponsor_id != :sponsor_id');
+        $stmt->execute(['username' => strtolower($username), 'sponsor_id' => $this->sponsor_id]);
         $same_usernames = $stmt->fetchColumn();
         if($same_usernames > 0){
             return "This username is already taken.";
@@ -217,6 +217,37 @@ class SponsorAccountUpdate
         array_push($this->advisors, $advisor);
     }
 
+    public function getSponsor(): bool
+	{
+		$sql =
+            "SELECT *
+            FROM        sponsors
+            WHERE       sponsor_id = :sponsor_id";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute(['sponsor_id' => $this->sponsor_id]);
+		$sponsor = $stmt->fetch();
+
+		if($sponsor) {
+            $this->sponsor_name = $sponsor["sponsor_name"];
+            $this->username = $sponsor["username"];
+            $this->contribution_type = $sponsor["contribution_type"];
+            $this->advisor1_name = $sponsor["advisor1_name"];
+            $this->advisor1_phone = $sponsor["advisor1_phone"];
+            $this->advisor1_email = $sponsor["advisor1_email"];
+            $this->advisor2_name = $sponsor["advisor2_name"];
+            $this->advisor2_phone = $sponsor["advisor2_phone"];
+            $this->advisor2_email = $sponsor["advisor2_email"];
+            $this->advisor3_name = $sponsor["advisor3_name"];
+            $this->advisor3_phone = $sponsor["advisor3_phone"];
+            $this->advisor3_email = $sponsor["advisor3_email"];
+            return true;
+        }
+		else {
+			return false;
+		}
+    }
+
     public function updateSponsorName(): bool
     {
         $sql =
@@ -279,7 +310,6 @@ class SponsorAccountUpdate
             [
                 'sponsor_name' => $this->sponsor_name,
                 'username' => $this->username,
-                //'password' => password_hash($this->password, PASSWORD_DEFAULT),
                 'contribution_type' => $this->contribution_type,
                 'advisor1_name' => $this->advisor1_name,
                 'advisor1_email' => $this->advisor1_email,
@@ -287,9 +317,10 @@ class SponsorAccountUpdate
                 'advisor2_name' => $this->advisor2_name,
                 'advisor2_email' => $this->advisor2_email,
                 'advisor2_phone' => $this->advisor2_phone,
-                'advisor3_name' => $this->aadvisor3_name,
+                'advisor3_name' => $this->advisor3_name,
                 'advisor3_email' => $this->advisor3_email,
                 'advisor3_phone' => $this->advisor3_phone,
+                'sponsor_id' => $this->sponsor_id
             ]
         );
 
