@@ -80,7 +80,7 @@ if(isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"]) && isset(
                             <p>Are you sure you want to delete this opportunity?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="opportunity-read.php" class="btn btn-default">No</a>
+                                <a href="event-read.php?event_id=<?php echo trim($_GET["event_id"]); ?>" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>
