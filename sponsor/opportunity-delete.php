@@ -4,89 +4,93 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
 // Process delete operation after confirmation
 if(isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"]) && isset($_POST["event_id"]) && !empty($_POST["event_id"])){
-  // Include config file
-  require_once "../config.php";
+    // Include config file
+    require_once "../config.php";
 
-  // Prepare a delete statement
-  $sql = "DELETE FROM opportunities WHERE opportunity_id = ? AND sponsor_id = {$_SESSION['sponsor_id']}";
+    // Prepare a delete statement
+    $sql = "DELETE FROM opportunities WHERE opportunity_id = ? AND sponsor_id = {$_SESSION['sponsor_id']}";
 
-  if($stmt = mysqli_prepare($link, $sql)){
-    // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
+    if($stmt = mysqli_prepare($link, $sql)){
+        // Bind variables to the prepared statement as parameters
+        mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
 
-    // Set parameters
-    $param_opportunity_id = trim($_POST["opportunity_id"]);
+        // Set parameters
+        $param_opportunity_id = trim($_POST["opportunity_id"]);
 
 
-    // Attempt to execute the prepared statement
-    if(mysqli_stmt_execute($stmt)){
-      // Opportunity deleted successfully. Redirect to landing page
-      //NOTE: link may be broken
-      header("location: event-read.php?event_id=" . $_POST['event_id']);
-      exit();
-    } else{
-      echo "Oops! Something went wrong. Please try again later.";
+        // Attempt to execute the prepared statement
+        if(mysqli_stmt_execute($stmt)){
+            // Opportunity deleted successfully. Redirect to landing page
+            //NOTE: link may be broken
+            header("location: event-read.php?event_id=" . $_POST['event_id']);
+            exit();
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
+        }
     }
-  }
 
-  // Close statement
-  mysqli_stmt_close($stmt);
+    // Close statement
+    mysqli_stmt_close($stmt);
 
-  // Close connection
-  mysqli_close($link);
+    // Close connection
+    mysqli_close($link);
 } else{
-  // Check existence of id parameter
-  if(empty(trim($_GET["opportunity_id"]))){
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
-  }
+    // Check existence of id parameter
+    if(empty(trim($_GET["opportunity_id"]))){
+        // URL doesn't contain id parameter. Redirect to error page
+        header("location: error.php");
+        exit();
+    }
 }
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Event</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
+    <title>Delete opportunity</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h1>Delete Opportunity</h1>
-                    </div>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="alert alert-danger fade in">
+    <?php $thisPage='Events'; include 'navbar.php';?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="col-12 col-md-6 card mt-3 mx-auto border-danger">
+                    <h5 class="card-header bg-danger text-light">Delete opportunity</h5>
+                    <div class="card-body">
+                        <p class="card-text">Are you sure you want to delete this opportunity? This cannot be undone.</p>
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <input type="hidden" name="opportunity_id" value="<?php echo trim($_GET["opportunity_id"]); ?>"/>
                             <input type="hidden" name="event_id" value="<?php echo trim($_GET["event_id"]); ?>"/>
-                            <p>Are you sure you want to delete this opportunity?</p><br>
-                            <p>
-                                <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="event-read.php?event_id=<?php echo trim($_GET["event_id"]); ?>" class="btn btn-default">No</a>
-                            </p>
-                        </div>
-                    </form>
+                            <input type="submit" value="Yes" class="btn btn-danger">
+                            <a href="event-read.php?event_id=<?php echo trim($_GET["event_id"]); ?>" class="btn btn-outline-secondary">No</a>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
+
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
