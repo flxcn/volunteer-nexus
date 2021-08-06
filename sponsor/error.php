@@ -30,7 +30,7 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
         <div class="row">
             <main class="ms-sm-auto px-md-4">
                 <div class="row my-4">
-                    <div class="col-12 col-md-8 mx-auto mb-4 mb-lg-0">
+                    <div class="col-12 col-md-6 mx-auto mb-4 mb-lg-0">
                         <div class="card border-danger">
                             <h3 class="card-header bg-danger text-light">Something's wrong.</h3>
                             <div class="card-body">
