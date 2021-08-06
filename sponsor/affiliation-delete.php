@@ -52,7 +52,6 @@ else {
     
     <!-- Custom styles for this template -->
     <link href="../assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
     <?php $thisPage='Affiliations'; include 'navbar.php';?>
@@ -60,14 +59,14 @@ else {
     <div class="container-fluid">
         <div class="row">
             <main class="ms-sm-auto px-md-4">
-                <div class="card mt-3">
-                    <h5 class="card-header">Remove volunteer</h5>
+                <div class="col-12 col-md-6 card mt-3 mx-auto border-danger">
+                    <h5 class="card-header bg-danger text-light">Remove volunteer</h5>
                     <div class="card-body">
-                        <p class="card-text">Are you sure you want to delete this affiliation? The volunteer would need to join again.</p>
+                        <p class="card-text">Are you sure you want to remove this volunteer? The volunteer would need to join again.</p>
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <input type="hidden" name="affiliation_id" value="<?php echo trim($_GET["affiliation_id"]); ?>"/>
                             <input type="submit" value="Yes" class="btn btn-danger"> 
-                            <a href="affiliations.php" class="btn btn-default">No</a>
+                            <a href="affiliations.php" class="btn btn-outline-secondary">No</a>
                         </form>
                     </div>
                 </div>
@@ -78,7 +77,6 @@ else {
     </div>
 
     <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 
 </body>
 </html>
