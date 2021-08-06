@@ -99,7 +99,7 @@ class SponsorEvent
 
     public function setContributionType(string $contribution_type): string
     {
-        if(empty($location)) {
+        if(empty($contribution_type)) {
             return "Please enter a contribution type.";
         }
         else {
@@ -254,6 +254,68 @@ class SponsorEvent
     public function getTimePosted(): bool
     {
         return $this->time_posted;
+    }
+
+    public function addEvent() {
+        $sql = 
+            "INSERT INTO    events 
+                            (sponsor_id, 
+                            event_name, 
+                            sponsor_name, 
+                            description, 
+                            location, 
+                            contribution_type, 
+                            contact_name, 
+                            contact_phone, 
+                            contact_email, 
+                            registration_start, 
+                            registration_end, 
+                            event_start, 
+                            event_end, 
+                            is_public) 
+            VALUES          (:sponsor_id, 
+                            :event_name, 
+                            :sponsor_name, 
+                            :description, 
+                            :location, 
+                            :contribution_type, 
+                            :contact_name, 
+                            :contact_phone,
+                            :contact_email, 
+                            :registration_start, 
+                            :registration_end, 
+                            :event_start, 
+                            :event_end, 
+                            :is_public)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $status = $stmt->execute([
+            'sponsor_id' => $this->sponsor_id, 
+
+            'event_name' => $this->event_name, 
+            'sponsor_name' => $this->sponsor_name, 
+            'description' => $this->description, 
+            'location' => $this->location, 
+            'contribution_type' => $this->contribution_type,
+
+            'contact_name' => $this->contact_name, 
+            'contact_phone' => $this->contact_phone, 
+            'contact_email' => $this->contact_email, 
+
+            'registration_start' => $this->registration_start, 
+            'registration_end' => $this->registration_end, 
+            'event_start' => $this->event_start, 
+            'event_end' => $this->event_end, 
+
+            'is_public' => $this->is_public, 
+
+        ]);
+        return $status;
+    }
+
+    public function getEventIdFromLastInsert(): int {
+        $stmt = $this->pdo->query("SELECT LAST_INSERT_ID()");
+        return $stmt->fetchColumn();
     }
 
     public function getEvent($event_id): bool
