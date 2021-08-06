@@ -79,7 +79,9 @@ $engagements = $obj->getEngagements($opportunity_id);
                                         <?php echo $engagement['email_address']; ?>
                                     </td>
                                     <td>
-                                        <a href=<?php echo "opportunity-delete.php?opportunity_id=" . $engagement['opportunity_id']; ?> class='btn btn-link btn-sm'>Delete</a>
+                                        <div id=<?php echo "statusOf" . $engagement['engagement_id']; ?> >
+                                            <button onclick="deleteEngagement(<?php echo $engagement['engagement_id']; ?>)" class='btn btn-link btn-sm' >Delete</button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -175,5 +177,28 @@ $engagements = $obj->getEngagements($opportunity_id);
     });
     </script>
 
+    <script>
+    function deleteEngagement(id) {
+        if (id == "")
+        {
+            return;
+        }
+        else
+        {
+            if (window.XMLHttpRequest)
+            {
+                xmlhttp = new XMLHttpRequest();
+            }
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("statusOf"+id).innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET","engagement-delete.php?engagement_id="+id,true);
+            xmlhttp.send();
+        }
+    }
+    </script>
 </body>
 </html>
