@@ -19,7 +19,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/flxcn/volunteer-nexus">
-    <img src="assets/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="assets/images/volunteernexus-logo-1.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">volunteer-nexus</h3>
