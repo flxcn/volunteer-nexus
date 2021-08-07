@@ -150,7 +150,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                                         <p><?php echo $opportunity["description"]; ?></p>
                                                                         <hr>
                                                                         <p><b>From </b><?php echo $opportunityObj->formatDate($opportunity['start_date']) . " @ " . $opportunityObj->formatTime($opportunity['start_time']) . " <br><b>To</b>   " . $opportunityObj->formatDate($opportunity['end_date']) . " @ " . $opportunityObj->formatTime($opportunity['end_time']); ?></p>
-                                                                        <p><b>Participants: </b><?php echo $opportunity['positions_filled'] . "/" . $opportunity['total_positions']; ?></p>
+                                                                        <?php echo $opportunityObj->getFormattedParticipation($opportunity['positions_filled'],$opportunity['total_positions']); ?>
                                                                     </div>
 
                                                                     <div class="modal-footer">
