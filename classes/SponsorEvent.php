@@ -211,6 +211,16 @@ class SponsorEvent
         return $this->contribution_type;
     }
 
+    public function getFormattedContributionType($contribution_type): string
+    {
+        if(empty($contribution_type)) {
+            return "";
+        }
+        else {
+            return "<span class='input-group-text'>" . $contribution_type . "</span>";
+        }
+    }
+
     public function getContactName(): string
     {
         return $this->contact_name;
