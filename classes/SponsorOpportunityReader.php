@@ -336,5 +336,15 @@ class SponsorOpportunityReader
         return $this->needs_reminder;
     }
 
+    public function getFormattedParticipation($positions_filled, $total_positions): string
+    {
+        if(is_null($total_positions)) {
+            return "<p><b>Participants: </b>" . $positions_filled . "</p>";
+        }
+        else {
+            return "<p><b>Participants: </b>" . $positions_filled . "/" . $total_positions . "</p>";
+        }
+    }
+
 }
 ?>
