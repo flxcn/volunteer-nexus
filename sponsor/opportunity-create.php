@@ -16,9 +16,9 @@ if(!isset($_GET["event_id"]) && empty(trim($_GET["event_id"]))) {
 
 
 // Include config file
-require_once '../classes/SponsorOpportunityCreation.php';
+require_once '../classes/SponsorOpportunity.php';
 $sponsor_id = trim($_SESSION["sponsor_id"]);
-$obj = new SponsorOpportunityCreation($sponsor_id);
+$obj = new SponsorOpportunity($sponsor_id);
 
 // Define variable
 $event_id = trim($_GET["event_id"]);
@@ -258,7 +258,8 @@ else {
                     <div class="row"> 
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="0" name="needs_verification" id="needs_verification" <?php if($needs_verification==0){echo "checked";}?>>
+                                <input type='hidden' value='1' name='needs_verification'>
+                                <input class="form-check-input" type="checkbox" value="0" name="needs_verification" id="needs_verification" <?php if($needs_verification===0){echo "checked";}?>>
                                 <label class="form-check-label" for="needs_verification">
                                     Immediately approve all volunteer sign-ups
                                 </label>
