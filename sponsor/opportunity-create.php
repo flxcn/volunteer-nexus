@@ -4,9 +4,16 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
+
+if(!isset($_GET["event_id"]) && empty(trim($_GET["event_id"]))) {
+    header("location: error.php");
+    exit();
+}
+
+
 
 // Include config file
 require_once '../classes/SponsorOpportunityCreation.php';
@@ -14,11 +21,7 @@ $sponsor_id = trim($_SESSION["sponsor_id"]);
 $obj = new SponsorOpportunityCreation($sponsor_id);
 
 // Define variable
-if(isset($_GET["event_id"])) {
-  $event_id = trim($_GET["event_id"]);
-} else {
-  $event_id = "";
-}
+$event_id = trim($_GET["event_id"]);
 
 $opportunity_name = "";
 $description = "";
@@ -28,7 +31,9 @@ $start_time = "";
 $end_time = "";
 $total_positions = "";
 $limit_per_volunteer = 1;
-$contribution_value = "";
+$contribution_value = 0.0;
+$contribution_type = "";
+$contribution_type_display = "";
 $needs_verification = "";
 $needs_reminder = "";
 
@@ -46,6 +51,21 @@ $limit_per_volunteer_error = "";
 $contribution_value_error = "";
 $needs_verification_error = "";
 $needs_reminder_error = "";
+
+require_once "../classes/SponsorEvent.php";
+$sponsorEventObj = new SponsorEvent($_SESSION["sponsor_id"]);
+$event_id =  trim($_GET["event_id"]);
+
+if($sponsorEventObj->getEvent($event_id)) {
+    $event_name = $sponsorEventObj->getEventName(); 
+    $contribution_type = $sponsorEventObj->getContributionType();
+    $contribution_type_display = $sponsorEventObj->getFormattedContributionType($contribution_type);
+    $start_date = $sponsorEventObj->getEventStart();
+    $end_date = $sponsorEventObj->getEventEnd();
+}
+else{
+    echo "Existing event details unavailable.";
+} 
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -121,150 +141,181 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Something went wrong. Please try again later. If the issue persists, send an email to felix@volunteernexus.com detailing the problem.";
         }
     }
+}
+else {
 
+    if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))) {
+
+        require_once "../classes/SponsorEvent.php";
+        $sponsorEventObj = new SponsorEvent($_SESSION["sponsor_id"]);
+        $event_id =  trim($_GET["event_id"]);
+
+        if($sponsorEventObj->getEvent($event_id)) {
+            $event_name = $sponsorEventObj->getEventName(); 
+            $contribution_type = $sponsorEventObj->getContributionType();
+            $contribution_type_display = $sponsorEventObj->getFormattedContributionType($contribution_type);
+            $start_date = $sponsorEventObj->getEventStart();
+            $end_date = $sponsorEventObj->getEventEnd();
+        }
+        else{
+            echo "Existing event details unavailable.";
+            exit();
+        } 
+    }
+    else {
+        header("location: error.php");
+        exit();
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <link rel="icon" type="image/png" href="assets/images/volunteernexus-logo-1.png">
+
     <title>Create Opportunity</title>
 
-    <!--Load required libraries-->
-    <?php $pageContent='Form'?>
-    <?php include '../head.php'?>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap Date-Picker Plugin -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-
-    <!--datepicker-->
-    <script>
-    $(document).ready(function(){
-      var date_input=$('input[type="date"]'); //our date input has the type "date"
-      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-      var options={
-        format: 'yyyy-mm-dd',
-        container: container,
-        todayHighlight: true,
-        autoclose: true,
-      };
-      date_input.datepicker(options);
-    })
-    </script>
-
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/form.css" rel="stylesheet">
 </head>
-<body>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h2>Create Opportunity</h2>
+<body class="bg-light">
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
+            <h2>Create Opportunity</h2>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center order-md-1">
+                <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post" class="row g-2">
+
+                    <!--form for sponsor-->
+                    <div class="row"> 
+                        <div class="mb-3">
+                            <label for="opportunity_name">Opportunity Name</label>
+                            <div class="input-group">
+                                <input type="text" name="opportunity_name" id="opportunity_name" class="form-control" value="<?php echo $opportunity_name; ?>">
+                            </div>
+                            <span class="help-block text-danger"><?php echo $opportunity_name_error;?></span>
+                        </div>
                     </div>
-                    <p>Please fill this form and submit to add a new opportunity to the database.</p>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <!--form for opportunity name-->
-                        <div class="form-group <?php echo (!empty($opportunity_name_error)) ? 'has-error' : ''; ?>">
-                            <label>Opportunity Name</label>
-                            <input type="text" name="opportunity_name" class="form-control" value="<?php echo $opportunity_name; ?>">
-                            <span class="help-block"><?php echo $opportunity_name_error;?></span>
-                        </div>
 
-                        <!--form for description-->
-                        <div class="form-group <?php echo (!empty($description_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Description</label>
-                            <textarea type="text" name="description" class="form-control"><?php echo $description; ?></textarea>
-                            <span class="help-block"><?php echo $description_error;?></span>
+                    <!--form for description-->
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="description">Description</label>
+                            <div class="input-group">
+                                <textarea type="text" name="description" id="description" class="form-control"><?php echo $description; ?></textarea>
+                            </div>      
+                            <span class="help-block text-danger"><?php echo $description_error;?></span>
                         </div>
+                    </div>
 
-                        <!--form for start_date-->
-                        <div class="form-group <?php echo (!empty($start_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>Start Date</label>
-                            <input type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
-                            <span class="help-block"><?php echo $start_date_error;?></span>
+                    <hr class="mb-3">
+
+                    <div class="row">
+                        <!--form for opportunity dates-->
+                        <div class="col-12 col-md-6 mb-3">
+                            <p>Start Date & Time</p>
+                            <div class="input-group">
+                                <input required type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
+                                <span class="input-group-text">@</span>
+                                <input required type="time" name="start_time" class="form-control" value="<?php echo $start_time; ?>">
+                            </div>
+                            <div class="row">
+                                <span class="help-block text-danger col-6"><?php echo $start_date_error;?></span>
+                                <span class="help-block text-danger col-6"><?php echo $start_time_error;?></span>
+                            </div>
                         </div>
-
-                        <!--form for end_date-->
-                        <div class="form-group <?php echo (!empty($end_date_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>End Date</label>
-                            <input type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
-                            <span class="help-block"><?php echo $end_date_error;?></span>
+                        
+                        <!--form for event_end-->
+                        <div class="col-12 col-md-6 mb-3">
+                            <p>End Date & Time</p>
+                            <div class="input-group">
+                                <input required type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
+                                <span class="input-group-text">@</span>
+                                <input required type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
+                            </div>
+                            <div class="row">
+                                <span class="help-block text-danger col-6"><?php echo $end_date_error;?></span>
+                                <span class="help-block text-danger col-6"><?php echo $end_time_error;?></span>
+                            </div>
                         </div>
+                    </div>
 
-                        <!--form for start_time-->
-                        <div class="form-group <?php echo (!empty($start_time_error)) ? 'has-error' : ''; ?>">
-                            <label>Start Time</label>
-                            <input type="time" name="start_time" class="form-control" value="<?php echo $start_time; ?>">
-                            <span class="help-block"><?php echo $start_time_error;?></span>
+                    <hr class="mb-3">
+
+                    <!--form for needs_verification-->
+                    <div class="row"> 
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="0" name="needs_verification" id="needs_verification" <?php if($needs_verification==0){echo "checked";}?>>
+                                <label class="form-check-label" for="needs_verification">
+                                    Immediately approve all volunteer sign-ups
+                                </label>
+                            </div>
+                            <span class="help-block text-danger"><?php echo $needs_verification_error;?></span>
                         </div>
+                    </div>
 
-                        <!--form for end_time-->
-                        <div class="form-group <?php echo (!empty($end_time_error)) ? 'has-error' : ''; ?>"> <!-- NOTE:see {2} -->
-                            <label>End Time</label>
-                            <input type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
-                            <span class="help-block"><?php echo $end_time_error;?></span>
-                        </div>
-
-                        <!--form for total_positions-->
-                        <div class="form-group <?php echo (!empty($total_positions_error)) ? 'has-error' : ''; ?>">
-                            <label>Total Positions</label>
-                            <input type="number" name="total_positions" class="form-control" value="<?php echo $total_positions; ?>">
-                            <span class="help-block"><?php echo $total_positions_error;?></span>
+                    <div class="row">
+                        <!--form for contribution_value-->
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="contribution_value">Contribution value</label>
+                            <div class="input-group">
+                                <input required type="number" min="0" step="any" name="contribution_value" id="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
+                                <?php echo $contribution_type_display; ?>
+                            </div>      
+                            <span class="help-block text-danger"><?php echo $contribution_value_error;?></span>
                         </div>
 
                         <!--form for limit_per_volunteer-->
-                        <div class="form-group <?php echo (!empty($limit_per_volunteer_error)) ? 'has-error' : ''; ?>">
-                            <label>Sign-up Limit per Volunteer</label>
-                            <p>How many times is a volunteer allowed to sign up for this event?</p>
-                            <input type="number" min="1" step="1" name="limit_per_volunteer" class="form-control" value="<?php echo $limit_per_volunteer; ?>">
-                            <span class="help-block"><?php echo $limit_per_volunteer_error;?></span>
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="limit_per_volunteer">Sign-up limit per volunteer</label>
+                            <div class="input-group">
+                                <input required type="number" min="1" step="1" name="limit_per_volunteer" id="limit_per_volunteer" class="form-control" value="<?php echo $limit_per_volunteer; ?>">
+                            </div>      
+                            <span class="help-block text-danger"><?php echo $limit_per_volunteer_error;?></span>
                         </div>
 
-                        <!--form for contribution_value-->
-                        <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
-                            <label>Contribution Value</label>
-                            <input type="number" min="0" step="any" name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
-                            <span class="help-block"><?php echo $contribution_value_error;?></span>
+                        <!--form for total_positions-->
+                        <div class="col-12 col-md-4 mb-3">
+                            <label for="total_positions">Total positions (optional)</label>
+                            <div class="input-group">
+                                <input type="number" name="total_positions" id="total_positions" class="form-control" value="<?php echo $total_positions; ?>">
+                            </div>      
+                            <span class="help-block text-danger"><?php echo $total_positions_error;?></span>
                         </div>
+                    </div>
 
-                        <!--form for needs_verification-->
-                        <div class="form-group <?php echo (!empty($needs_verification_error)) ? 'has-error' : ''; ?>">
-                            <label for="needs_verification">Needs verification?</label>
-                            <p>Do volunteers need their contribution verified in this opportunity?</p>
-                            <input type="radio" name="needs_verification" value="1"> Yes
-                            <input type="radio" name="needs_verification" value="0" checked> No
-                            <span class="help-block"><?php echo $needs_verification_error;?></span>
-                        </div>
+                    <hr class="mb-3">
 
-                        <!--form for needs_reminder-->
-                        <!-- <div class="form-group <?php // echo (!empty($needs_reminder_error)) ? 'has-error' : ''; ?>">
-                            <label for="needs_reminder">Needs reminder?</label>
-                            <p>Do volunteers need a reminder the day before?</p>
-                            <input type="radio" name="needs_reminder" value="1"> Yes
-                            <input type="radio" name="needs_reminder" value="0" checked> No
-                            <span class="help-block"><?php // echo $needs_reminder_error;?></span>
-                        </div> -->
+                    <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
+                    <input type="hidden" name="sponsor_id" value="<?php echo $sponsor_id;?>">
 
-                        <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
-                        <input type="hidden" name="sponsor_id" value="<?php echo $sponsor_id;?>">
+                    <button class="w-100 btn btn-primary btn-lg btn-block" type="submit">Create opportunity</button>
 
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="event-read.php?event_id=<?php echo $event_id; ?>" class="btn btn-default">Cancel</a>
-                    </form>
-                </div>
+                    <a href="event-read.php?event_id=<?php echo $event_id; ?>" class="btn btn-default">Cancel</a>
+                </form>
             </div>
         </div>
+
+        <?php include 'footer.php';?>
+
     </div>
 
-    <?php include '../footer.php';?>
+    <!-- Custom js for this page -->
+    <script src="../assets/js/form.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
 </body>
 </html>
