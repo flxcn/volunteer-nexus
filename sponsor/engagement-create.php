@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
@@ -86,128 +86,122 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Create Engagement</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <link rel="icon" type="image/png" href="assets/images/volunteernexus-logo-1.png">
 
-    <!--Load required libraries-->
-    <?php $pageContent='Form'?>
-    <?php include '../head.php'?>
+    <title>Record Engagement</title>
 
-    <style type="text/css">
-        .wrapper { 
-            width: 350px; 
-            padding: 20px;
-            padding-bottom: 100px; 
-        }
-    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/form.css" rel="stylesheet">
+
+    <!-- Custom JS for this page -->
     <script type='text/javascript'>
         <?php
         echo "var volunteers = $jsonVolunteers; \n";
         echo "var events = $jsonEvents; \n";
         echo "var opportunities = $jsonOpportunities; \n";
-        ?>
-
-        function loadVolunteers(){
-            var select = document.getElementById("volunteersSelect");
-            for(var i = 0; i < volunteers.length; i++){
-            select.options[i] = new Option(volunteers[i].volunteer_name, volunteers[i].volunteer_id);
-            }
-        }
-
-        function loadEvents(){
-            var select = document.getElementById("eventsSelect");
-            select.onchange = updateOpportunities;
-            for(var i = 0; i < events.length; i++){
-            select.options[i] = new Option(events[i].event_name, events[i].event_id);
-            }
-        }
-
-        function updateOpportunities(){
-            var eventSelect = this;
-            var eventId = this.value;
-            var opportunitySelect = document.getElementById("opportunitiesSelect");
-            opportunitiesSelect.options.length = 0; // clear previous options
-            opportunitiesSelect.options[0] = new Option('Select Opportunity', "{'opportunity_id':'','contribution_value':''}");
-            if (typeof opportunities[eventId] != 'undefined') {
-            for(var i = 0; i < opportunities[eventId].length; i++){
-                var opportunityValue = [opportunities[eventId][i].opportunity_id, opportunities[eventId][i].contribution_value];
-                opportunitiesSelect.options[1+i] = new Option(opportunities[eventId][i].opportunity_name, JSON.stringify(opportunityValue));
-            }
-            opportunitySelect.onchange = updateContributionValue;
-            }
-        }
-
-        function updateContributionValue(){
-            var opportunitySelect = document.getElementById('opportunitiesSelect');
-            var contributionValue = document.getElementById('contributionValue');
-            var opportunityValues = JSON.parse(opportunitySelect.value);
-            contributionValue.value = opportunityValues[1];
-            // console.log(opportunityValues[1]);
-        }
+        ?>  
     </script>
+    <script src="../assets/js/engagement-create.js"></script>
 </head>
+<body class="bg-light" onload='loadVolunteers(); loadEvents();'>
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
+            <h2>Record Engagement</h2>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center order-md-1">
+                <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post" class="row g-2" id="engagementForm">
 
-<!-- onload could be revised to be less obtrusive -->
-<body onload='loadVolunteers(); loadEvents();'>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h2>Create Engagement</h2>
+                    <!--form for volunteer-->
+                    <div class="row"> 
+                        <div class="mb-3">
+                            <label for="volunteersSelect">Volunteer Name</label>
+                            <div class="input-group">
+                                <select required name='volunteer_name' id='volunteersSelect' class="form-select">
+                                </select>                            
+                            </div>
+                            <span class="help-block text-danger"><?php echo $volunteer_name_error;?></span>
+                        </div>
                     </div>
-                    <p>Please fill this form and submit to add a new engagement for an affiliated volunteer.</p>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-                        <!--form for volunteer_name-->
-                        <div class="form-group <?php echo (!empty($volunteer_name_error)) ? 'has-error' : ''; ?>">
-                            <label>Volunteer Name</label>
-                            <select name='volunteer_name' id='volunteersSelect' class="form-control">
-                            </select>
-                            <span class="help-block"><?php echo $volunteer_name_error;?></span>
+                    <!--form for event-->
+                    <div class="row"> 
+                        <div class="mb-3">
+                            <label for="eventsSelect">Event Name</label>
+                            <div class="input-group">
+                                <select required name='event_name' id='eventsSelect' class="form-select">
+                                </select>                           
+                            </div>
+                            <span class="help-block text-danger"><?php echo $event_name_error;?></span>
                         </div>
+                    </div>
 
-                        <!--form for event_name-->
-                        <div class="form-group <?php echo (!empty($event_name_error)) ? 'has-error' : ''; ?>">
-                            <label>Event Name</label>
-                            <select name='event_name' id='eventsSelect' class="form-control">
-                            </select>
-                            <span class="help-block"><?php echo $event_name_error;?></span>
+                    <!--form for opportunity-->
+                    <div class="row"> 
+                        <div class="mb-3">
+                            <label for="opportunitiesSelect">Opportunity Name</label>
+                            <div class="input-group">
+                                <select required name='opportunity_name' id='opportunitiesSelect' class="form-select">
+                                </select>                           
+                            </div>
+                            <span class="help-block text-danger"><?php echo $opportunity_name_error;?></span>
                         </div>
+                    </div>
 
-                        <!--form for opportunity_name-->
-                        <div class="form-group <?php echo (!empty($opportunity_name_error)) ? 'has-error' : ''; ?>">
-                            <label>Opportunity Name</label>
-                            <select name='opportunity_name' id='opportunitiesSelect' class="form-control">
-                            </select>
-                            <span class="help-block"><?php echo $opportunity_name_error;?></span>
+                    <!-- display and form for contribution value -->
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="contribution_value">Contribution value</label>
+                            <div class="input-group">
+                                <input type="number" min="0" step="any" id='contributionValue' name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
+                            </div>      
+                            <span class="help-block text-danger"><?php echo $contribution_value_error;?></span>
                         </div>
+                    </div>
 
-                        <!-- display and form for contribution value -->
-                        <div class="form-group <?php echo (!empty($contribution_value_error)) ? 'has-error' : ''; ?>">
-                            <label>Contribution Value</label>
-                            <input type="number" min="0" step="any" id='contributionValue' name="contribution_value" class="form-control" value="<?php echo $contribution_value; ?>">
-                            <span class="help-block"><?php echo $contribution_value_error;?></span>
+                    <!--form for status-->
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input type='hidden' value='1' name='status'>
+                                <input class="form-check-input" type="checkbox" value="0" name="status" id="status" checked>
+                                <label class="form-check-label" for="status">
+                                    This engagement is already verified.
+                                </label>
+                            </div>
+                            <span class="help-block text-danger"><?php echo $status_error;?></span>
                         </div>
+                    </div>
 
-                        <!--form for status-->
-                        <div class="form-group <?php echo (!empty($status_error)) ? 'has-error' : ''; ?>">
-                            <label for="status">Verified?</label>
-                            <p>Is this engagement already verified?</p>
-                            <input type="radio" name="status" value="1" checked> Yes
-                            <input type="radio" name="status" value="0"> No
-                            <span class="help-block"><?php echo $status_error;?></span>
-                        </div>
+                    <hr class="mb-3">
 
+                    <div class="row">
 
+                    <button class="w-100 btn btn-primary btn-lg btn-block" type="submit" onclick="return validateForm()">Record engagement</button>
 
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="dashboard.php" class="btn btn-default">Cancel</a>
-                    </form>
-                </div>
+                    </div>
+
+                    <a href="engagements.php" class="btn btn-default">Cancel</a>
+                </form>
             </div>
         </div>
+
+        <?php include 'footer.php';?>
+
     </div>
-    <?php include '../footer.php';?>
+
+    <!-- Custom js for this page -->
+    <script src="../assets/js/form.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
 </body>
 </html>
