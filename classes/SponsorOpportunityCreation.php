@@ -118,12 +118,16 @@ class SponsorOpportunityCreation
     public function setTotalPositions(string $total_positions): string
 	{
 		if(empty($total_positions)) {
-			return "Please enter the total number of positions available.";
+            $this->total_positions = null;
+            return "";
 		}
-		else {
+		else if(is_numeric($total_positions)) {
 			$this->total_positions = $total_positions;
 			return "";
 		}
+        else {
+            return "Not a valid number";
+        }
 	}
 
     public function setLimitPerVolunteer(string $limit_per_volunteer): string
@@ -137,29 +141,17 @@ class SponsorOpportunityCreation
 		}
 	}
 
-    public function setContributionValue( $contribution_value): string
+    public function setContributionValue($contribution_value): string
 	{
 		if(empty($contribution_value)) {
             $this->contribution_value = 0.0;
             return "";
-			// return "Please enter a contribution value.";
 		}
 		else {
 			$this->contribution_value = $contribution_value;
 			return "";
 		}
 	}
-
-	// public function setOpportunityId(int $opportunity_id): string
-	// {
-	// 	if(empty($opportunity_id)) {
-	// 		return "Please select an opportunity.";
-	// 	}
-	// 	else {
-	// 		$this->opportunity_id = $opportunity_id;
-	// 		return "";
-	// 	}
-	// }
 
 	public function setNeedsReminder($needs_reminder): string
 	{
