@@ -130,7 +130,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta name="description" content="">
     <link rel="icon" type="image/png" href="assets/images/volunteernexus-logo-1.png">
 
-    <title>Create Event!!!</title>
+    <title>Create Event</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
