@@ -73,7 +73,7 @@ $jsonOpportunities = $populatorObj->getOpportunities();
     <div class="container">
         <div id="initialForm">
             <div class="py-5 text-center">
-                <img class="d-block mx-auto mb-4" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
+                <img class="d-block mx-auto mb-3" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
                 <h2>Attendance Anywhere</h2>
                 <p class="lead">Fill out this form to start scanning Volunteer IDs.</p>
             </div>
