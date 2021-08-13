@@ -38,15 +38,8 @@ $jsonOpportunities = $engagementFormPopulatorObj->getOpportunities();
 // Process Form Submission
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
-    $output .= "<div class='row'>";
-    $output .=    "<div class='col-12 mb-3'>";
-    $output .=       "<pre class='bg-dark text-light p-3 mt-1 rounded' id='output'>";
-
-    $output .=          "<b>Processing of Student IDs</b>\n";
-    $output .=          "----------------------------\n";
-
     $failed_student_ids = array();
+
     // Instantiate EngagementCreation object
     require_once '../classes/EngagementCreation.php';
     $engagementCreationObj = new EngagementCreation($sponsor_id);
@@ -72,50 +65,54 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         // Convert string input of student_ids, delimited by newline character, to string array of student_ids
         $student_ids = preg_split('/\s+/', trim($_POST["student_ids"]));
 
+        $output .= "<div class='row'>";
+        $output .=    "<div class='col-12 mb-3'>";
+        $output .=       "<pre class='bg-dark text-light p-3 mt-1 rounded' id='output'>";
+        $output .=          "<b>Processing of Student IDs</b>\n";
+        $output .=          "----------------------------\n";
+
         // Loop through input of student_ids to find corresponding volunteer_id to each student_id
         foreach($student_ids as $student_id)
         {
-        $output .= "Student ID = " . $student_id . "\n";
+            $output .= "Student ID = " . $student_id . "\n";
 
-        if($engagementCreationObj->setVolunteerIdByStudentId($student_id))
-        {
-            $output .= "\t<span class='text-success'>SUCCESS: Volunteer ID Retrieval</span>\n";
-
-            if($engagementCreationObj->addEngagement())
+            if($engagementCreationObj->setVolunteerIdByStudentId($student_id))
             {
-                $output .= "\t<span class='text-success'>SUCCESS: Engagement Addition</span>\n";
+                $output .= "\t<span class='text-success'>SUCCESS: Volunteer ID Retrieval</span>\n";
 
+                if($engagementCreationObj->addEngagement())
+                {
+                    $output .= "\t<span class='text-success'>SUCCESS: Engagement Addition</span>\n";
+
+                }
+                else
+                {
+                    $output .= "\t<span class='text-danger'>FAILURE: Engagement Addition</span>\n";
+                    array_push($failed_student_ids, $student_id);
+                }
             }
             else
             {
-                $output .= "\t<span class='text-danger'>FAILURE: Engagement Addition</span>\n";
+                $output .= "\t<span class='text-danger'>FAILURE: Volunteer ID Retrieval</span>\n";
                 array_push($failed_student_ids, $student_id);
             }
         }
-        else
+
+        $output .=          "----------------------------\n";
+        $output .=          "<b>List of Failed Student IDs:</b>\n";
+        $output .=          "----------------------------\n";
+
+        foreach($failed_student_ids as $failed_student_id)
         {
-            $output .= "\t<span class='text-danger'>FAILURE: Volunteer ID Retrieval</span>\n";
-            array_push($failed_student_ids, $student_id);
-        }
-        }
-
-        $output .= "----------------------------\n";
-        $output .= "<b>List of Failed Student IDs:</b>\n";
-        $output .= "----------------------------\n";
-
-        foreach($failed_student_ids as $failed_student_id) {
             $output .= "<span class='text-danger'>".$failed_student_id . "</span>\n";
         }
 
-        $output .= "----------------------------\n";
-
-        $output .=        "<span class='text-info'><b>NOTE:</b> Make sure your volunteers have added their Student IDs to their profiles.<br>Direct them to \"Profile\" -> \"Update Profile\"<br>(https://volunteernexus.com/volunteer/profile-update.php)</span>\n";      
-
-        $output .=        "</pre>";      
+        $output .=          "----------------------------\n";
+        $output .=          "<span class='text-info'><b>NOTE:</b> Make sure your volunteers have added their Student IDs to their profiles.<br>Direct them to \"Profile\" -> \"Update Profile\"<br>(https://volunteernexus.com/volunteer/profile-update.php)</span>\n";
+        $output .=       "</pre>";      
         $output .=    "</div>";
         $output .= "</div>"; 
         $output .= "<hr class='mb-3'>";
-   
     }
 }
 ?>
@@ -145,10 +142,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     <!-- Custom JS for this page -->
     <script type='text/javascript'>
-      <?php
+        <?php
         echo "var events = $jsonEvents; \n";
         echo "var opportunities = $jsonOpportunities; \n";
-      ?>
+        ?>
     </script>
     <script src="../assets/js/engagement-create.js"></script>
 </head>
