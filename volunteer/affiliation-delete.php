@@ -4,13 +4,13 @@ session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["volunteer_loggedin"]) || $_SESSION["volunteer_loggedin"] !== true){
-    header("location: login.php");
+    header("location: sign-in.php");
     exit;
 }
 
 // Process delete operation after confirmation
 if(isset($_POST["affiliation_id"]) && !empty($_POST["affiliation_id"])){
-    // Include config file
+
     require_once "../classes/VolunteerAffiliation.php";
 
     $volunteer_id = trim($_SESSION["volunteer_id"]);
@@ -37,42 +37,48 @@ else {
     }
 }
 ?>
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Delete Affiliation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Felix Chen">
+    
+    <title>Leave sponsor</title>
 
-        <!--Load required libraries-->
-        <?php include '../head.php'?>
-
-    <style type="text/css">
-        .wrapper{
-            margin: 0 auto;
-        }
-    </style>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h1>Delete Affiliation</h1>
-                    </div>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="alert alert-danger fade in">
+    <?php $thisPage='Events'; include 'navbar.php';?>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="ms-sm-auto px-md-4">
+                <div class="col-12 col-md-6 card mt-3 mx-auto border-danger">
+                    <h5 class="card-header bg-danger text-light">Leave sponsor</h5>
+                    <div class="card-body">
+                        <p class="card-text">Are you sure you want to leave this Sponsor? You can rejoin later.</p>
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <input type="hidden" name="affiliation_id" value="<?php echo trim($_GET["affiliation_id"]); ?>"/>
-                            <p>Are you sure you want to delete this affiliation? This action can be undone.</p><br>
-                            <p>
-                                <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="dashboard.php" class="btn btn-default">No</a>
-                            </p>
-                        </div>
-                    </form>
+                            <input type="submit" value="Yes" class="btn btn-danger"> 
+                            <a href="dashboard.php" class="btn btn-outline-secondary">No</a>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+
+            <?php include "footer.php"; ?>
         </div>
     </div>
+
+    <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+
