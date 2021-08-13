@@ -10,39 +10,27 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 // Process delete operation after confirmation
 if(isset($_POST["opportunity_id"]) && !empty($_POST["opportunity_id"]) && isset($_POST["event_id"]) && !empty($_POST["event_id"])){
-    // Include config file
-    require_once "../config.php";
 
-    // Prepare a delete statement
-    $sql = "DELETE FROM opportunities WHERE opportunity_id = ? AND sponsor_id = {$_SESSION['sponsor_id']}";
+    require_once "../classes/SponsorOpportunity.php";
 
-    if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "i", $param_opportunity_id);
-
-        // Set parameters
-        $param_opportunity_id = trim($_POST["opportunity_id"]);
-
-
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            // Opportunity deleted successfully. Redirect to landing page
-            //NOTE: link may be broken
-            header("location: event-read.php?event_id=" . $_POST['event_id']);
-            exit();
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
+    $sponsor_id = trim($_SESSION["sponsor_id"]);
+    $opportunity_id = trim($_POST["opportunity_id"]);
+    
+    $obj = new SponsorOpportunity($sponsor_id);
+    
+    if($obj->removeOpportunity($opportunity_id))
+    {
+        header("location: event-read.php?event_id=" . $_POST['event_id']);
+        exit();
     }
-
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-    // Close connection
-    mysqli_close($link);
-} else{
+    else {
+        header("location: error.php");
+        exit();
+    }
+}
+else {
     // Check existence of id parameter
-    if(empty(trim($_GET["opportunity_id"]))){
+    if(empty(trim($_GET["opportunity_id"]))) {
         // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
