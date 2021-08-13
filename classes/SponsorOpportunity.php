@@ -290,6 +290,19 @@ class SponsorOpportunity
         return $status;
     }
 
+    public function removeOpportunity($opportunity_id): bool 
+    {
+		$sql =
+			"DELETE FROM 
+				opportunities
+			WHERE
+				sponsor_id = :sponsor_id
+				AND opportunity_id = :opportunity_id";
+		$stmt = $this->pdo->prepare($sql);
+		$status = $stmt->execute(['sponsor_id' => $this->sponsor_id, 'opportunity_id' => $opportunity_id]);
+		return $status;
+	}
+
     public function getOpportunityName(): string
     {
         return $this->opportunity_name;
