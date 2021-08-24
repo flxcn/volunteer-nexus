@@ -98,7 +98,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $is_public_error = $obj->setIsPublic($is_public);
 
 
-
     // Check input errors before inserting in database
     if( empty($event_name_error) 
         && empty($description_error) 
@@ -242,8 +241,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <input type="date" name="registration_end" id="registration_end"class="form-control" value="<?php echo $registration_end; ?>">
                                 
                             </div>
-                            <span class="help-block"><?php echo $registration_start_error;?></span>
-                            <span class="help-block"><?php echo $registration_end_error;?></span>
+                            <span class="help-block text-danger"><?php echo $registration_start_error;?></span>
+                            <span class="help-block text-danger"><?php echo $registration_end_error;?></span>
                         </div>
                         
                         <!--form for event_end-->
@@ -255,8 +254,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <span class="input-group-text">End Date</span>
                                 <input type="date" name="event_end" id="event_end" class="form-control" value="<?php echo $event_end; ?>">
                             </div>
-                            <span class="help-block"><?php echo $event_start_error;?></span>
-                            <span class="help-block"><?php echo $event_end_error;?></span>
+                            <span class="help-block text-danger"><?php echo $event_start_error;?></span>
+                            <span class="help-block text-danger"><?php echo $event_end_error;?></span>
                         </div>
                     </div>
 
