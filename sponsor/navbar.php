@@ -25,7 +25,7 @@
                         <a class="nav-link <?php if ($thisPage === 'Affiliations') {echo 'active';} ?>" href="affiliations.php">Volunteers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if ($thisPage === 'Tutoring') {echo 'active';} ?>" href="../organizer/dashboard.php">Tutoring</a>
+                        <a class="nav-link <?php if ($thisPage === 'Tutoring') {echo 'active';} ?>" href="tutoring.php">Tutoring</a>
                     </li>
                 </ul>
 
