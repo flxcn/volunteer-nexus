@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true){
+if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== true) {
     header("location: sign-in.php");
     exit;
 }
@@ -40,7 +40,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
                     </div>
                 </div>
             </main>
-
             <?php include "footer.php"; ?>
         </div>
     </div>

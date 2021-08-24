@@ -96,7 +96,7 @@ else {
 }
 
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $event_id = trim($_POST["event_id"]);
     $obj->setEventId($event_id);
@@ -140,10 +140,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate needs_verification
     $needs_verification = trim($_POST["needs_verification"]);
     $obj->setNeedsVerification($needs_verification);
-
-    // Validate needs_reminder
-    $needs_reminder = 0;
-    //$obj->setNeedsReminder($needs_reminder);
 
     // Check input errors before inserting in database
     if( empty($event_id_error) 

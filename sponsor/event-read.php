@@ -25,7 +25,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
         header("location: error.php");
     }
 
-} else {
+} 
+else {
     header("location: error.php");
     exit();
 }
@@ -96,17 +97,11 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                     <!-- Opportunities -->
                     <div class="col-sm-12 col-lg-8 mb-4">
                         <div class="card border-primary">
-                        <h5 class="card-header d-flex text-primary justify-content-between align-items-center">
-                                    Opportunities
-                                    <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"];?>" class="btn btn-sm btn-success">Add New</a>
-                                </h5>
+                            <h5 class="card-header d-flex text-primary justify-content-between align-items-center">
+                                Opportunities
+                                <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"];?>" class="btn btn-sm btn-success">Add New</a>
+                            </h5>
                             <div class="card-body">
-                            <!-- <h5 class="card-title d-flex text-primary justify-content-between align-items-center">
-                                    Opportunities
-                                    <a href="opportunity-create.php?event_id=<?php echo $_GET["event_id"];?>" class="btn btn-sm btn-success">Add New</a>
-                                </h5> -->
-                                
-                                <!-- <h5 class="card-title text-primary">Opportunities</h5> -->
                                 <?php if($opportunities): ?>
                                     <div class="table-responsive">
                                         <table class='table table-hover'>
@@ -129,11 +124,8 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                     <td><?php echo $eventObj->formatDescription($opportunity['description']); ?></td>
                                                     <td><?php echo $opportunityObj->formatTime($opportunity['start_time']) . " to<br>" . $opportunityObj->formatTime($opportunity['end_time']); ?></td>
                                                     <td>
-                                                        <!-- Button trigger modal -->
                                                         <div class="btn-group float-end">
                                                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">View</button> 
-                                                            <!-- <a class="btn btn-success btn-sm" href=<?php echo "opportunity-update.php?event_id=" . $_GET["event_id"] . "&opportunity_id=" . $opportunity['opportunity_id']; ?>>Edit</a> -->
-                                                            <!-- <a class="btn btn-danger btn-sm" href=<?php echo "opportunity-delete.php?event_id=" . $_GET["event_id"] . "&opportunity_id=" . $opportunity['opportunity_id']; ?>>Delete</a> -->
                                                         </div>
 
                                                         <!-- Modal -->
@@ -188,6 +180,13 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
     <script src="../assets/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        (function () {
+        'use strict'
+
+        feather.replace({ 'aria-hidden': 'true' })
+
+        })()
+
         function toggleContactInfo() {
             var contactInfo = document.getElementById("contactInfo");
             var toggleButton = document.getElementById("toggleButton");
@@ -200,15 +199,6 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                 toggleButtonText.textContent = "See contact info";
             }
         }
-    </script>
-
-    <script>
-    (function () {
-    'use strict'
-
-    feather.replace({ 'aria-hidden': 'true' })
-
-    })()
     </script>
 </body>
 </html>

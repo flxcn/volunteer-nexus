@@ -12,6 +12,7 @@ require '../classes/SponsorEventReader.php';
 $obj = new SponsorEventReader($_SESSION['sponsor_id']);
 $events = $obj->getUpcomingSponsoredEvents();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,100 +125,101 @@ $events = $obj->getUpcomingSponsoredEvents();
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 
     <script>
-    // Activate feather icon 
-    (function () {
-    'use strict'
+        // Activate feather icon 
+        (function () {
+        'use strict'
 
-    feather.replace({ 'aria-hidden': 'true' })
+        feather.replace({ 'aria-hidden': 'true' })
 
-    })()
+        })()
 
-    // Sort table functionality 
-    function sortTable(n) {
-      var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
-      table = document.getElementById("events");
-      switching = true;
-      // Set the sorting direction to ascending:
-      direction = "asc";
-      /* Make a loop that will continue until
-      no switching has been done: */
-      while (switching) {
-        // Start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /* Loop through all table rows (except the
-        first, which contains table headers): */
-        for (i = 1; i < (rows.length - 1); i++) {
-          // Start by saying there should be no switching:
-          shouldSwitch = false;
-          /* Get the two elements you want to compare,
-          one from current row and one from the next: */
-          x = rows[i].getElementsByTagName("TD")[n];
-          y = rows[i + 1].getElementsByTagName("TD")[n];
-          /* Check if the two rows should switch place,
-          based on the direction, asc or desc: */
-          if (direction == "asc") {
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              // If so, mark as a switch and break the loop:
-              shouldSwitch = true;
-              break;
-            }
-          } else if (direction == "desc") {
-            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              // If so, mark as a switch and break the loop:
-              shouldSwitch = true;
-              break;
-            }
-          }
-        }
-        if (shouldSwitch) {
-          /* If a switch has been marked, make the switch
-          and mark that a switch has been done: */
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-          // Each time a switch is done, increase this count by 1:
-          switchcount ++;
-        } else {
-          /* If no switching has been done AND the direction is "asc",
-          set the direction to "desc" and run the while loop again. */
-          if (switchcount == 0 && direction == "asc") {
-            direction = "desc";
+        // Sort table functionality 
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
+            table = document.getElementById("events");
             switching = true;
-          }
-        }
-      }
-    }
-
-    // AJAX script to fetch table
-    function showTable(interval) {
-        if (interval == "") {
-            return;
-        }
-        else {
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("eventsContent").innerHTML = this.responseText;
+            // Set the sorting direction to ascending:
+            direction = "asc";
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (direction == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (direction == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
                 }
-            };
 
-            xmlhttp.open("GET","events-get-table.php?interval="+interval,true);
-            xmlhttp.send();
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount ++;
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && direction == "asc") {
+                        direction = "desc";
+                        switching = true;
+                    }
+                }
+            }
         }
-    }
 
-    // search feature
-    $(document).ready(function(){
-        $("#searchInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#eventTableBody tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        // AJAX script to fetch table
+        function showTable(interval) {
+            if (interval == "") {
+                return;
+            }
+            else {
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("eventsContent").innerHTML = this.responseText;
+                    }
+                };
+
+                xmlhttp.open("GET","events-get-table.php?interval="+interval,true);
+                xmlhttp.send();
+            }
+        }
+
+        // search feature
+        $(document).ready(function(){
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#eventTableBody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         });
-    });
     </script>
 
 </body>

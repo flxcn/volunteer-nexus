@@ -8,7 +8,6 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
     exit;
 }
 
-// Include config file
 require_once "../classes/SponsorEvent.php";
 $obj = new SponsorEvent($_SESSION['sponsor_id']);
 
@@ -137,7 +136,7 @@ else {
             $event_end = $obj->getEventEnd();
             $is_public = $obj->getIsPublic();
         }
-        else{
+        else {
             echo "Existing event details unavailable.";
             exit();
         }        
@@ -307,7 +306,7 @@ else {
 
     <!-- Custom js for this page -->
     <script src="../assets/js/form.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
 
 </body>
 </html>

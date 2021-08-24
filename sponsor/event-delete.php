@@ -10,20 +10,21 @@ if(!isset($_SESSION["sponsor_loggedin"]) || $_SESSION["sponsor_loggedin"] !== tr
 
 // Process delete operation after confirmation
 if(isset($_POST["event_id"]) && !empty($_POST["event_id"])) {
-    // Include config file
-    require_once "../classes/SponsorEvent.php";
 
+    require_once "../classes/SponsorEvent.php";
     $obj = new SponsorEvent($_SESSION['sponsor_id']);
 
     $event_id = trim($_POST["event_id"]);
     if($obj->removeEvent($event_id)) {
         header("location: events.php");
         exit();
-    } else {
+    } 
+    else {
         echo "Oops! Something went wrong. Please try again later.";
     }
   
-} else {
+} 
+else {
     // Check existence of id parameter
     if(empty(trim($_GET["event_id"]))) {
         // URL doesn't contain id parameter. Redirect to error page
@@ -47,7 +48,6 @@ if(isset($_POST["event_id"]) && !empty($_POST["event_id"])) {
     
     <!-- Custom styles for this template -->
     <link href="../assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" media="print" href="../assets/css/print.css" />
 </head>
 <body>
     <?php $thisPage='Events'; include 'navbar.php';?>
