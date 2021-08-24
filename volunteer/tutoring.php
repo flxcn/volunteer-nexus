@@ -48,7 +48,7 @@ $engagements = $obj->getUpcomingEngagements();
     <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 <body>
-    <?php $thisPage='Tutoring'; include '../volunteer/navbar.php';?>
+    <?php $thisPage='Tutoring'; include 'navbar.php';?>
 
     <div class="container-fluid">
         <div class="row">
@@ -59,7 +59,6 @@ $engagements = $obj->getUpcomingEngagements();
                 </div>
 
                 <a href="tutor-create.php" class="btn btn-success">Register as a Tutor</a>
-                <a href="../volunteer/affiliation-create.php" class="btn btn-primary">Sign up with a Sponsor</a>
                 <a href="tutor-request.php" class="btn btn-primary">Request tutoring</a>
                 <a href="tutorial-create.php" class="btn btn-primary">Log tutoring</a>
 
