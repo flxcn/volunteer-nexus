@@ -19,7 +19,7 @@
                         <a class="nav-link <?php if ($thisPage === 'Events') {echo 'active';} ?>" href="events.php">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if ($thisPage === 'Tutoring') {echo 'active';} ?>" href="../tutor/dashboard.php">Tutoring</a>
+                        <a class="nav-link <?php if ($thisPage === 'Tutoring') {echo 'active';} ?>" href="tutoring.php">Tutoring</a>
                     </li>
                 </ul>
 
