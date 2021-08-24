@@ -94,17 +94,7 @@ git clone https://github.com/flxcn/volunteer-nexus.git
 ```sh
 php composer.phar install
 ```
-4. Enter your database credentials in `config.php` 
-
-```PHP
-define('HOST', 'localhost');
-define('USERNAME', 'ENTER YOUR USERNAME');
-define('PASSWORD', 'ENTER YOUR PASSWORD');
-define('DATABASE_NAME', 'volunteer_nexus');
-```
-
-   and in `DatabaseConnection.php`
-
+3. Enter your database credentials in `DatabaseConnection.php`
 ```PHP
 define('DB_HOST','localhost');
 define('DB_NAME','volunteer_nexus');
@@ -112,14 +102,14 @@ define('DB_CHARSET','utf8mb4');
 define('DB_USERNAME','ENTER YOUR USERNAME');
 define('DB_PASSWORD','ENTER YOUR PASSWORD');
 ```
-5. Enter your Google OAuth2.0 credentials in `google-oauth.php`
+4. Enter your Google OAuth2.0 credentials in `google-oauth.php`
 ```PHP
 $clientID = '<YOUR_CLIENT_ID>';
 $clientSecret = '<YOUR_CLIENT_SECRET>';
 $redirectUri = '<YOUR_REDIRECT_URI>';
 ```
 
-6. Deploy to web server
+5. Deploy to web server
 
 
 
