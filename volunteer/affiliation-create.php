@@ -61,14 +61,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <link href="../assets/css/form.css" rel="stylesheet">
 
     <script type='text/javascript'>
-      var sponsors = <?php echo $jsonSponsors;?>;
+        var sponsors = <?php echo $jsonSponsors;?>;
 
-      function loadSponsors() {
-        var select = document.getElementById("sponsorsSelect");
-        for(var i = 0; i < sponsors.length; i++){
-          select.options[i] = new Option(sponsors[i].sponsor_name, sponsors[i].sponsor_id);
+        function loadSponsors() {
+            var select = document.getElementById("sponsorsSelect");
+            for(var i = 0; i < sponsors.length; i++){
+                select.options[i] = new Option(sponsors[i].sponsor_name, sponsors[i].sponsor_id);
+            }
         }
-      }
     </script>
 </head>
 
@@ -78,7 +78,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
             <h2>Join a Sponsor</h2>
-            <p class="lead">After joining, you'll be able to see a Sponsor's events and opportunities.v</p>
+            <p class="lead">After joining, you'll be able to see a Sponsor's events and opportunities.</p>
         </div>
         
         <div class="row">
