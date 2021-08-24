@@ -13,9 +13,6 @@ if(!isset($_GET["event_id"]) && empty(trim($_GET["event_id"]))) {
     exit();
 }
 
-
-
-// Include config file
 require_once '../classes/SponsorOpportunity.php';
 $sponsor_id = trim($_SESSION["sponsor_id"]);
 $obj = new SponsorOpportunity($sponsor_id);
@@ -34,7 +31,7 @@ $limit_per_volunteer = 1;
 $contribution_value = 0.0;
 $contribution_type = "";
 $contribution_type_display = "";
-$needs_verification = "";
+$needs_verification = 0;
 $needs_reminder = "";
 
 //define and initialize error message variables
@@ -316,7 +313,7 @@ else {
 
     <!-- Custom js for this page -->
     <script src="../assets/js/form.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="../assets/jQuery/jquery-3.4.1.min.js"></script>
 
 </body>
 </html>
