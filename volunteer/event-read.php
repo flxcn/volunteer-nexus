@@ -119,7 +119,7 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                 <tr>
                                                     <td><?php echo $opportunity['opportunity_name']; ?></td>
                                                     <td><?php echo $eventObj->formatDescription($opportunity['description']); ?></td>
-                                                    <td><?php echo $opportunity['start_time'] . " to " . $opportunity['end_time']; ?></td>
+                                                    <td><?php echo $opportunityObj->formatTime($opportunity['start_time']) . " to<br >" . $opportunityObj->formatTime($opportunity['end_time']); ?></td>
                                                     <td>
                                                         <!-- Button trigger modal -->
                                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">
