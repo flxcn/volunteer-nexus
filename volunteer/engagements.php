@@ -19,7 +19,6 @@ $engagements = $obj->getUpcomingEngagements();
                             <thead>
                             <tr>
                                 <th scope="col">Event</th>
-                                <!-- <th scope="col">Description</th> -->
                                 <th scope="col">Opportunity</th>
                                 <th scope="col">Contact Info</th>
                                 <th scope="col">Duration</th>
@@ -36,9 +35,6 @@ $engagements = $obj->getUpcomingEngagements();
                                     <th scope="row">
                                         <?php echo $engagement['event_name']; ?>
                                     </th>
-                                    <!-- <td>
-                                        <?php //echo $engagement['description']; ?>
-                                    </td> -->
                                     <td>
                                         <?php echo $engagement['opportunity_name']; ?>
                                     </td>
@@ -48,15 +44,11 @@ $engagements = $obj->getUpcomingEngagements();
                                     <td>
                                         <?php echo $obj->formatOpportunityStartToEnd($engagement['start_date'],$engagement['end_date']); ?>
                                     </td>
-                                    <td>
-                                        <!-- <a href=<?php // echo "engagement-read.php?engagement_id=" . $engagement['engagement_id'] . "&opportunity_id=" . $engagement['opportunity_id']; ?> class="btn btn-primary">View</a> -->
-                                        
+                                    <td>                                        
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">
                                             View
                                         </button>
-
-                                        <!-- <a href=<?php //echo "engagement-delete.php?engagement_id=" . $engagement['engagement_id']; ?> class='btn btn-danger' >Cancel</a> -->
                                         
                                         <!-- Modal -->
                                         <div class="modal fade" id="modal<?php echo $modalCount;?>" tabindex="-1" aria-labelledby="modal<?php echo $modalCount;?>Label" aria-hidden="true">
