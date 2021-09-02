@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="VolunteerNexus offers a centralized platform for students to discover, join, and track volunteer opportunities in their community.">
         <meta name="author" content="Felix Chen">
+
         <link rel="icon" type="image/png" href="assets/images/volunteernexus-logo-1.png">
-    
+        <link rel="apple-touch-icon" href="assets/images/volunteernexus-logo-1.png">
+
         <title>VolunteerNexus</title>
 
         <!-- Bootstrap core CSS -->
