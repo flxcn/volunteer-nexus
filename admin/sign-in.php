@@ -71,11 +71,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <main class="form-signin">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <img class="mb-4" src="../assets/images/volunteernexus-logo-1.png" alt="" width="72" height="72">
-                <h1 class="h3 mb-3 fw-normal">Sponsor</h1>
+                <h1 class="h3 mb-3 fw-normal">Admin</h1>
 
                 <div class="form-floating">
-                    <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@email.com">
-                    <label for="floatingInput">Email address</label>
+                    <input type="text" name="username" class="form-control" id="floatingInput" placeholder="name@email.com">
+                    <label for="floatingInput">Username</label>
                 </div>
                 <div class="form-floating">
                     <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
