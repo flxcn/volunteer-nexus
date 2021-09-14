@@ -19,6 +19,9 @@
                         <a class="nav-link <?php if ($thisPage === 'Events') {echo 'active';} ?>" href="events.php">Events</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link <?php if ($thisPage === 'Opportunities') {echo 'active';} ?>" href="opportunities.php">Events</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link <?php if ($thisPage === 'Engagements') {echo 'active';} ?>" href="engagements.php">Engagements</a>
                     </li>
                     <li class="nav-item">
