@@ -56,6 +56,32 @@ class AdminReader {
 		}
     }
 
+    public function getOpportunities(): ?array
+	{
+		$sql =
+            "SELECT     event_id,
+                        event_name, 
+                        sponsor_name,
+                        description,
+                        location,
+                        event_start,
+                        event_end,
+                        registration_start, 
+                        registration_end 
+            FROM        opportunities";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute();
+		$events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if(!$events) {
+			return null;
+		}
+		else {
+			return $events;
+		}
+    }
+
     public function getLatestEvents(): ?array
 	{
 		$sql =
