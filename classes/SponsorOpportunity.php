@@ -358,7 +358,7 @@ class SponsorOpportunity
         return $this->needs_reminder;
     }
 
-    public function getLimitPerVolunteer(): string
+    public function getLimitPerVolunteer(): ?int
     {
         return $this->limit_per_volunteer;
     }
