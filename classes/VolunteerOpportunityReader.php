@@ -150,6 +150,7 @@ class VolunteerOpportunityReader
                         end_date, 
                         end_time, 
                         total_positions, 
+                        needs_verification,
                         COUNT(engagement_id)    AS positions_filled
             FROM        opportunities AS o
             LEFT JOIN   engagements AS e
