@@ -111,58 +111,56 @@ if(isset($_GET["event_id"]) && !empty(trim($_GET["event_id"]))){
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php 
-                                                $modalCount = 0; 
-                                                foreach($opportunities as $opportunity): 
-                                                    $modalCount++;
-                                                ?>
+                                                <?php foreach($opportunities as $opportunity): ?>
                                                 <tr>
                                                     <td><?php echo $opportunity['opportunity_name']; ?></td>
                                                     <td><?php echo $eventObj->formatDescription($opportunity['description']); ?></td>
                                                     <td><?php echo $opportunityObj->formatTime($opportunity['start_time']) . " to<br >" . $opportunityObj->formatTime($opportunity['end_time']); ?></td>
                                                     <td>
                                                         <!-- Button trigger modal -->
-                                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $modalCount;?>">
+                                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?php echo $opportunity["opportunity_id"];?>">
                                                         View
                                                         </button>
-
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="modal<?php echo $modalCount;?>" tabindex="-1" aria-labelledby="modal<?php echo $modalCount;?>Label" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="modal<?php echo $modalCount;?>Label"><?php echo $opportunity["opportunity_name"]; ?></h5>                           
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-
-                                                                    <div class="modal-body">
-                                                                        <h6 class="small text-muted"><?php echo $opportunity["contribution_value"] . " " . $eventObj->getContributionType(); ?></h6>
-                                                                        <p><?php echo $opportunity["description"]; ?></p>
-                                                                        <hr>
-                                                                        <p><b>From </b><?php echo $opportunityObj->formatDate($opportunity['start_date']) . " @ " . $opportunityObj->formatTime($opportunity['start_time']) . " <br><b>To</b>   " . $opportunityObj->formatDate($opportunity['end_date']) . " @ " . $opportunityObj->formatTime($opportunity['end_time']); ?></p>
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="engagement-create.php" method="post">
-                                                                            <input type="hidden" name="event_id" value="<?php echo trim($event_id); ?>">
-                                                                            <input type="hidden" name="opportunity_id" value="<?php echo trim($opportunity["opportunity_id"]); ?>">
-                                                                            <input type="hidden" name="sponsor_id" value="<?php echo $eventObj->getSponsorId(); ?>">
-                                                                            <input type="hidden" name="volunteer_id" value="<?php echo trim($_SESSION["volunteer_id"]); ?>">
-                                                                            <input type="hidden" name="contribution_value" value="<?php echo $opportunity["contribution_value"];?>">
-                                                                            <input type="hidden" name="needs_verification" value="<?php echo $opportunity["needs_verification"];?>">
-                                                                            <input type="submit" class="btn btn-success" value="Sign up!">                                                                    
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <!-- Modal -->
+                                    <?php foreach($opportunities as $opportunity): ?>
+                                    <div class="modal fade" id="modal<?php echo $opportunity["opportunity_id"];?>" tabindex="-1" aria-labelledby="modal<?php echo $opportunity["opportunity_id"];?>Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modal<?php echo $opportunity["opportunity_id"];?>Label"><?php echo $opportunity["opportunity_name"]; ?></h5>                           
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <h6 class="small text-muted"><?php echo $opportunity["contribution_value"] . " " . $eventObj->getContributionType(); ?></h6>
+                                                    <p><?php echo $opportunity["description"]; ?></p>
+                                                    <hr>
+                                                    <p><b>From </b><?php echo $opportunityObj->formatDate($opportunity['start_date']) . " @ " . $opportunityObj->formatTime($opportunity['start_time']) . " <br><b>To</b>   " . $opportunityObj->formatDate($opportunity['end_date']) . " @ " . $opportunityObj->formatTime($opportunity['end_time']); ?></p>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <form action="engagement-create.php" method="post">
+                                                        <input type="hidden" name="event_id" value="<?php echo trim($event_id); ?>">
+                                                        <input type="hidden" name="opportunity_id" value="<?php echo trim($opportunity["opportunity_id"]); ?>">
+                                                        <input type="hidden" name="sponsor_id" value="<?php echo $eventObj->getSponsorId(); ?>">
+                                                        <input type="hidden" name="volunteer_id" value="<?php echo trim($_SESSION["volunteer_id"]); ?>">
+                                                        <input type="hidden" name="contribution_value" value="<?php echo $opportunity["contribution_value"];?>">
+                                                        <input type="hidden" name="needs_verification" value="<?php echo $opportunity["needs_verification"];?>">
+                                                        <input type="submit" class="btn btn-success" value="Sign up!">                                                                    
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
                                 <?php else: ?>
                                     <p class='lead'>
                                         <em>There are currently no opportunities.</em>
