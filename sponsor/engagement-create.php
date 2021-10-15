@@ -168,8 +168,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="form-check">
-                                <input type='hidden' value='1' name='status'>
-                                <input class="form-check-input" type="checkbox" value="0" name="status" id="status" checked>
+                                <input type='hidden' value='0' name='status'>
+                                <input class="form-check-input" type="checkbox" value="1" name="status" id="status" checked>
                                 <label class="form-check-label" for="status">
                                     This engagement is already verified.
                                 </label>
