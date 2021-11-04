@@ -2,7 +2,7 @@
 session_start();
 
 // Check if the sponsor is already logged in, if yes then redirect to dashboard
-if(isset($_SESSION["sponsor_loggedin"]) && $_SESSION["sponsor_loggedin"] === true){
+if(isset($_SESSION["admin_loggedin"]) && $_SESSION["admin_loggedin"] === true){
     header("location: dashboard.php");
     exit;
 }
