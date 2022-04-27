@@ -45,24 +45,30 @@ $obj = new NexusOverview();
 
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 g-3">
-                        <div class="card col">
-                            <div class="card-body text-dark">
-                                <p class="card-text display-3"><b><?php echo $obj->countSponsors(); ?></b></p>
-                                <p>Organizations</p>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body text-dark">
+                                    <p class="card-text display-3"><b><?php echo $obj->countSponsors(); ?></b></p>
+                                    <p>Organizations</p>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card col">
-                            <div class="card-body text-dark">
-                                <p class="card-text display-3"><b><?php echo $obj->formatDisplayNumber($obj->countVolunteers()); ?></b></p>
-                                <p>Volunteers</p>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body text-dark">
+                                    <p class="card-text display-3"><b><?php echo $obj->formatDisplayNumber($obj->countVolunteers()); ?></b></p>
+                                    <p>Volunteers</p>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card col">
-                            <div class="card-body text-dark">
-                                <p class="card-text display-3"><b><?php echo $obj->formatDisplayNumberShort($obj->countEngagements()); ?></b></p>
-                                <p class="p-0">Engagements</p>                        
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body text-dark">
+                                    <p class="card-text display-3"><b><?php echo $obj->formatDisplayNumberShort($obj->countEngagements()); ?></b></p>
+                                    <p class="p-0">Engagements</p>                        
+                                </div>
                             </div>
                         </div>
                     </div>
